@@ -8,6 +8,12 @@ const theme = {
     background: "#100d38",
   },
   fonts: ["Ubuntu", "sans-serif", "Roboto"],
+  screenSize: {
+    xs: "480px",
+    sm: "768px",
+    md: "1024px",
+    lg: "1200px",
+  },
 };
 const Theme = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>

@@ -7,4 +7,7 @@ export const LogoTitle = styled(Link)`
   flex: 1;
   cursor: pointer;
   text-decoration: none;
+  @media (max-width: ${(props) => props.theme.screenSize.lg}) {
+    font-size: 30px;
+  }
 `;
