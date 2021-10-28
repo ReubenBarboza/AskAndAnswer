@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { LoginContainer } from "./styles/Login/LoginContainer.styled";
 import { StyledButton } from "./styles/StyledButton.styled";
 import { StyledDiv } from "./styles/StyledDiv.styled";
+import { UsersContext } from "./contexts/UsersContex";
 
 function Login() {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [users, setUsers] = useState([]);
+  const { userName, setUserName, password, setPassword, users, setUsers } =
+    useContext(UsersContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,10 +18,13 @@ function Login() {
     <LoginContainer>
       <form onSubmit={handleSubmit}>
         <StyledDiv
-          height="200px"
+          height="400px"
+          border="1px solid black"
+          bRadius="25px"
+          padding="20px"
           display="flex"
           direction="column"
-          justify="space-between"
+          justify="space-evenly"
         >
           <div>
             <label htmlFor="username">Username: </label>

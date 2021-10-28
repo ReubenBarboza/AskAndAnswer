@@ -7,21 +7,25 @@ import Login from "./components/Login";
 import Signin from "./components/Signin";
 import Theme from "./components/Theme";
 
+import { UsersContextProvider } from "./components/contexts/UsersContex";
+
 function App() {
   return (
     <div className="App">
       <Theme>
         <Router>
-          <div>
-            <Navbar />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/Ask" component={Ask} />
-              <Route exact path="/Answer" component={Answer} />
-              <Route exact path="/Login" component={Login} />
-              <Route exact path="/Signin" component={Signin} />
-            </Switch>
-          </div>
+          <UsersContextProvider>
+            <div>
+              <Navbar />
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/Ask" component={Ask} />
+                <Route exact path="/Answer" component={Answer} />
+                <Route exact path="/Login" component={Login} />
+                <Route exact path="/Signin" component={Signin} />
+              </Switch>
+            </div>
+          </UsersContextProvider>
         </Router>
       </Theme>
     </div>

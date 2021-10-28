@@ -7,4 +7,8 @@ export const StyledDiv = styled.div`
   flex-direction: ${(props) => props.direction};
   align-items: ${(props) => props.align};
   justify-content: ${(props) => props.justify};
+  border: ${(props) => props.border};
+  margin: ${(props) => props.margin};
+  padding: ${(props) => props.padding};
+  border-radius: ${(props) => props.bRadius}; ;
 `;
