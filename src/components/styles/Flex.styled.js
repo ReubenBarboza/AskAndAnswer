@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const Flex = styled.div`
-  display: flex;
+export const StyledDiv = styled.div`
+  display: ${(props) => props.display};
   align-items: ${(props) => props.align};
   justify-content: ${(props) => props.justify};
 `;

@@ -1,12 +1,12 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { NavContainer } from "./styles/NavContainer.styled";
+import { useState } from "react";
+import { NavContainer } from "./styles/Navbar/NavContainer.styled";
 import { Flex } from "./styles/Flex.styled";
 import GlobalStyles from "./styles/Global.styles";
-import { LogoTitle } from "./styles/LogoTitle.styled";
-import { StyledLink } from "./styles/StyledLink.styled";
-import { LinkContainer } from "./styles/LinkContainer.styled";
-import { HamburgerIcon } from "./styles/HamburgerIcon.styled";
+import { LogoTitle } from "./styles/Navbar/LogoTitle.styled";
+import { StyledLink } from "./styles/Navbar/StyledLink.styled";
+import { LinkContainer } from "./styles/Navbar/LinkContainer.styled";
+import { HamburgerIcon } from "./styles/Navbar/HamburgerIcon.styled";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {

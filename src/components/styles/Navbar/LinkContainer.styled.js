@@ -18,6 +18,7 @@ export const LinkContainer = styled.div`
     width: ${(props) => (props.animate ? "10rem" : "0rem")};
     height: 100vh;
     top: 3.2rem;
-    background-color: ${(props) => props.theme.colors.background2};
+    background-color: ${(props) => props.theme.colors.background};
+    opacity: 0.9;
   }
 `;
