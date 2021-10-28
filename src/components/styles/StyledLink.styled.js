@@ -5,7 +5,7 @@ export const StyledLink = styled(Link)`
   font-size: 20px;
   color: ${(props) => props.theme.colors.primary};
   padding: 20px;
-  margin: 15px;
+  margin: 10px;
   text-decoration: none;
   border-bottom: 1px solid ${(props) => props.theme.colors.primary};
 

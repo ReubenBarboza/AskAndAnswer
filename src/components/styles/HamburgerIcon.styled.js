@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const HamburgerIcon = styled(FontAwesomeIcon)`
   font-size: 40px;
   position: sticky;
-  right: 3.5rem;
+  margin-right: 3rem;
   z-index: 300;
   color: ${(props) => props.theme.colors.primary};
 
@@ -12,6 +12,6 @@ export const HamburgerIcon = styled(FontAwesomeIcon)`
     display: none;
   }
   @media (max-width: ${(props) => props.theme.screenSize.xs}) {
-    right: 1rem;
+    margin-right: 1rem;
   }
 `;

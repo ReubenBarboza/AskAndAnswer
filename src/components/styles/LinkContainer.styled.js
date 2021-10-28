@@ -5,15 +5,17 @@ export const LinkContainer = styled.div`
   position: absolute;
   justify-content: space-between;
   align-items: center;
+  margin-right: 3rem;
   z-index: 100;
+
   @media (max-width: ${(props) => props.theme.screenSize.sm}) {
-    transition: width 1s ease-in-out;
-    visibility: ${(props) => (props.show ? "visible" : "hidden")};
+    transition: width 0.75s ease-in-out;
     flex-direction: column;
     justify-content: flex-start;
+    margin-right: 0rem;
+    overflow: hidden;
     margin-top: 3rem;
     width: ${(props) => (props.animate ? "10rem" : "0rem")};
-    transition: width 1s ease-in-out;
     height: 100vh;
     top: 3.2rem;
     background-color: ${(props) => props.theme.colors.background2};
