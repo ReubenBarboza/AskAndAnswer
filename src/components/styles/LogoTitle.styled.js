@@ -10,4 +10,7 @@ export const LogoTitle = styled(Link)`
   @media (max-width: ${(props) => props.theme.screenSize.lg}) {
     font-size: 30px;
   }
+  @media (max-width: ${(props) => props.theme.screenSize.xs}) {
+    margin-left: 1rem;
+  }
 `;

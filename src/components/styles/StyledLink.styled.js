@@ -7,10 +7,10 @@ export const StyledLink = styled(Link)`
   padding: 20px;
   margin: 15px;
   text-decoration: none;
-  border-bottom: 2px solid white;
-  border-radius: 20px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.primary};
 
   &:hover {
     background-color: ${(props) => props.theme.colors.secondary};
+    border-radius: 10px;
   }
 `;

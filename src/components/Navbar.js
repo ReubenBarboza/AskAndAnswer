@@ -17,7 +17,7 @@ function Navbar() {
       <GlobalStyles />
       <LogoTitle to="/">Ask&amp;Answer</LogoTitle>
       <HamburgerIcon icon={faBars} onClick={() => setShow(!show)} />
-      <LinkContainer show={show}>
+      <LinkContainer show={show} animate={show}>
         <StyledLink to="/">Home</StyledLink>
         <StyledLink to="/Ask">Ask</StyledLink>
         <StyledLink to="/Answer">Answer</StyledLink>

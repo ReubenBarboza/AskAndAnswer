@@ -3,9 +3,10 @@ import { ThemeProvider } from "styled-components";
 
 const theme = {
   colors: {
-    primary: "white",
+    primary: "#fcf5e3",
     secondary: "#6a43e6",
     background: "#100d38",
+    background2: "#221e4a",
   },
   fonts: ["Ubuntu", "sans-serif", "Roboto"],
   screenSize: {
