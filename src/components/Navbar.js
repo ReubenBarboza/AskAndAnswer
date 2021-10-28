@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { NavContainer } from "./styles/Navbar/NavContainer.styled";
-import { Flex } from "./styles/Flex.styled";
 import GlobalStyles from "./styles/Global.styles";
 import { LogoTitle } from "./styles/Navbar/LogoTitle.styled";
 import { StyledLink } from "./styles/Navbar/StyledLink.styled";

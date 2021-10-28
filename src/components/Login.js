@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { LoginContainer } from "./styles/Login/LoginContainer.styled";
+import { StyledButton } from "./styles/StyledButton.styled";
+import { StyledDiv } from "./styles/StyledDiv.styled";
 
 function Login() {
   const [userName, setUserName] = useState("");
@@ -11,9 +15,14 @@ function Login() {
     setUsers([...users, newUser]);
   };
   return (
-    <div>
+    <LoginContainer>
       <form onSubmit={handleSubmit}>
-        <div>
+        <StyledDiv
+          height="200px"
+          display="flex"
+          direction="column"
+          justify="space-between"
+        >
           <div>
             <label htmlFor="username">Username: </label>
             <input
@@ -36,9 +45,21 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             ></input>
           </div>
-          <div>
-            <button type="submit">Submit</button>
-          </div>
+          <StyledDiv display="flex" justify="center" align="center">
+            <StyledButton
+              padding="10px"
+              margin="20px"
+              type="submit"
+              color="red"
+            >
+              Submit
+            </StyledButton>
+            <Link to="/Signin">
+              <StyledButton padding="10px" margin="20px">
+                Signin
+              </StyledButton>
+            </Link>
+          </StyledDiv>
           <div>
             {users.map((currentUser, index) => {
               return (
@@ -49,9 +70,9 @@ function Login() {
               );
             })}
           </div>
-        </div>
+        </StyledDiv>
       </form>
-    </div>
+    </LoginContainer>
   );
 }
 
