@@ -1,11 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { LoginContainer } from "./styles/Login/LoginContainer.styled";
 import { StyledButton } from "./styles/StyledButton.styled";
 import { StyledDiv } from "./styles/StyledDiv.styled";
 import { UsersContext } from "./contexts/UsersContex";
+import { StyledLabel } from "./styles/Login/StyledLabel.styled";
+import { StyledInput } from "./styles/Login/StyledInput.styled";
+import { ShowPassword } from "./styles/Login/ShowPassword.styled";
 
 function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const { userName, setUserName, password, setPassword, users, setUsers } =
     useContext(UsersContext);
 
@@ -25,28 +30,33 @@ function Login() {
           display="flex"
           direction="column"
           justify="space-evenly"
+          align="center"
         >
           <div>
-            <label htmlFor="username">Username: </label>
-            <input
+            <StyledLabel htmlFor="username">Username</StyledLabel>
+            <StyledInput
               type="text"
               name="username"
               id="username"
               autoComplete="off"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-            ></input>
+            ></StyledInput>
           </div>
           <div>
-            <label htmlFor="password">Password: </label>
-            <input
-              type="password"
+            <StyledLabel htmlFor="password">Password</StyledLabel>
+            <StyledInput
+              type={showPassword ? "text" : "password"}
               name="password"
               id="password"
               autoComplete="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            ></input>
+            ></StyledInput>
+            <br />
+            <ShowPassword onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? "Hide password" : "Show password"}
+            </ShowPassword>
           </div>
           <StyledDiv display="flex" justify="center" align="center">
             <StyledButton

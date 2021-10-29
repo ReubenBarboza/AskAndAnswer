@@ -9,6 +9,10 @@ const theme = {
     background2: "#dbddff",
   },
   fonts: ["Ubuntu", "sans-serif", "Roboto"],
+  fontSize: {
+    logoTitle: "40px",
+    label: "20px",
+  },
   screenSize: {
     xs: "480px",
     sm: "768px",
