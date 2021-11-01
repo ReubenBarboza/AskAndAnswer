@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./components/Home";
 import Ask from "./components/Ask";
 import Answer from "./components/Answer";
-import Login from "./components/Login";
-import Signin from "./components/Signin";
+import Login from "./components/registration/Login";
 import Theme from "./components/Theme";
-
+import Form from "./components/registration/Form";
 import { UsersContextProvider } from "./components/contexts/UsersContex";
 
 function App() {
@@ -22,7 +21,7 @@ function App() {
                 <Route exact path="/Ask" component={Ask} />
                 <Route exact path="/Answer" component={Answer} />
                 <Route exact path="/Login" component={Login} />
-                <Route exact path="/Signin" component={Signin} />
+                <Route exact path="/Form" component={Form} />
               </Switch>
             </div>
           </UsersContextProvider>

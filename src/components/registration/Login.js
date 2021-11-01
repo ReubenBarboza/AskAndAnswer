@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { LoginContainer } from "./styles/Login/LoginContainer.styled";
-import { StyledButton } from "./styles/StyledButton.styled";
-import { StyledDiv } from "./styles/StyledDiv.styled";
-import { UsersContext } from "./contexts/UsersContex";
-import { StyledLabel } from "./styles/Login/StyledLabel.styled";
-import { StyledInput } from "./styles/Login/StyledInput.styled";
-import { ShowPassword } from "./styles/Login/ShowPassword.styled";
+import { LoginContainer } from "../styles/Login/LoginContainer.styled";
+import { StyledButton } from "../styles/StyledButton.styled";
+import { StyledDiv } from "../styles/StyledDiv.styled";
+import { UsersContext } from "../contexts/UsersContex";
+import { StyledLabel } from "../styles/Login/StyledLabel.styled";
+import { StyledInput } from "../styles/Login/StyledInput.styled";
+import { ShowPassword } from "../styles/Login/ShowPassword.styled";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -67,9 +67,9 @@ function Login() {
             >
               Submit
             </StyledButton>
-            <Link to="/Signin">
+            <Link to="/Form">
               <StyledButton padding="10px" margin="20px">
-                Signin
+                Sign Up
               </StyledButton>
             </Link>
           </StyledDiv>
