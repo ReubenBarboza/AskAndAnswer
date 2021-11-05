@@ -7,4 +7,8 @@ export const NavContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: right;
+
+  & span {
+    margin-right: auto;
+  }
 `;

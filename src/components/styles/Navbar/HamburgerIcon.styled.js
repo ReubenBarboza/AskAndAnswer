@@ -6,6 +6,7 @@ export const HamburgerIcon = styled(FontAwesomeIcon)`
   position: sticky;
   margin-right: 3rem;
   z-index: 300;
+  cursor: pointer;
   color: ${(props) => props.theme.colors.primary};
 
   @media (min-width: ${(props) => props.theme.screenSize.sm}) {

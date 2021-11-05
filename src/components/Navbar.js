@@ -14,7 +14,9 @@ function Navbar() {
   return (
     <NavContainer>
       <GlobalStyles />
-      <LogoTitle to="/">Ask&amp;Answer</LogoTitle>
+      <span>
+        <LogoTitle to="/">Ask&amp;Answer</LogoTitle>
+      </span>
       <HamburgerIcon icon={faBars} onClick={() => setAnimate(!animate)} />
       <LinkContainer animate={animate}>
         <StyledLink to="/">Home</StyledLink>

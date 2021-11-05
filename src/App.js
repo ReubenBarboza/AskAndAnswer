@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./components/Home";
 import Ask from "./components/Ask";
 import Answer from "./components/Answer";
-import Login from "./components/registration/Login";
+import Login from "./components/muiRegistration/Login";
 import Theme from "./components/Theme";
 import Form from "./components/registration/Form";
 import { UsersContextProvider } from "./components/contexts/UsersContex";

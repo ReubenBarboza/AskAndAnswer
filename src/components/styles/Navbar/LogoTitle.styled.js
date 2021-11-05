@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 export const LogoTitle = styled(Link)`
+  display: inline-block;
+  width: 100px;
   font-size: ${(props) => props.theme.fontSize.logoTitle};
   color: ${(props) => props.theme.colors.primary};
   margin-left: 5rem;
