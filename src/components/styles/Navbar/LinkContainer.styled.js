@@ -16,7 +16,7 @@ export const LinkContainer = styled.div`
     overflow: hidden;
     margin-top: 3rem;
     width: ${(props) => (props.animate ? "10rem" : "0rem")};
-    height: 100vh;
+    height: calc(100vh - 100px);
     top: 3.2rem;
     background-color: ${(props) => props.theme.colors.background};
     opacity: 0.9;
