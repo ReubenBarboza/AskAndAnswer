@@ -15,11 +15,6 @@ export const useStyles = makeStyles({
   gridItem: {
     width: "100%",
   },
-  passwordContainer: {
-    width: "100%",
-    display: "flex",
-    flexFlow: "row wrap",
-  },
   showPassword: {
     fontSize: "12px",
     cursor: "pointer",
@@ -32,6 +27,11 @@ export const useStyles = makeStyles({
   link: {
     textAlign: "center",
     textDecoration: "none",
-    paddingTop: "5px",
+    "& p": {
+      marginTop: "8px",
+    },
+    "& p:hover": {
+      textDecoration: "underline",
+    },
   },
 });

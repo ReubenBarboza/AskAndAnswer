@@ -24,41 +24,40 @@ const Login = ({ theme }) => {
         <Grid container className={classes.gridContainerStyle}>
           <CssBaseline />
 
-          <Grid item>
-            <Typography variant="h4">Log In</Typography>
+          <Grid item xs={12}>
+            <Typography variant="h4" align="center">
+              Log In
+            </Typography>
           </Grid>
 
-          <Grid item className={classes.gridItem}>
+          <Grid item xs={12} className={classes.gridItem}>
             <TextField
               label="Email"
               placeholder="Enter email"
               fullWidth
               required
-              margin="normal"
             ></TextField>
-            <div className={classes.passwordContainer}>
-              <TextField
-                label="Password"
-                placeholder="Enter password"
-                type={showPassword ? "text" : "password"}
-                fullWidth
-                required
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              ></TextField>
-            </div>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Password"
+              placeholder="Enter password"
+              type={showPassword ? "text" : "password"}
+              fullWidth
+              required
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            ></TextField>
           </Grid>
 
-          <Grid item className={classes.gridItem}>
+          <Grid item xs={12} className={classes.gridItem}>
             <Button type="submit" color="primary" variant="contained" fullWidth>
               Log In
             </Button>
