@@ -9,6 +9,11 @@ export const StyledLink = styled(Link)`
   text-decoration: none;
   border-bottom: 1px solid ${(props) => props.theme.colors.primary};
 
+  &.active {
+    background-color: ${(props) => props.theme.colors.secondary};
+    border-radius: 10px;
+  }
+
   &:hover {
     background-color: ${(props) => props.theme.colors.secondary};
     border-radius: 10px;
