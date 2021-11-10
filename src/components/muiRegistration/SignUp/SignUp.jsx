@@ -7,9 +7,30 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
+import { auth } from "../../../firebase/firebase-config";
 import { useStyles } from "./SignUpStyles";
 
-const SignUp = () => {
+const SignUp = ({
+  registerEmail,
+  setRegisterEmail,
+  registerPassword,
+  setRegisterPassword,
+  registerConfirmPassword,
+  setRegisterConfirmPassword,
+}) => {
+  const register = async () => {
+    try {
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
+      console.log(user);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   const classes = useStyles();
   return (
     <Container className={classes.signUpContainer} maxWidth={false}>
@@ -21,12 +42,19 @@ const SignUp = () => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <TextField label="Email" placeholder="Email" fullWidth required />
+            <TextField
+              label="Email"
+              placeholder="Email"
+              onChange={(e) => setRegisterEmail(e.target.value)}
+              fullWidth
+              required
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField
               label="Password"
               placeholder="Password"
+              onChange={(e) => setRegisterPassword(e.target.value)}
               fullWidth
               required
             />
@@ -35,12 +63,18 @@ const SignUp = () => {
             <TextField
               label="Confirm Password"
               placeholder="Confirm Password"
+              onChange={(e) => setRegisterConfirmPassword(e.target.value)}
               fullWidth
               required
             />
           </Grid>
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" fullWidth>
+            <Button
+              type="submit"
+              onClick={register}
+              variant="contained"
+              fullWidth
+            >
               Sign Up
             </Button>
           </Grid>
