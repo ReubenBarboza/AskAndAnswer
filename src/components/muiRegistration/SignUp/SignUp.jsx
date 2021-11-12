@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Grid,
@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { auth } from "../../../firebase/firebase-config";
 import { useStyles } from "./SignUpStyles";
@@ -19,6 +20,7 @@ const SignUp = ({
   registerConfirmPassword,
   setRegisterConfirmPassword,
 }) => {
+  const [hasRegistered, setHasRegistered] = useState(false);
   const register = async () => {
     try {
       const user = await createUserWithEmailAndPassword(
@@ -27,11 +29,14 @@ const SignUp = ({
         registerPassword
       );
       console.log(user);
+      setHasRegistered(true);
     } catch (error) {
       console.log(error.message);
     }
   };
+
   const classes = useStyles();
+
   return (
     <Container className={classes.signUpContainer} maxWidth={false}>
       <Paper elevation={14} className={classes.paper}>
@@ -77,6 +82,14 @@ const SignUp = ({
             >
               Sign Up
             </Button>
+            {hasRegistered ? (
+              <Typography className={classes.typo} variant="body1">
+                Account Successfully Registered!{" "}
+                <Link className={classes.link} to="/">
+                  Go Back
+                </Link>
+              </Typography>
+            ) : null}
           </Grid>
         </Grid>
       </Paper>

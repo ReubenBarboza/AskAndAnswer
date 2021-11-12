@@ -18,4 +18,14 @@ export const useStyles = makeStyles({
     justifyContent: "space-around",
     alignItems: "center",
   },
+  typo: {
+    textAlign: "center",
+    paddingTop: "5px",
+  },
+  link: {
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
 });

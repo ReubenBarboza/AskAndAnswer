@@ -15,7 +15,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useStyles } from "./LoginStyles";
 
-const Login = ({ theme }) => {
+const Login = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   return (
