@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { auth } from "../../../firebase/firebase-config";
 import { useStyles } from "./SignUpStyles";
+import { SignUpValidation } from "./SignUpValidation";
 
 const SignUp = ({
   registerEmail,
@@ -21,17 +22,30 @@ const SignUp = ({
   setRegisterConfirmPassword,
 }) => {
   const [hasRegistered, setHasRegistered] = useState(false);
+  const [registerClicked, setRegisterClicked] = useState(false);
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => setErrors(SignUpValidation(values)), [values]);
+
   const register = async () => {
-    try {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        registerEmail,
-        registerPassword
-      );
-      console.log(user);
-      setHasRegistered(true);
-    } catch (error) {
-      console.log(error.message);
+    setRegisterClicked(true);
+    if (Object.keys(errors).length === 0 && errors.constructor === Object) {
+      try {
+        const user = await createUserWithEmailAndPassword(
+          auth,
+          registerEmail,
+          registerPassword
+        );
+        console.log(user);
+        setHasRegistered(true);
+      } catch (error) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -49,29 +63,46 @@ const SignUp = ({
           <Grid item xs={12}>
             <TextField
               label="Email"
+              type="text"
               placeholder="Email"
-              onChange={(e) => setRegisterEmail(e.target.value)}
+              onChange={(e) => {
+                setRegisterEmail(e.target.value);
+                setValues({ ...values, email: e.target.value });
+              }}
               fullWidth
               required
             />
+            {registerClicked && errors.email && <p>{errors.email}</p>}
           </Grid>
           <Grid item xs={12}>
             <TextField
               label="Password"
+              type="password"
               placeholder="Password"
-              onChange={(e) => setRegisterPassword(e.target.value)}
+              onChange={(e) => {
+                setRegisterPassword(e.target.value);
+                setValues({ ...values, password: e.target.value });
+              }}
               fullWidth
               required
             />
+            {registerClicked && errors.password && <p>{errors.password}</p>}
           </Grid>
           <Grid item xs={12}>
             <TextField
               label="Confirm Password"
               placeholder="Confirm Password"
-              onChange={(e) => setRegisterConfirmPassword(e.target.value)}
+              type="password"
+              onChange={(e) => {
+                setRegisterConfirmPassword(e.target.value);
+                setValues({ ...values, confirmPassword: e.target.value });
+              }}
               fullWidth
               required
             />
+            {registerClicked && errors.confirmPassword && (
+              <p>{errors.confirmPassword}</p>
+            )}
           </Grid>
           <Grid item xs={12}>
             <Button
