@@ -9,28 +9,28 @@ import { HamburgerIcon } from "./styles/Navbar/HamburgerIcon.styled";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router";
 
-function Navbar() {
+function Navbar({ user }) {
   const [animate, setAnimate] = useState(false);
   const location = useLocation();
 
-  const links = [
-    {
-      name: "Home",
-      path: "/",
-    },
-    {
-      name: "Ask",
-      path: "/Ask",
-    },
-    {
-      name: "Answer",
-      path: "/Answer",
-    },
-    {
-      name: "Login",
-      path: "/Login",
-    },
-  ];
+  // const links = [
+  //   {
+  //     name: "Home",
+  //     path: "/",
+  //   },
+  //   {
+  //     name: "Ask",
+  //     path: "/Ask",
+  //   },
+  //   {
+  //     name: "Answer",
+  //     path: "/Answer",
+  //   },
+  //   {
+  //     name: "Login",
+  //     path: "/Login",
+  //   },
+  // ];
 
   return (
     <NavContainer>
@@ -40,11 +40,35 @@ function Navbar() {
       </span>
       <HamburgerIcon icon={faBars} onClick={() => setAnimate(!animate)} />
       <LinkContainer animate={animate}>
-        {/* <StyledLink to="/">Home</StyledLink>
-        <StyledLink to="/Ask">Ask</StyledLink>
-        <StyledLink to="/Answer">Answer</StyledLink>
-        <StyledLink to="/Login">Login</StyledLink> */}
-        {links.map((link, index) => {
+        <StyledLink
+          to="/"
+          className={location.pathname === "/" ? "active" : null}
+        >
+          Home
+        </StyledLink>
+        <StyledLink
+          to="/Ask"
+          className={location.pathname === "/Ask" ? "active" : null}
+        >
+          Ask
+        </StyledLink>
+        <StyledLink
+          to="/Answer"
+          className={location.pathname === "/Answer" ? "active" : null}
+        >
+          Answer
+        </StyledLink>
+        <StyledLink
+          to={user ? "/Logout" : "/Login"}
+          className={
+            location.pathname === "/Login" || location.pathname === "/Logout"
+              ? "active"
+              : null
+          }
+        >
+          {user ? "Logout" : "Login"}
+        </StyledLink>
+        {/* {links.map((link, index) => {
           return (
             <StyledLink
               key={index}
@@ -54,7 +78,7 @@ function Navbar() {
               {link.name}
             </StyledLink>
           );
-        })}
+        })} */}
       </LinkContainer>
     </NavContainer>
   );

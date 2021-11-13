@@ -23,6 +23,8 @@ const SignUp = ({
   setRegisterPassword,
   registerConfirmPassword,
   setRegisterConfirmPassword,
+  user,
+  setUser,
 }) => {
   const [hasRegistered, setHasRegistered] = useState(false);
   const [registerClicked, setRegisterClicked] = useState(false);
