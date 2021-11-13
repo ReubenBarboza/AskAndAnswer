@@ -6,7 +6,10 @@ import {
   TextField,
   Typography,
   Button,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { auth } from "../../../firebase/firebase-config";
@@ -29,12 +32,15 @@ const SignUp = ({
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => setErrors(SignUpValidation(values)), [values]);
 
   const register = async () => {
     setRegisterClicked(true);
     if (Object.keys(errors).length === 0 && errors.constructor === Object) {
+      // to avoid false positives
       try {
         const user = await createUserWithEmailAndPassword(
           auth,
@@ -77,11 +83,20 @@ const SignUp = ({
           <Grid item xs={12}>
             <TextField
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               onChange={(e) => {
                 setRegisterPassword(e.target.value);
                 setValues({ ...values, password: e.target.value });
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
               fullWidth
               required
@@ -92,10 +107,23 @@ const SignUp = ({
             <TextField
               label="Confirm Password"
               placeholder="Confirm Password"
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               onChange={(e) => {
                 setRegisterConfirmPassword(e.target.value);
                 setValues({ ...values, confirmPassword: e.target.value });
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
               fullWidth
               required
