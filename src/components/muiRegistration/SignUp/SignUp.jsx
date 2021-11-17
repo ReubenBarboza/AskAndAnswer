@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "@firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth";
 import { auth } from "../../../firebase/firebase-config";
 import { useStyles } from "./SignUpStyles";
 import { SignUpValidation } from "./SignUpValidation";
@@ -21,21 +21,19 @@ const SignUp = ({
   setRegisterEmail,
   registerPassword,
   setRegisterPassword,
-  registerConfirmPassword,
-  setRegisterConfirmPassword,
+  registerDisplayName,
+  setRegisterDisplayName,
   user,
-  setUser,
 }) => {
   const [hasRegistered, setHasRegistered] = useState(false);
   const [registerClicked, setRegisterClicked] = useState(false);
   const [values, setValues] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
+    displayName: "",
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => setErrors(SignUpValidation(values)), [values]);
 
@@ -51,6 +49,12 @@ const SignUp = ({
         );
         console.log(user);
         setHasRegistered(true);
+        user &&
+          updateProfile(auth.currentUser, {
+            displayName: registerDisplayName,
+          })
+            .then()
+            .catch((error) => console.log(error.message));
       } catch (error) {
         console.log(error.message);
       }
@@ -107,32 +111,16 @@ const SignUp = ({
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Confirm Password"
-              placeholder="Confirm Password"
-              type={showConfirmPassword ? "text" : "password"}
+              label="Username"
+              placeholder="Username"
+              type="text"
               onChange={(e) => {
-                setRegisterConfirmPassword(e.target.value);
-                setValues({ ...values, confirmPassword: e.target.value });
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                    >
-                      {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
+                setRegisterDisplayName(e.target.value);
+                setValues({ ...values, displayName: e.target.value });
               }}
               fullWidth
               required
             />
-            {registerClicked && errors.confirmPassword && (
-              <p>{errors.confirmPassword}</p>
-            )}
           </Grid>
           <Grid item xs={12}>
             <Button

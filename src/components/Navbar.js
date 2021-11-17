@@ -66,7 +66,7 @@ function Navbar({ user }) {
               : null
           }
         >
-          {user ? "Logout" : "Login"}
+          {user ? "Log out" : "Login"}
         </StyledLink>
         {/* {links.map((link, index) => {
           return (

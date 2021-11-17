@@ -16,7 +16,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 function App() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
-  const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
+  const [registerDisplayName, setRegisterDisplayName] = useState("");
   const [user, setUser] = useState({});
 
   onAuthStateChanged(auth, (currentUser) => {
@@ -41,10 +41,9 @@ function App() {
                   setRegisterEmail={setRegisterEmail}
                   registerPassword={registerPassword}
                   setRegisterPassword={setRegisterPassword}
-                  registerConfirmPassword={registerConfirmPassword}
-                  setRegisterConfirmPassword={setRegisterConfirmPassword}
+                  registerDisplayName={registerDisplayName}
+                  setRegisterDisplayName={setRegisterDisplayName}
                   user={user}
-                  setUser={setUser}
                 />
               </Route>
             </Switch>

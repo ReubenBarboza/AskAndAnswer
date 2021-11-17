@@ -9,9 +9,6 @@ export const SignUpValidation = (values) => {
   if (values.password.length < 6) {
     errors.password = "Password must be greater than 6 characters";
   }
-  if (values.confirmPassword !== values.password) {
-    errors.confirmPassword = "Passwords are different";
-  }
 
   return errors;
 };
