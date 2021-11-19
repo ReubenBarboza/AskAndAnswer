@@ -9,7 +9,7 @@ export const useStyles = makeStyles({
   },
   paper: {
     padding: 20,
-    height: "55vh",
+    height: "65vh",
     maxWidth: "400px",
     margin: "50px auto",
   },
@@ -18,14 +18,25 @@ export const useStyles = makeStyles({
     justifyContent: "space-around",
     alignItems: "center",
   },
-  typo: {
+  successText: {
     textAlign: "center",
-    paddingTop: "5px",
+    padding: "3px",
+    backgroundColor: "#b5f5c6",
+    border: "1px solid #4e6e56",
+    borderRadius: "3px",
   },
   link: {
     textDecoration: "none",
     "&:hover": {
       textDecoration: "underline",
     },
+  },
+  errorText: {
+    textAlign: "center",
+    padding: "5px",
+    margin: "10px",
+    backgroundColor: "#fcd4e0",
+    border: "1px solid #854953",
+    borderRadius: "3px",
   },
 });

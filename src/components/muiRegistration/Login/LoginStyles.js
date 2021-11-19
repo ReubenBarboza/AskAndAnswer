@@ -34,4 +34,12 @@ export const useStyles = makeStyles({
       textDecoration: "underline",
     },
   },
+
+  errorText: {
+    textAlign: "center",
+    padding: "4px",
+    backgroundColor: "#facacb",
+    border: "1px solid #854953",
+    borderRadius: "3px",
+  },
 });

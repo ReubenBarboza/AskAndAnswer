@@ -53,7 +53,7 @@ const SignUp = ({
           updateProfile(auth.currentUser, {
             displayName: registerDisplayName,
           })
-            .then()
+            .then(console.log(user.user.displayName))
             .catch((error) => console.log(error.message));
       } catch (error) {
         console.log(error.message);
@@ -84,8 +84,14 @@ const SignUp = ({
               fullWidth
               required
             />
-            {registerClicked && errors.email && <p>{errors.email}</p>}
           </Grid>
+          {registerClicked && errors.email && (
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" className={classes.errorText}>
+                {errors.email}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <TextField
               label="Password"
@@ -107,8 +113,14 @@ const SignUp = ({
               fullWidth
               required
             />
-            {registerClicked && errors.password && <p>{errors.password}</p>}
           </Grid>
+          {registerClicked && errors.password && (
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" className={classes.errorText}>
+                {errors.password}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <TextField
               label="Username"
@@ -131,15 +143,17 @@ const SignUp = ({
             >
               Sign Up
             </Button>
-            {hasRegistered ? (
-              <Typography className={classes.typo} variant="body1">
+          </Grid>
+          {hasRegistered ? (
+            <Grid item xs={12}>
+              <Typography className={classes.successText} variant="body1">
                 Account Successfully Registered!{" "}
                 <Link className={classes.link} to="/">
                   Go Back
                 </Link>
               </Typography>
-            ) : null}
-          </Grid>
+            </Grid>
+          ) : null}
         </Grid>
       </Paper>
     </Container>

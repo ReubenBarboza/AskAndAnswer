@@ -17,6 +17,8 @@ function App() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerDisplayName, setRegisterDisplayName] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [user, setUser] = useState({});
 
   onAuthStateChanged(auth, (currentUser) => {
@@ -33,7 +35,14 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/Ask" component={Ask} />
               <Route exact path="/Answer" component={Answer} />
-              <Route exact path="/Login" component={Login} />
+              <Route exact path="/Login">
+                <Login
+                  loginEmail={loginEmail}
+                  setLoginEmail={setLoginEmail}
+                  loginPassword={loginPassword}
+                  setLoginPassword={setLoginPassword}
+                />
+              </Route>
               <Route exact path="/Logout" component={Logout} />
               <Route exact path="/SignUp">
                 <SignUp
