@@ -12,7 +12,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth";
-import { auth } from "../../../firebase/firebase-config";
+import { auth, createUserDocument } from "../../../firebase/firebase-config";
 import { useStyles } from "./SignUpStyles";
 import { SignUpValidation } from "./SignUpValidation";
 
@@ -53,8 +53,10 @@ const SignUp = ({
           updateProfile(auth.currentUser, {
             displayName: registerDisplayName,
           })
-            .then(console.log(user.user.displayName))
+            .then(console.log(registerDisplayName))
             .catch((error) => console.log(error.message));
+
+        await createUserDocument(user.user, { registerDisplayName });
       } catch (error) {
         console.log(error.message);
       }
