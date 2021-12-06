@@ -28,6 +28,7 @@ export const createUserDocument = async (user, additionalData) => {
       displayName: registerDisplayName,
       createdAt: new Date(),
     });
+    console.log("user doc set");
   } catch (error) {
     console.log("Error in creating user", error);
   }

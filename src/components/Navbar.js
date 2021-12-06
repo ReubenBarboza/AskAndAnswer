@@ -53,12 +53,6 @@ function Navbar({ user }) {
           Ask
         </StyledLink>
         <StyledLink
-          to="/Answer"
-          className={location.pathname === "/Answer" ? "active" : null}
-        >
-          Answer
-        </StyledLink>
-        <StyledLink
           to={user ? "/Logout" : "/Login"}
           className={
             location.pathname === "/Login" || location.pathname === "/Logout"
