@@ -1,6 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  addDoc,
+  collection,
+  Timestamp,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQJ3k244OrPCbQo8oOI84GuXZVWZBwpGc",
@@ -26,10 +33,28 @@ export const createUserDocument = async (user, additionalData) => {
     await setDoc(userRef, {
       email,
       displayName: registerDisplayName,
-      createdAt: new Date(),
+      createdAt: Timestamp.fromDate(new Date()),
     });
     console.log("user doc set");
   } catch (error) {
     console.log("Error in creating user", error);
+  }
+};
+
+export const createUserQuestion = async (user, additionalData) => {
+  if (!user) return;
+  const questionsRef = collection(db, "questions");
+  const { displayName, uid } = user;
+  const { question } = additionalData;
+  try {
+    await addDoc(questionsRef, {
+      createdAt: Timestamp.fromDate(new Date()),
+      displayName: displayName,
+      question: question,
+      user: uid,
+    });
+    console.log("question added!");
+  } catch (error) {
+    console.log("Error in creating question", error);
   }
 };

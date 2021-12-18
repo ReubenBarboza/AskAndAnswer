@@ -2,8 +2,8 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./Home";
-import Ask from "./Ask";
-import Answer from "./Answer";
+import Ask from "./Ask/Ask";
+import Answers from "././Answers/Answers";
 import Login from "./muiRegistration/Login/Login";
 import Logout from "./muiRegistration/Logout/Logout";
 import Theme from "./Theme";
@@ -34,7 +34,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/Ask" component={Ask} />
-              <Route exact path="/Answer" component={Answer} />
+              <Route exact path="/Answer" component={Answers} />
               <Route exact path="/Login">
                 <Login
                   loginEmail={loginEmail}
