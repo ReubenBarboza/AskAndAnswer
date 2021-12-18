@@ -58,3 +58,20 @@ export const createUserQuestion = async (user, additionalData) => {
     console.log("Error in creating question", error);
   }
 };
+export const createUserAnswer = async (user, id, additionalData) => {
+  if (!user) return;
+  const answersRef = collection(db, `questions/${id}/answers`);
+  const { displayName, uid } = user;
+  const { answer } = additionalData;
+  try {
+    await addDoc(answersRef, {
+      answer: answer,
+      createdAt: Timestamp.fromDate(new Date()),
+      displayName: displayName,
+      user: uid,
+    });
+    console.log("answer added!");
+  } catch (error) {
+    console.log("Error in creating answer", error);
+  }
+};

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { getDocs, collection, limit, query } from "firebase/firestore";
-import { db } from "../../firebase/firebase-config";
+import { getDocs, collection, limit, query, orderBy } from "firebase/firestore";
+import { db, auth, createUserAnswer } from "../../firebase/firebase-config";
 import Answer from "./Answer/Answer";
 
 function Answers() {
@@ -10,15 +10,18 @@ function Answers() {
   const { id, question } = location.state;
   const [answersData, setAnswersData] = useState(null);
   const [values, setValues] = useState({ yourAnswer: "" });
+  const [toggleAskedAnswer, setToggleAskedAnswer] = useState(false);
   //const [answersId, setAnswersId] = useState(null);
+
+  const answersRef = query(
+    collection(db, `questions/${id}/answers`),
+    orderBy("createdAt")
+  );
 
   useEffect(() => {
     let mounted = true;
     console.log("use effect in answers triggered");
-    const answersRef = query(
-      collection(db, `questions/${id}/answers`),
-      limit(2)
-    );
+
     getDocs(answersRef)
       .then((snapshot) => {
         if (mounted) {
@@ -37,13 +40,20 @@ function Answers() {
       });
 
     return () => (mounted = false);
-  }, [id]);
+  }, [toggleAskedAnswer]);
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //todo create userAnswer function
+    try {
+      await createUserAnswer(auth.currentUser, id, {
+        answer: values.yourAnswer,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    setToggleAskedAnswer(!toggleAskedAnswer);
   };
   return (
     <div>
