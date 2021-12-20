@@ -2,33 +2,72 @@ import React, { useEffect, useState } from "react";
 import Question from "./Question/Question";
 import { db } from "../../firebase/firebase-config";
 import { auth, createUserQuestion } from "../../firebase/firebase-config";
-import { collection, getDocs, query, limit, orderBy } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  limit,
+  orderBy,
+  startAfter,
+} from "firebase/firestore";
 
 function Ask() {
   const [values, setValues] = useState({ question: "" });
   const [toggleAskedQuestion, setToggleAskedQuestion] = useState(false);
   const [data, setData] = useState(null);
+  const [lastVisibleDoc, setLastVisibleDoc] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
     console.log("question use effect fired");
     //reading questions
     const questionsRef = query(
       collection(db, "questions"),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
+      limit(1)
     );
+    setLoading(true);
     getDocs(questionsRef)
       .then((snapshot) => {
         const snapData = [];
-        // const docId = [];
+        const lastVisibleDoc = snapshot.docs[snapshot.size - 1];
+        setLastVisibleDoc(lastVisibleDoc);
+
         snapshot.forEach((doc) => {
           snapData.push({ id: doc.id, ...doc.data() });
-          // docId.push(doc.id);
         });
         setData(snapData);
-        // setDocId(docId);
       })
       .catch((error) => console.log(error));
+    setLoading(false);
   }, [toggleAskedQuestion]);
+
+  const loadMore = () => {
+    setLoading(true);
+    getDocs(
+      query(
+        collection(db, "questions"),
+        orderBy("createdAt", "desc"),
+        startAfter(lastVisibleDoc),
+        limit(1)
+      )
+    ).then((snapshot) => {
+      const isCollectionEmpty = snapshot.size === 0;
+      if (!isCollectionEmpty) {
+        let nextSnapData = [];
+        const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
+        snapshot.forEach((doc) => {
+          nextSnapData.push({ id: doc.id, ...doc.data() });
+        });
+        setData([...data, ...nextSnapData]);
+        setLastVisibleDoc(nextLastVisibleDoc);
+      } else {
+        setIsEmpty(true);
+      }
+    });
+    setLoading(false);
+  };
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -54,6 +93,7 @@ function Ask() {
         <button onClick={handleSubmit}>Submit</button>
       </div>
       <div>
+        {!data && <h1>Loading...</h1>}
         {data &&
           data.map((obj) => {
             return (
@@ -74,6 +114,9 @@ function Ask() {
               <Question key={obj.id} obj={obj} />
             );
           })}
+        {loading && <h1>Loading...</h1>}
+        {!loading && <button onClick={loadMore}>Load more</button>}
+        {isEmpty && <h1>There is no more data</h1>}
       </div>
     </>
   );
