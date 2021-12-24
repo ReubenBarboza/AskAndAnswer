@@ -12,10 +12,15 @@ import {
 } from "firebase/firestore";
 
 function Ask() {
+  //Question input from form.
   const [values, setValues] = useState({ question: "" });
+  //To update ui after asking a question.
   const [toggleAskedQuestion, setToggleAskedQuestion] = useState(false);
+  //main question data to be displayed
   const [data, setData] = useState(null);
+  //integrating pagination using firebase api
   const [lastVisibleDoc, setLastVisibleDoc] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
 
@@ -43,6 +48,7 @@ function Ask() {
     setLoading(false);
   }, [toggleAskedQuestion]);
 
+  //pagination
   const loadMore = () => {
     setLoading(true);
     getDocs(
@@ -116,7 +122,7 @@ function Ask() {
           })}
         {loading && <h1>Loading...</h1>}
         {!loading && <button onClick={loadMore}>Load more</button>}
-        {isEmpty && <h1>There is no more data</h1>}
+        {isEmpty && <h1>There are no more questions.</h1>}
       </div>
     </>
   );
