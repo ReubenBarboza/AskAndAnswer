@@ -15,7 +15,7 @@ const Question = ({ obj }) => {
     try {
       const update = async () => {
         await updateDoc(questionDocRef, {
-          reputation: increment(reputation),
+          reputation: increment(reputation), //+1 or -1
         });
         console.log("async ran");
       };
@@ -49,7 +49,7 @@ const Question = ({ obj }) => {
       </div>
       <Link
         to={{
-          pathname: "/Answer",
+          pathname: "/Answers",
           state: { id: obj.id, question: obj.question },
         }}
       >

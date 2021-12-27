@@ -111,7 +111,13 @@ function Answers() {
         {!answersData && <h1>Loading...</h1>}
         {answersData &&
           answersData.map((answerData) => {
-            return <Answer key={answerData.id} answerData={answerData} />;
+            return (
+              <Answer
+                key={answerData.id}
+                answerData={answerData}
+                questionId={id}
+              />
+            );
           })}
         {loading && <h1>Loading...</h1>}
         {!loading && <button onClick={loadMore}>Load more</button>}

@@ -30,6 +30,7 @@ function Ask() {
     const questionsRef = query(
       collection(db, "questions"),
       orderBy("createdAt", "desc"),
+      orderBy("reputation", "desc"),
       limit(1)
     );
     setLoading(true);
@@ -55,6 +56,7 @@ function Ask() {
       query(
         collection(db, "questions"),
         orderBy("createdAt", "desc"),
+        orderBy("reputation", "desc"),
         startAfter(lastVisibleDoc),
         limit(1)
       )

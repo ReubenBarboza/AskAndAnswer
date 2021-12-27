@@ -51,6 +51,7 @@ export const createUserQuestion = async (user, additionalData) => {
       createdAt: Timestamp.fromDate(new Date()),
       displayName: displayName,
       question: question,
+      reputation: 0,
       user: uid,
     });
     console.log("question added!");
@@ -68,6 +69,7 @@ export const createUserAnswer = async (user, id, additionalData) => {
       answer: answer,
       createdAt: Timestamp.fromDate(new Date()),
       displayName: displayName,
+      reputation: 0,
       user: uid,
     });
     console.log("answer added!");
