@@ -11,6 +11,11 @@ import {
   startAfter,
 } from "firebase/firestore";
 
+import { Button, Paper, TextField, Typography } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useStyles } from "./AskStyles";
+
 function Ask() {
   //Question input from form.
   const [values, setValues] = useState({ question: "" });
@@ -24,32 +29,35 @@ function Ask() {
   const [loading, setLoading] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
 
-  useEffect(() => {
-    console.log("question use effect fired");
-    //reading questions
-    const questionsRef = query(
-      collection(db, "questions"),
-      orderBy("createdAt", "desc"),
-      orderBy("reputation", "desc"),
-      limit(1)
-    );
-    setLoading(true);
-    getDocs(questionsRef)
-      .then((snapshot) => {
-        const snapData = [];
-        const lastVisibleDoc = snapshot.docs[snapshot.size - 1];
-        setLastVisibleDoc(lastVisibleDoc);
+  //muistyles
+  const classes = useStyles();
 
-        snapshot.forEach((doc) => {
-          snapData.push({ id: doc.id, ...doc.data() });
-        });
-        setData(snapData);
-      })
-      .catch((error) => console.log(error));
-    setLoading(false);
-  }, [toggleAskedQuestion]);
+  // useEffect(() => {
+  //   console.log("question use effect fired");
+  //   //reading questions
+  //   const questionsRef = query(
+  //     collection(db, "questions"),
+  //     orderBy("createdAt", "desc"),
+  //     orderBy("reputation", "desc"),
+  //     limit(1)
+  //   );
+  //   setLoading(true);
+  //   getDocs(questionsRef)
+  //     .then((snapshot) => {
+  //       const snapData = [];
+  //       const lastVisibleDoc = snapshot.docs[snapshot.size - 1];
+  //       setLastVisibleDoc(lastVisibleDoc);
 
-  //pagination
+  //       snapshot.forEach((doc) => {
+  //         snapData.push({ id: doc.id, ...doc.data() });
+  //       });
+  //       setData(snapData);
+  //     })
+  //     .catch((error) => console.log(error));
+  //   setLoading(false);
+  // }, [toggleAskedQuestion]);
+
+  // //pagination
   const loadMore = () => {
     setLoading(true);
     getDocs(
@@ -87,9 +95,20 @@ function Ask() {
   };
 
   return (
-    <>
-      <div>
-        <label htmlFor="question" aria-label="Ask a question">
+    <Paper
+      elevation={8}
+      sx={{
+        width: "95vw",
+        height: "83vh",
+        mx: "auto",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+      }}
+    >
+      <div className={classes.questionContainer}>
+        {/* <label htmlFor="question" aria-label="Ask a question">
           Ask a Question
         </label>
         <textarea
@@ -97,8 +116,22 @@ function Ask() {
           rows="4"
           cols="50"
           onChange={handleChange}
-        ></textarea>
-        <button onClick={handleSubmit}>Submit</button>
+        ></textarea> */}
+        <TextField
+          aria-label="Ask a question"
+          placeholder="Ask a question"
+          variant="standard"
+          multiline
+          sx={{
+            width: "50vw",
+            height: "10vh",
+            marginTop: "25px",
+          }}
+          onChange={handleChange}
+        />
+        <button className={classes.sendIcon} onClick={handleSubmit}>
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </button>
       </div>
       <div>
         {!data && <h1>Loading...</h1>}
@@ -126,7 +159,7 @@ function Ask() {
         {!loading && <button onClick={loadMore}>Load more</button>}
         {isEmpty && <h1>There are no more questions.</h1>}
       </div>
-    </>
+    </Paper>
   );
 }
 

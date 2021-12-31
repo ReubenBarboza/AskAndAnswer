@@ -8,14 +8,14 @@ export const StyledLink = styled(Link)`
   margin: 10px;
   text-decoration: none;
   border-bottom: 1px solid ${(props) => props.theme.colors.primary};
+  transition: background-color 1s ease;
+  border-radius: 10px;
 
   &.active {
     background-color: ${(props) => props.theme.colors.secondary};
-    border-radius: 10px;
   }
 
   &:hover {
     background-color: ${(props) => props.theme.colors.secondary};
-    border-radius: 10px;
   }
 `;
