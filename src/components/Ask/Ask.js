@@ -21,6 +21,7 @@ import {
   Paper,
   TextField,
   Typography,
+  Grid,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -36,6 +37,8 @@ import { Card } from "@mui/material";
 function Ask() {
   //Question input from form.
   const [values, setValues] = useState({ question: "" });
+  const [error, setError] = useState("");
+
   //To update ui after asking a question.
   const [toggleAskedQuestion, setToggleAskedQuestion] = useState(false);
   //main question data to be displayed
@@ -107,8 +110,13 @@ function Ask() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!values.question) {
+      setError("Enter a question.");
+      return;
+    }
     await createUserQuestion(auth.currentUser, { question: values.question });
     setToggleAskedQuestion(!toggleAskedQuestion);
+    setError("");
   };
 
   return (
@@ -141,6 +149,7 @@ function Ask() {
             aria-label="Ask a question"
             placeholder="Ask a question"
             variant="standard"
+            name="question"
             multiline
             sx={{
               width: "50vw",
@@ -164,7 +173,16 @@ function Ask() {
           <button className={classes.sendIcon} onClick={handleSubmit}>
             <FontAwesomeIcon icon={faPaperPlane} />
           </button>
+          <br />
         </div>
+        {error && (
+          <Grid item xs={12} sx={{ width: "25vw", mx: "auto" }}>
+            <Typography variant="subtitle1" className={classes.errorText}>
+              {error}
+            </Typography>
+          </Grid>
+        )}
+
         <div style={{ width: "100%" }}>
           {!data && <ReactLogo />}
           {data &&

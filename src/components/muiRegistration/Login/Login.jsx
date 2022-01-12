@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import {
   Typography,
@@ -28,6 +28,9 @@ const Login = ({
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
+  //to redirect user to Ask after login
+  let history = useHistory();
+
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(
@@ -37,6 +40,7 @@ const Login = ({
       );
       console.log(user);
       setError("");
+      history.push("/Ask");
     } catch (error) {
       setError("Invalid email or password.");
     }
