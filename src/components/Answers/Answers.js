@@ -11,10 +11,50 @@ import {
 import { db, auth, createUserAnswer } from "../../firebase/firebase-config";
 import Answer from "./Answer/Answer";
 
+import { Paper } from "@mui/material";
+import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
+
+function getDateFromFirestoreTimestamp(timestamp) {
+  function ordinalSuffixOf(i) {
+    var j = i % 10,
+      k = i % 100;
+    if (j === 1 && k !== 11) {
+      return "st";
+    }
+    if (j === 2 && k !== 12) {
+      return "nd";
+    }
+    if (j === 3 && k !== 13) {
+      return "rd";
+    }
+    return "th";
+  }
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  return `${timestamp.toDate().getDate()}${ordinalSuffixOf(
+    timestamp.toDate().getDate()
+  )} ${monthNames[timestamp.toDate().getMonth()]}, ${timestamp
+    .toDate()
+    .getFullYear()}`;
+}
+
 function Answers() {
   const location = useLocation();
   //this id is question id
-  const { id, question } = location.state;
+  const { id, question, displayName, createdAt } = location.state;
   const [answersData, setAnswersData] = useState(null);
   const [values, setValues] = useState({ yourAnswer: "" });
   const [toggleAskedAnswer, setToggleAskedAnswer] = useState(false);
@@ -93,8 +133,24 @@ function Answers() {
     setToggleAskedAnswer(!toggleAskedAnswer);
   };
   return (
-    <div>
-      <div>{question}</div>
+    <Paper
+      elevation={8}
+      sx={{
+        width: "95vw",
+        height: "83vh",
+        mx: "auto",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        overflowY: "auto",
+        alignItems: "center",
+        backgroundColor: "#e6e6e6",
+      }}
+    >
+      <div>
+        {question} by {displayName} on{" "}
+        {getDateFromFirestoreTimestamp(createdAt)}
+      </div>
       <div>
         <label htmlFor="yourAnswer" aria-label="Your answer to the question">
           Your answer
@@ -119,11 +175,11 @@ function Answers() {
               />
             );
           })}
-        {loading && <h1>Loading...</h1>}
+        {loading && <ReactLogo />}
         {!loading && <button onClick={loadMore}>Load more</button>}
         {isEmpty && <h1>There are no more answers.</h1>}
       </div>
-    </div>
+    </Paper>
   );
 }
 

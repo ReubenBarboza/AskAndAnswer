@@ -11,28 +11,11 @@ import {
   startAfter,
 } from "firebase/firestore";
 
-import {
-  Avatar,
-  Button,
-  CardActions,
-  CardContent,
-  CardHeader,
-  IconButton,
-  Paper,
-  TextField,
-  Typography,
-  Grid,
-} from "@mui/material";
+import { Button, Paper, TextField, Typography, Grid } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPaperPlane,
-  faThumbsUp,
-  faThumbsDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useStyles } from "./AskStyles";
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
-
-import { Card } from "@mui/material";
 
 function Ask() {
   //Question input from form.
@@ -136,15 +119,6 @@ function Ask() {
     >
       <div className={classes.aboveQuestionContainer}>
         <div className={classes.questionContainer}>
-          {/* <label htmlFor="question" aria-label="Ask a question">
-          Ask a Question
-        </label>
-        <textarea
-          name="question"
-          rows="4"
-          cols="50"
-          onChange={handleChange}
-        ></textarea> */}
           <TextField
             aria-label="Ask a question"
             placeholder="Ask a question"
@@ -189,68 +163,7 @@ function Ask() {
             data.map((obj) => {
               return <Question key={obj.id} obj={obj} />;
             })}
-          {/* <Card sx={{ width: "100%", bgColor: "#fcf5e3" }}>
-            <CardHeader
-              sx={{
-                position: "relative",
-                "& ::after": {
-                  content: '""',
-                  background: "#f0f0f0",
-                  position: "absolute",
-                  bottom: "-1px",
-                  left: "25%",
-                  width: "50%",
-                  height: "1px",
-                },
-              }}
-              avatar={
-                <Avatar sx={{ bgcolor: "#100d38" }} aria-label="Question">
-                  J
-                </Avatar>
-              }
-              title="jacob"
-              subheader="September 14, 2016"
-            />
-            <CardContent
-              sx={{
-                position: "relative",
-                "& ::after": {
-                  content: '""',
-                  background: "#f0f0f0",
-                  position: "absolute",
-                  bottom: "-1px",
-                  left: "25%",
-                  width: "50%",
-                  height: "1px",
-                },
-              }}
-            >
-              <Typography variant="h5" color="#100d38">
-                test
-              </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <IconButton sx={{ mx: "4px" }}>
-                <FontAwesomeIcon icon={faThumbsUp} />
-              </IconButton>
-              <Typography variant="body2">3</Typography>
-              <IconButton sx={{ mx: "4px" }}>
-                <FontAwesomeIcon icon={faThumbsDown} />
-              </IconButton>
-              <Button
-                variant="outlined"
-                sx={{
-                  marginLeft: "auto",
-                  minWidth: "maxContent",
-                  whiteSpace: "noWrap",
-                  color: "black",
-                  borderColor: "black",
-                }}
-              >
-                See Answers
-              </Button>
-            </CardActions>
-          </Card> */}
+
           {loading && <ReactLogo />}
           {!loading && (
             <Button
