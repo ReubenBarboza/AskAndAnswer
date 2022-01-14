@@ -14,43 +14,7 @@ import {
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-
-function getDateFromFirestoreTimestamp(timestamp) {
-  function ordinalSuffixOf(i) {
-    var j = i % 10,
-      k = i % 100;
-    if (j === 1 && k !== 11) {
-      return "st";
-    }
-    if (j === 2 && k !== 12) {
-      return "nd";
-    }
-    if (j === 3 && k !== 13) {
-      return "rd";
-    }
-    return "th";
-  }
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  return `${timestamp.toDate().getDate()}${ordinalSuffixOf(
-    timestamp.toDate().getDate()
-  )} ${monthNames[timestamp.toDate().getMonth()]}, ${timestamp
-    .toDate()
-    .getFullYear()}`;
-}
+import { getDateFromFirestoreTimestamp } from "../../../com/functions";
 
 const Question = ({ obj }) => {
   const [reputation, setReputation] = useState(0);
@@ -130,7 +94,21 @@ const Question = ({ obj }) => {
           >
             <FontAwesomeIcon icon={faThumbsUp} />
           </IconButton>
-          <Typography variant="body2">{obj.reputation + reputation}</Typography>
+          <Typography
+            variant="body2"
+            fontWeight="medium"
+            width="30px"
+            height="30px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            bgcolor={
+              reputation === 1 ? "#DFF2BF" : reputation === -1 ? "#FFD2D2" : ""
+            }
+            borderRadius="50%"
+          >
+            {obj.reputation + reputation}
+          </Typography>
           <IconButton
             onClick={() => {
               setIsReputationLocallyUpdated(true);

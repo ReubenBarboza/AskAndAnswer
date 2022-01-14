@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import {
   getDocs,
   collection,
@@ -13,46 +13,11 @@ import Answer from "./Answer/Answer";
 
 import { Paper } from "@mui/material";
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
-
-function getDateFromFirestoreTimestamp(timestamp) {
-  function ordinalSuffixOf(i) {
-    var j = i % 10,
-      k = i % 100;
-    if (j === 1 && k !== 11) {
-      return "st";
-    }
-    if (j === 2 && k !== 12) {
-      return "nd";
-    }
-    if (j === 3 && k !== 13) {
-      return "rd";
-    }
-    return "th";
-  }
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  return `${timestamp.toDate().getDate()}${ordinalSuffixOf(
-    timestamp.toDate().getDate()
-  )} ${monthNames[timestamp.toDate().getMonth()]}, ${timestamp
-    .toDate()
-    .getFullYear()}`;
-}
+import { getDateFromFirestoreTimestamp } from "../../com/functions";
 
 function Answers() {
   const location = useLocation();
+  const history = useHistory(); // for back button functionality
   //this id is question id
   const { id, question, displayName, createdAt } = location.state;
   const [answersData, setAnswersData] = useState(null);
@@ -118,6 +83,10 @@ function Answers() {
     setLoading(false);
   };
 
+  const handleBack = () => {
+    history.goBack();
+  };
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -177,6 +146,7 @@ function Answers() {
           })}
         {loading && <ReactLogo />}
         {!loading && <button onClick={loadMore}>Load more</button>}
+        {!loading && <button onClick={handleBack}>Go Back</button>}
         {isEmpty && <h1>There are no more answers.</h1>}
       </div>
     </Paper>
