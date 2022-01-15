@@ -21,26 +21,47 @@ const Question = ({ obj }) => {
   const [isReputationLocallyUpdated, setIsReputationLocallyUpdated] =
     useState(false);
 
+  //to compensate for reputation in Answers component
+  const [clickedPositiveRep, setClickedPositiveRep] = useState(false);
+  const [clickedNegativeRep, setClickedNegativeRep] = useState(false);
+  const [wasPositiveRep, setWasPositiveRep] = useState(false);
+  const [wasNegativeRep, setWasNegativeRep] = useState(false);
+
   const questionDocRef = doc(db, "questions", obj.id);
   // implementing reputation
   useEffect(() => {
     console.log("reputation useeffect fired");
     try {
-      const update = async () => {
+      const update = async (reputation) => {
         await updateDoc(questionDocRef, {
           reputation: increment(reputation), //+1 or -1
         });
         console.log("async ran");
       };
-      if (isReputationLocallyUpdated) update();
+      if (clickedPositiveRep && wasPositiveRep && !wasNegativeRep) {
+        //this will execute only on first click
+        update(reputation); //+1
+      } else if (wasPositiveRep && clickedNegativeRep) {
+        update(reputation - 1); //-2
+      } else if (clickedNegativeRep && !wasPositiveRep && wasNegativeRep) {
+        //this will execute only on first click
+        update(reputation); //-1
+      } else if (wasNegativeRep && clickedPositiveRep) {
+        update(reputation + 1); //+2
+      }
     } catch (error) {
       console.log(error);
     }
-  }, [isReputationLocallyUpdated]);
+  }, [
+    clickedPositiveRep,
+    clickedNegativeRep,
+    wasPositiveRep,
+    wasNegativeRep,
+    reputation,
+  ]);
 
   return (
     <>
-      {console.log()}
       <Card
         key={obj.id}
         sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}
@@ -89,6 +110,9 @@ const Question = ({ obj }) => {
             onClick={() => {
               setIsReputationLocallyUpdated(true);
               setReputation(1);
+              setClickedPositiveRep(true);
+              setClickedNegativeRep(false);
+              setWasPositiveRep(true);
             }}
             sx={{ mx: "4px" }}
           >
@@ -102,8 +126,16 @@ const Question = ({ obj }) => {
             display="flex"
             justifyContent="center"
             alignItems="center"
+            flexShrink="0"
             bgcolor={
               reputation === 1 ? "#DFF2BF" : reputation === -1 ? "#FFD2D2" : ""
+            }
+            border={
+              reputation === 1
+                ? "1px solid #4F8A10"
+                : reputation === -1
+                ? "1px solid #D8000C"
+                : ""
             }
             borderRadius="50%"
           >
@@ -113,6 +145,9 @@ const Question = ({ obj }) => {
             onClick={() => {
               setIsReputationLocallyUpdated(true);
               setReputation(-1);
+              setClickedNegativeRep(true);
+              setClickedPositiveRep(false);
+              setWasNegativeRep(true);
             }}
             sx={{ mx: "4px" }}
           >
@@ -127,6 +162,9 @@ const Question = ({ obj }) => {
                 question: obj.question,
                 displayName: obj.displayName,
                 createdAt: obj.createdAt,
+                serverReputation: obj.reputation,
+                clickedPositiveRep: clickedPositiveRep,
+                clickedNegativeRep: clickedNegativeRep,
               },
             }}
           >

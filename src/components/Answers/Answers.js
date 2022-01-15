@@ -7,19 +7,43 @@ import {
   query,
   orderBy,
   startAfter,
+  updateDoc,
+  increment,
+  doc,
 } from "firebase/firestore";
 import { db, auth, createUserAnswer } from "../../firebase/firebase-config";
 import Answer from "./Answer/Answer";
 
-import { Paper } from "@mui/material";
+import {
+  Paper,
+  Card,
+  IconButton,
+  CardContent,
+  Avatar,
+  CardHeader,
+  Typography,
+  CardActions,
+} from "@mui/material";
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
 import { getDateFromFirestoreTimestamp } from "../../com/functions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 function Answers() {
+  //////FUNCTIONALITY////////
+
   const location = useLocation();
   const history = useHistory(); // for back button functionality
   //this id is question id
-  const { id, question, displayName, createdAt } = location.state;
+  const {
+    id,
+    question,
+    displayName,
+    createdAt,
+    serverReputation,
+    clickedPositiveRep,
+    clickedNegativeRep,
+  } = location.state;
   const [answersData, setAnswersData] = useState(null);
   const [values, setValues] = useState({ yourAnswer: "" });
   const [toggleAskedAnswer, setToggleAskedAnswer] = useState(false);
@@ -101,6 +125,11 @@ function Answers() {
     }
     setToggleAskedAnswer(!toggleAskedAnswer);
   };
+  //-----------
+
+  ////FUNCTIONALITY ENDS//////
+
+  //UI BEGINS
   return (
     <Paper
       elevation={8}
@@ -116,10 +145,80 @@ function Answers() {
         backgroundColor: "#e6e6e6",
       }}
     >
-      <div>
-        {question} by {displayName} on{" "}
-        {getDateFromFirestoreTimestamp(createdAt)}
-      </div>
+      <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
+        <CardHeader
+          sx={{
+            position: "relative",
+            "& ::after": {
+              content: '""',
+              background: "#f0f0f0",
+              position: "absolute",
+              bottom: "-1px",
+              left: "25%",
+              width: "50%",
+              height: "1px",
+            },
+          }}
+          avatar={
+            <Avatar sx={{ bgcolor: "#100d38" }} aria-label="Question">
+              {displayName.charAt(0)}
+            </Avatar>
+          }
+          title={displayName}
+          subheader={getDateFromFirestoreTimestamp(createdAt)}
+        />
+        <CardContent
+          sx={{
+            position: "relative",
+            "& ::after": {
+              content: '""',
+              background: "#f0f0f0",
+              position: "absolute",
+              bottom: "-1px",
+              left: "25%",
+              width: "50%",
+              height: "1px",
+            },
+          }}
+        >
+          <Typography variant="h5" color="#100d38">
+            {question}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <Typography
+            variant="body2"
+            fontWeight="medium"
+            width="30px"
+            height="30px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexShrink="0"
+            bgcolor={
+              clickedPositiveRep
+                ? "#DFF2BF"
+                : clickedNegativeRep
+                ? "#FFD2D2"
+                : ""
+            }
+            border={
+              clickedPositiveRep
+                ? "1px solid #4F8A10"
+                : clickedNegativeRep
+                ? "1px solid #D8000C"
+                : ""
+            }
+            borderRadius="50%"
+          >
+            {clickedPositiveRep
+              ? serverReputation + 1
+              : clickedNegativeRep
+              ? serverReputation - 1
+              : serverReputation}
+          </Typography>
+        </CardActions>
+      </Card>
       <div>
         <label htmlFor="yourAnswer" aria-label="Your answer to the question">
           Your answer
