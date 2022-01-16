@@ -135,7 +135,7 @@ const Question = ({ obj }) => {
                 ? "1px solid #4F8A10"
                 : reputation === -1
                 ? "1px solid #D8000C"
-                : ""
+                : "1px solid rgba(0, 0, 0, 0.6)"
             }
             borderRadius="50%"
           >
@@ -162,7 +162,7 @@ const Question = ({ obj }) => {
                 question: obj.question,
                 displayName: obj.displayName,
                 createdAt: obj.createdAt,
-                serverReputation: obj.reputation,
+                reputation: obj.reputation,
                 clickedPositiveRep: clickedPositiveRep,
                 clickedNegativeRep: clickedNegativeRep,
               },

@@ -17,17 +17,25 @@ import Answer from "./Answer/Answer";
 import {
   Paper,
   Card,
+  TextField,
+  Grid,
   IconButton,
   CardContent,
   Avatar,
   CardHeader,
   Typography,
   CardActions,
+  Button,
+  Collapse,
 } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
 import { getDateFromFirestoreTimestamp } from "../../com/functions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { useStyles } from "./AnswersStyles";
+
+//this component is copied
 
 function Answers() {
   //////FUNCTIONALITY////////
@@ -40,7 +48,7 @@ function Answers() {
     question,
     displayName,
     createdAt,
-    serverReputation,
+    reputation,
     clickedPositiveRep,
     clickedNegativeRep,
   } = location.state;
@@ -51,6 +59,9 @@ function Answers() {
   //integrating pagination using firebase api
   const [lastVisibleDoc, setLastVisibleDoc] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
+  //for styles
+  const classes = useStyles();
+  const [expanded, setExpanded] = useState(false);
 
   const answersRef = query(
     collection(db, `questions/${id}/answers`),
@@ -107,6 +118,10 @@ function Answers() {
     setLoading(false);
   };
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   const handleBack = () => {
     history.goBack();
   };
@@ -145,81 +160,135 @@ function Answers() {
         backgroundColor: "#e6e6e6",
       }}
     >
-      <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
-        <CardHeader
-          sx={{
-            position: "relative",
-            "& ::after": {
-              content: '""',
-              background: "#f0f0f0",
-              position: "absolute",
-              bottom: "-1px",
-              left: "25%",
-              width: "50%",
-              height: "1px",
-            },
-          }}
-          avatar={
-            <Avatar sx={{ bgcolor: "#100d38" }} aria-label="Question">
-              {displayName.charAt(0)}
-            </Avatar>
-          }
-          title={displayName}
-          subheader={getDateFromFirestoreTimestamp(createdAt)}
-        />
-        <CardContent
-          sx={{
-            position: "relative",
-            "& ::after": {
-              content: '""',
-              background: "#f0f0f0",
-              position: "absolute",
-              bottom: "-1px",
-              left: "25%",
-              width: "50%",
-              height: "1px",
-            },
-          }}
-        >
-          <Typography variant="h5" color="#100d38">
-            {question}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <Typography
-            variant="body2"
-            fontWeight="medium"
-            width="30px"
-            height="30px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexShrink="0"
-            bgcolor={
-              clickedPositiveRep
-                ? "#DFF2BF"
-                : clickedNegativeRep
-                ? "#FFD2D2"
-                : ""
+      <div className={classes.questionContainer}>
+        <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
+          <CardHeader
+            sx={{
+              position: "relative",
+              "& ::after": {
+                content: '""',
+                background: "#f0f0f0",
+                position: "absolute",
+                bottom: "-1px",
+                left: "25%",
+                width: "50%",
+                height: "1px",
+              },
+            }}
+            avatar={
+              <Avatar sx={{ bgcolor: "#100d38" }} aria-label="Question">
+                {displayName.charAt(0)}
+              </Avatar>
             }
-            border={
-              clickedPositiveRep
-                ? "1px solid #4F8A10"
-                : clickedNegativeRep
-                ? "1px solid #D8000C"
-                : ""
-            }
-            borderRadius="50%"
+            title={displayName}
+            subheader={getDateFromFirestoreTimestamp(createdAt)}
+          />
+          <CardContent
+            sx={{
+              position: "relative",
+              "& ::after": {
+                content: '""',
+                background: "#f0f0f0",
+                position: "absolute",
+                bottom: "-1px",
+                left: "25%",
+                width: "50%",
+                height: "1px",
+              },
+            }}
           >
-            {clickedPositiveRep
-              ? serverReputation + 1
-              : clickedNegativeRep
-              ? serverReputation - 1
-              : serverReputation}
-          </Typography>
-        </CardActions>
-      </Card>
-      <div>
+            <Typography variant="h5" color="#100d38">
+              {question}
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <Typography
+              variant="body2"
+              fontWeight="medium"
+              width="30px"
+              height="30px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              flexShrink="0"
+              bgcolor={
+                clickedPositiveRep
+                  ? "#DFF2BF"
+                  : clickedNegativeRep
+                  ? "#FFD2D2"
+                  : ""
+              }
+              border={
+                clickedPositiveRep
+                  ? "1px solid #4F8A10"
+                  : clickedNegativeRep
+                  ? "1px solid #D8000C"
+                  : "1px solid rgba(0, 0, 0, 0.6)"
+              }
+              borderRadius="50%"
+            >
+              {clickedPositiveRep
+                ? reputation + 1
+                : clickedNegativeRep
+                ? reputation - 1
+                : reputation}
+            </Typography>
+            <Button
+              sx={{ marginLeft: "auto" }}
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="Expand to reply"
+            >
+              REPLY
+            </Button>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <div className={classes.divider}>
+              <div className={classes.inner}></div>
+            </div>
+            <div className={classes.expandedAnswerTextFieldContainer}>
+              <TextField
+                aria-label="Answer the question"
+                placeholder="Your Answer"
+                variant="standard"
+                name="yourAnswer"
+                multiline
+                sx={{
+                  width: "50vw",
+                  height: "10vh",
+                  marginTop: "25px",
+                  "& .MuiInputBase-input": {
+                    color: "#000", // Text color
+                  },
+                  "& .MuiInput-underline:before": {
+                    borderBottomColor: "#100d38", // Semi-transparent underline
+                  },
+                  "& .MuiInput-underline:hover:before": {
+                    borderBottomColor: "#100d38", // Solid underline on hover
+                  },
+                  "& .MuiInput-underline:after": {
+                    borderBottomColor: "#3f51b5", // Solid underline on focus
+                  },
+                }}
+                onChange={handleChange}
+              />
+              <button className={classes.sendIcon} onClick={handleSubmit}>
+                <FontAwesomeIcon icon={faPaperPlane} />
+              </button>
+              <br />
+              {/* {error && (
+              <Grid item xs={12} sx={{ width: "25vw", mx: "auto" }}>
+                <Typography variant="subtitle1" className={classes.errorText}>
+                  {error}
+                </Typography>
+              </Grid>
+            )} */}
+            </div>
+          </Collapse>
+        </Card>
+      </div>
+      {/* <div>
         <label htmlFor="yourAnswer" aria-label="Your answer to the question">
           Your answer
         </label>
@@ -230,7 +299,7 @@ function Answers() {
           onChange={handleChange}
         ></textarea>
         <button onClick={handleSubmit}>Submit</button>
-      </div>
+      </div> */}
       <div>
         {!answersData && <h1>Loading...</h1>}
         {answersData &&
