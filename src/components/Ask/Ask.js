@@ -89,15 +89,29 @@ function Ask() {
   };
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!values.question) {
-      setError("Enter a question.");
+    if (!auth.currentUser) {
+      setError("Login to ask a question.");
+      if (e.target.value === "") {
+        setError("");
+      }
       return;
     }
-    await createUserQuestion(auth.currentUser, { question: values.question });
+
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setError("");
+      if (!values.question) {
+        setError("Enter a question.");
+        return;
+      }
+      await createUserQuestion(auth.currentUser, { question: values.question });
+    } catch (error) {
+      console.log(error);
+    }
     setToggleAskedQuestion(!toggleAskedQuestion);
     setError("");
   };
@@ -150,7 +164,7 @@ function Ask() {
           <br />
         </div>
         {error && (
-          <Grid item xs={12} sx={{ width: "25vw", mx: "auto" }}>
+          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
             <Typography variant="subtitle1" className={classes.errorText}>
               {error}
             </Typography>

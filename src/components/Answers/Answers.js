@@ -35,8 +35,6 @@ import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
 import { getDateFromFirestoreTimestamp } from "../../com/functions";
 import { useStyles } from "./AnswersStyles";
 
-//this component is copied
-
 function Answers() {
   //////FUNCTIONALITY////////
 
@@ -54,6 +52,7 @@ function Answers() {
   } = location.state;
   const [answersData, setAnswersData] = useState(null);
   const [values, setValues] = useState({ yourAnswer: "" });
+  const [error, setError] = useState("");
   const [toggleAskedAnswer, setToggleAskedAnswer] = useState(false);
   const [loading, setLoading] = useState(false);
   //integrating pagination using firebase api
@@ -127,11 +126,23 @@ function Answers() {
   };
 
   const handleChange = (e) => {
+    if (!auth.currentUser) {
+      setError("Login to answer.");
+      if (e.target.value === "") {
+        setError("");
+      }
+    }
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
+      setError("");
+      if (!values.yourAnswer) {
+        setError("Enter an answer.");
+        return;
+      }
       await createUserAnswer(auth.currentUser, id, {
         answer: values.yourAnswer,
       });
@@ -139,6 +150,7 @@ function Answers() {
       console.log(error);
     }
     setToggleAskedAnswer(!toggleAskedAnswer);
+    setError("");
   };
   //-----------
 
@@ -160,133 +172,199 @@ function Answers() {
         backgroundColor: "#e6e6e6",
       }}
     >
-      <div className={classes.questionContainer}>
-        <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
-          <CardHeader
-            sx={{
-              position: "relative",
-              "& ::after": {
-                content: '""',
-                background: "#f0f0f0",
-                position: "absolute",
-                bottom: "-1px",
-                left: "25%",
-                width: "50%",
-                height: "1px",
-              },
-            }}
-            avatar={
-              <Avatar sx={{ bgcolor: "#100d38" }} aria-label="Question">
-                {displayName.charAt(0)}
-              </Avatar>
-            }
-            title={displayName}
-            subheader={getDateFromFirestoreTimestamp(createdAt)}
-          />
-          <CardContent
-            sx={{
-              position: "relative",
-              "& ::after": {
-                content: '""',
-                background: "#f0f0f0",
-                position: "absolute",
-                bottom: "-1px",
-                left: "25%",
-                width: "50%",
-                height: "1px",
-              },
-            }}
-          >
-            <Typography variant="h5" color="#100d38">
-              {question}
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <Typography
-              variant="body2"
-              fontWeight="medium"
-              width="30px"
-              height="30px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              flexShrink="0"
-              bgcolor={
-                clickedPositiveRep
-                  ? "#DFF2BF"
-                  : clickedNegativeRep
-                  ? "#FFD2D2"
-                  : ""
+      <div className={classes.aboveQuestionContainer}>
+        <div className={classes.questionContainer}>
+          <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
+            <CardHeader
+              sx={{
+                position: "relative",
+                "& ::after": {
+                  content: '""',
+                  background: "#f0f0f0",
+                  position: "absolute",
+                  bottom: "-1px",
+                  left: "25%",
+                  width: "50%",
+                  height: "1px",
+                },
+              }}
+              avatar={
+                <Avatar sx={{ bgcolor: "#100d38" }} aria-label="Question">
+                  {displayName.charAt(0)}
+                </Avatar>
               }
-              border={
-                clickedPositiveRep
-                  ? "1px solid #4F8A10"
+              title={displayName}
+              subheader={getDateFromFirestoreTimestamp(createdAt)}
+            />
+            <CardContent
+              sx={{
+                position: "relative",
+                "& ::after": {
+                  content: '""',
+                  background: "#f0f0f0",
+                  position: "absolute",
+                  bottom: "-1px",
+                  left: "25%",
+                  width: "50%",
+                  height: "1px",
+                },
+              }}
+            >
+              <Typography variant="h5" color="#100d38">
+                {question}
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing sx={{ p: "8px" }}>
+              <Typography
+                variant="body2"
+                fontWeight="medium"
+                width="30px"
+                height="30px"
+                mx="4px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexShrink="0"
+                bgcolor={
+                  clickedPositiveRep
+                    ? "#DFF2BF"
+                    : clickedNegativeRep
+                    ? "#FFD2D2"
+                    : ""
+                }
+                border={
+                  clickedPositiveRep
+                    ? "1px solid #4F8A10"
+                    : clickedNegativeRep
+                    ? "1px solid #D8000C"
+                    : "1px solid rgba(0, 0, 0, 0.6)"
+                }
+                borderRadius="50%"
+              >
+                {clickedPositiveRep
+                  ? reputation + 1
                   : clickedNegativeRep
-                  ? "1px solid #D8000C"
-                  : "1px solid rgba(0, 0, 0, 0.6)"
-              }
-              borderRadius="50%"
-            >
-              {clickedPositiveRep
-                ? reputation + 1
-                : clickedNegativeRep
-                ? reputation - 1
-                : reputation}
-            </Typography>
-            <Button
-              sx={{ marginLeft: "auto" }}
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="Expand to reply"
-            >
-              REPLY
-            </Button>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <div className={classes.divider}>
-              <div className={classes.inner}></div>
-            </div>
-            <div className={classes.expandedAnswerTextFieldContainer}>
-              <TextField
-                aria-label="Answer the question"
-                placeholder="Your Answer"
-                variant="standard"
-                name="yourAnswer"
-                multiline
+                  ? reputation - 1
+                  : reputation}
+              </Typography>
+              <Button
                 sx={{
-                  width: "50vw",
-                  height: "10vh",
-                  marginTop: "25px",
-                  "& .MuiInputBase-input": {
-                    color: "#000", // Text color
-                  },
-                  "& .MuiInput-underline:before": {
-                    borderBottomColor: "#100d38", // Semi-transparent underline
-                  },
-                  "& .MuiInput-underline:hover:before": {
-                    borderBottomColor: "#100d38", // Solid underline on hover
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#3f51b5", // Solid underline on focus
-                  },
+                  marginLeft: "auto",
+                  marginY: "10px",
+                  color: "black",
+                  borderColor: "black",
+                  minWidth: "maxContent",
+                  whiteSpace: "noWrap",
                 }}
-                onChange={handleChange}
-              />
-              <button className={classes.sendIcon} onClick={handleSubmit}>
-                <FontAwesomeIcon icon={faPaperPlane} />
-              </button>
-              <br />
-              {/* {error && (
-              <Grid item xs={12} sx={{ width: "25vw", mx: "auto" }}>
-                <Typography variant="subtitle1" className={classes.errorText}>
-                  {error}
-                </Typography>
-              </Grid>
-            )} */}
-            </div>
-          </Collapse>
-        </Card>
+                variant="outlined"
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="Expand to reply"
+              >
+                REPLY
+              </Button>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <div className={classes.divider}>
+                <div className={classes.inner}></div>
+              </div>
+              <div className={classes.expandedContainer}>
+                <div className={classes.expandedTextFieldButtonGroup}>
+                  <TextField
+                    aria-label="Answer the question"
+                    placeholder="Your Answer"
+                    variant="standard"
+                    name="yourAnswer"
+                    multiline
+                    sx={{
+                      width: "50vw",
+                      height: "10vh",
+                      marginTop: "25px",
+                      "& .MuiInputBase-input": {
+                        color: "#000", // Text color
+                      },
+                      "& .MuiInput-underline:before": {
+                        borderBottomColor: "#100d38", // Semi-transparent underline
+                      },
+                      "& .MuiInput-underline:hover:before": {
+                        borderBottomColor: "#100d38", // Solid underline on hover
+                      },
+                      "& .MuiInput-underline:after": {
+                        borderBottomColor: "#3f51b5", // Solid underline on focus
+                      },
+                    }}
+                    onChange={handleChange}
+                  />
+                  <button className={classes.sendIcon} onClick={handleSubmit}>
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                  </button>
+                </div>
+
+                {error && (
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ width: "25vw", mx: "auto", mb: "5vh" }}
+                  >
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.errorText}
+                    >
+                      {error}
+                    </Typography>
+                  </Grid>
+                )}
+              </div>
+            </Collapse>
+          </Card>
+        </div>
+        <div style={{ width: "100%" }}>
+          {!answersData && <ReactLogo />}
+          {answersData &&
+            answersData.map((answerData) => {
+              return (
+                <Answer
+                  key={answerData.id}
+                  answerData={answerData}
+                  questionId={id}
+                />
+              );
+            })}
+          {loading && <ReactLogo />}
+          {!loading && (
+            <Button
+              variant="outlined"
+              sx={{
+                marginY: "10px",
+                marginRight: "10px",
+                color: "black",
+                borderColor: "black",
+                minWidth: "maxContent",
+                whiteSpace: "noWrap",
+              }}
+              onClick={loadMore}
+            >
+              Load more
+            </Button>
+          )}
+          {!loading && (
+            <Button
+              variant="outlined"
+              sx={{
+                marginY: "10px",
+                color: "black",
+                borderColor: "black",
+                minWidth: "maxContent",
+                whiteSpace: "noWrap",
+              }}
+              onClick={handleBack}
+            >
+              Go Back
+            </Button>
+          )}
+          {isEmpty && <h1>There are no more answers.</h1>}
+        </div>
       </div>
       {/* <div>
         <label htmlFor="yourAnswer" aria-label="Your answer to the question">
@@ -300,23 +378,6 @@ function Answers() {
         ></textarea>
         <button onClick={handleSubmit}>Submit</button>
       </div> */}
-      <div>
-        {!answersData && <h1>Loading...</h1>}
-        {answersData &&
-          answersData.map((answerData) => {
-            return (
-              <Answer
-                key={answerData.id}
-                answerData={answerData}
-                questionId={id}
-              />
-            );
-          })}
-        {loading && <ReactLogo />}
-        {!loading && <button onClick={loadMore}>Load more</button>}
-        {!loading && <button onClick={handleBack}>Go Back</button>}
-        {isEmpty && <h1>There are no more answers.</h1>}
-      </div>
     </Paper>
   );
 }
