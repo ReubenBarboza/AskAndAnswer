@@ -75,16 +75,21 @@ function Answers() {
     setLoading(true);
     getDocs(answersRef)
       .then((snapshot) => {
-        const answersData = [];
-        const lastDoc = snapshot.docs[snapshot.size - 1];
-        setLastVisibleDoc(lastDoc);
-        // const answersIdArr = [];
-        snapshot.forEach((doc) =>
-          answersData.push({ id: doc.id, ...doc.data() })
-        );
-        //snapshot.forEach((doc) => answersIdArr.push(doc.id));
-        setAnswersData(answersData);
-        //setAnswersId(answersIdArr);
+        const isCollectionEmpty = snapshot.size === 0;
+        if (!isCollectionEmpty) {
+          const answersData = [];
+          const lastDoc = snapshot.docs[snapshot.size - 1];
+          setLastVisibleDoc(lastDoc);
+          // const answersIdArr = [];
+          snapshot.forEach((doc) =>
+            answersData.push({ id: doc.id, ...doc.data() })
+          );
+          //snapshot.forEach((doc) => answersIdArr.push(doc.id));
+          setAnswersData(answersData);
+          //setAnswersId(answersIdArr);
+        } else {
+          setIsEmpty(true);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -326,7 +331,7 @@ function Answers() {
           </Card>
         </div>
         <div style={{ width: "100%" }}>
-          {!answersData && <ReactLogo />}
+          {loading && <ReactLogo />}
           {answersData &&
             answersData.map((answerData) => {
               return (
