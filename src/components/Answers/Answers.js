@@ -10,6 +10,7 @@ import {
   updateDoc,
   increment,
   doc,
+  Timestamp,
 } from "firebase/firestore";
 import { db, auth, createUserAnswer } from "../../firebase/firebase-config";
 import Answer from "./Answer/Answer";
@@ -50,6 +51,7 @@ function Answers() {
     clickedPositiveRep,
     clickedNegativeRep,
   } = location.state;
+
   const [answersData, setAnswersData] = useState(null);
   const [values, setValues] = useState({ yourAnswer: "" });
   const [error, setError] = useState("");
@@ -138,7 +140,9 @@ function Answers() {
     e.preventDefault();
 
     try {
-      setError("");
+      if (error) {
+        return;
+      }
       if (!values.yourAnswer) {
         setError("Enter an answer.");
         return;
@@ -194,7 +198,9 @@ function Answers() {
                 </Avatar>
               }
               title={displayName}
-              subheader={getDateFromFirestoreTimestamp(createdAt)}
+              subheader={getDateFromFirestoreTimestamp(
+                new Timestamp(createdAt.seconds, createdAt.nanoseconds) //just typing createdAt gave an error once you reload the page. This is probably because Timestamp object is not serialized.
+              )}
             />
             <CardContent
               sx={{
@@ -257,7 +263,7 @@ function Answers() {
                   whiteSpace: "noWrap",
                 }}
                 variant="outlined"
-                expand={expanded}
+                expand={expanded ? 1 : 0}
                 onClick={handleExpandClick}
                 aria-expanded={expanded}
                 aria-label="Expand to reply"

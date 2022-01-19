@@ -45,19 +45,22 @@ function Ask() {
       limit(1)
     );
     setLoading(true);
-    getDocs(questionsRef)
-      .then((snapshot) => {
-        const snapData = [];
-        const lastVisibleDoc = snapshot.docs[snapshot.size - 1];
-        setLastVisibleDoc(lastVisibleDoc);
+    if (!error) {
+      getDocs(questionsRef)
+        .then((snapshot) => {
+          console.log("inside question async");
+          const snapData = [];
+          const lastVisibleDoc = snapshot.docs[snapshot.size - 1];
+          setLastVisibleDoc(lastVisibleDoc);
 
-        snapshot.forEach((doc) => {
-          snapData.push({ id: doc.id, ...doc.data() });
-        });
-        setData(snapData);
-      })
-      .catch((error) => console.log(error));
-    setLoading(false);
+          snapshot.forEach((doc) => {
+            snapData.push({ id: doc.id, ...doc.data() });
+          });
+          setData(snapData);
+        })
+        .catch((error) => console.log(error));
+      setLoading(false);
+    }
   }, [toggleAskedQuestion]);
 
   // //pagination
@@ -103,7 +106,9 @@ function Ask() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setError("");
+      if (error) {
+        return;
+      }
       if (!values.question) {
         setError("Enter a question.");
         return;
