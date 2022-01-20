@@ -7,9 +7,6 @@ import {
   query,
   orderBy,
   startAfter,
-  updateDoc,
-  increment,
-  doc,
   Timestamp,
 } from "firebase/firestore";
 import { db, auth, createUserAnswer } from "../../firebase/firebase-config";
@@ -20,7 +17,6 @@ import {
   Card,
   TextField,
   Grid,
-  IconButton,
   CardContent,
   Avatar,
   CardHeader,
@@ -30,7 +26,7 @@ import {
   Collapse,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
 import { getDateFromFirestoreTimestamp } from "../../com/functions";
@@ -80,13 +76,11 @@ function Answers() {
           const answersData = [];
           const lastDoc = snapshot.docs[snapshot.size - 1];
           setLastVisibleDoc(lastDoc);
-          // const answersIdArr = [];
           snapshot.forEach((doc) =>
             answersData.push({ id: doc.id, ...doc.data() })
           );
-          //snapshot.forEach((doc) => answersIdArr.push(doc.id));
           setAnswersData(answersData);
-          //setAnswersId(answersIdArr);
+          setIsEmpty(false);
         } else {
           setIsEmpty(true);
         }
@@ -183,7 +177,7 @@ function Answers() {
     >
       <div className={classes.aboveQuestionContainer}>
         <div className={classes.questionContainer}>
-          <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
+          <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginTop: "10px" }}>
             <CardHeader
               sx={{
                 position: "relative",
@@ -231,7 +225,7 @@ function Answers() {
                 fontWeight="medium"
                 width="30px"
                 height="30px"
-                mx="4px"
+                marginLeft="4px"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -330,6 +324,11 @@ function Answers() {
             </Collapse>
           </Card>
         </div>
+        {!isEmpty && (
+          <div className={classes.arrowDownContainer}>
+            <FontAwesomeIcon icon={faArrowDown} />
+          </div>
+        )}
         <div style={{ width: "100%" }}>
           {loading && <ReactLogo />}
           {answersData &&

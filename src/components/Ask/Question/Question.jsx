@@ -18,10 +18,8 @@ import { getDateFromFirestoreTimestamp } from "../../../com/functions";
 
 const Question = ({ obj }) => {
   const [reputation, setReputation] = useState(0);
-  const [isReputationLocallyUpdated, setIsReputationLocallyUpdated] =
-    useState(false);
 
-  //to compensate for reputation in Answers component
+  //to handle reputation when user clicks dislike after liking and vice versa.
   const [clickedPositiveRep, setClickedPositiveRep] = useState(false);
   const [clickedNegativeRep, setClickedNegativeRep] = useState(false);
   const [wasPositiveRep, setWasPositiveRep] = useState(false);
@@ -34,7 +32,7 @@ const Question = ({ obj }) => {
     try {
       const update = async (reputation) => {
         await updateDoc(questionDocRef, {
-          reputation: increment(reputation), //+1 or -1
+          reputation: increment(reputation), //+1 or -1 first then -2 or +2 after changing opinions
         });
         console.log("async ran");
       };
@@ -108,7 +106,6 @@ const Question = ({ obj }) => {
         <CardActions disableSpacing>
           <IconButton
             onClick={() => {
-              setIsReputationLocallyUpdated(true);
               setReputation(1);
               setClickedPositiveRep(true);
               setClickedNegativeRep(false);
@@ -143,7 +140,6 @@ const Question = ({ obj }) => {
           </Typography>
           <IconButton
             onClick={() => {
-              setIsReputationLocallyUpdated(true);
               setReputation(-1);
               setClickedNegativeRep(true);
               setClickedPositiveRep(false);

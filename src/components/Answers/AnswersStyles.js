@@ -56,4 +56,20 @@ export const useStyles = makeStyles({
     border: "1px solid #854953",
     borderRadius: "3px",
   },
+  arrowDownContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "1.3rem",
+    opacity: "0.7",
+    animation: "$arrowDown 1000ms ease-in-out 0s infinite alternate",
+  },
+  "@keyframes arrowDown": {
+    "0%": {
+      transform: "translateY(0px)",
+    },
+    "100%": {
+      transform: "translateY(5px)",
+    },
+  },
 });
