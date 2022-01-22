@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "./Home";
+import Home from "./Home/Home";
 import Ask from "./Ask/Ask";
 import Answers from "././Answers/Answers";
 import Login from "./muiRegistration/Login/Login";
@@ -26,7 +26,7 @@ function App() {
   });
 
   return (
-    <AppContainer className="App">
+    <AppContainer>
       <Theme>
         <Router>
           <UsersContextProvider>
