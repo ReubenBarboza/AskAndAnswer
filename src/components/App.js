@@ -12,6 +12,7 @@ import { UsersContextProvider } from "./contexts/UsersContex";
 import { AppContainer } from "./styles/AppContainer.styled";
 import { auth } from "../firebase/firebase-config";
 import { onAuthStateChanged } from "@firebase/auth";
+import Footer from "./Footer/Footer";
 
 function App() {
   const [registerEmail, setRegisterEmail] = useState("");
@@ -56,6 +57,7 @@ function App() {
                 />
               </Route>
             </Switch>
+            <Footer />
           </UsersContextProvider>
         </Router>
       </Theme>

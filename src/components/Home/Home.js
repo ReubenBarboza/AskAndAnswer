@@ -15,37 +15,44 @@ function Home() {
               // left="52%"
               // top="20%"
               fontWeight="light"
-              fontSize="48px"
-              lineHeight="60px"
+              fontSize="28px"
+              lineHeight="45px"
               zIndex="10"
             >
               Share Your <br />
-              <Typography
-                fontWeight="bold"
-                fontSize="48px"
-                lineHeight="60px"
-                zIndex="10"
+              <span
+                style={{
+                  display: "block",
+                  fontWeight: "bold",
+                  fontSize: "28px",
+                  lineHeight: "45px",
+                  zIndex: "10",
+                }}
               >
                 Ideas.
-              </Typography>
+              </span>
             </Typography>
             <Typography
+              className={classes.headerBottom}
               // position="absolute"
               // left="52%"
               // bottom="20%"
               fontWeight="light"
-              fontSize="48px"
-              lineHeight="60px"
+              fontSize="28px"
+              lineHeight="45px"
               zIndex="10"
             >
-              <Typography
-                fontWeight="bold"
-                fontSize="48px"
-                lineHeight="60px"
-                zIndex="10"
+              <span
+                style={{
+                  display: "block",
+                  fontWeight: "bold",
+                  fontSize: "28px",
+                  lineHeight: "45px",
+                  zIndex: "10",
+                }}
               >
                 Enlighten
-              </Typography>
+              </span>
               Others.
             </Typography>
           </div>

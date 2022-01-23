@@ -164,7 +164,7 @@ function Answers() {
     <Paper
       elevation={8}
       sx={{
-        width: "95vw",
+        width: "100%",
         height: "83vh",
         mx: "auto",
         display: "flex",
