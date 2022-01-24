@@ -13,7 +13,11 @@ import {
   Typography,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faThumbsDown,
+  faThumbsUp,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
 import { getDateFromFirestoreTimestamp } from "../../../com/functions";
 
 const Question = ({ obj }) => {
@@ -172,42 +176,26 @@ const Question = ({ obj }) => {
                 whiteSpace: "noWrap",
                 color: "black",
                 borderColor: "black",
+                "@media (max-width:400px)": {
+                  display: "none",
+                },
               }}
             >
               See Answers
             </Button>
+            <Button //this icon is for mobile, it does not exist on screens>400px.
+              sx={{
+                color: "black",
+                "@media (min-width:400px)": {
+                  display: "none",
+                },
+              }}
+            >
+              <FontAwesomeIcon icon={faEye} />
+            </Button>
           </Link>
         </CardActions>
       </Card>
-      {/* <div key={obj.id}>
-        {obj.question} by {obj.displayName}
-        <button
-          onClick={() => {
-            setIsReputationLocallyUpdated(true);
-            setReputation(1);
-          }}
-        >
-          +
-        </button>
-        <span>{obj.reputation + reputation}</span>
-        <button
-          onClick={() => {
-            setIsReputationLocallyUpdated(true);
-            setReputation(-1);
-          }}
-        >
-          -
-        </button>
-      </div>
-      <Link
-        to={{
-          pathname: "/Answers",
-          state: { id: obj.id, question: obj.question },
-        }}
-      >
-        <button>Load answers</button>
-      </Link>
-      */}
     </>
   );
 };

@@ -11,17 +11,15 @@ export const useStyles = makeStyles({
   },
   footerLinkContainer: {
     display: "flex",
+    flexWrap: "wrap",
     justifyContent: "space-between",
-    minWidth: "25%",
-    "@media screen and (max-width:500px)": {
-      flexDirection: "column",
-      justifyContent: "center",
-      gap: "5px",
-    },
+    minWidth: "50%",
+    paddingBottom: "10px",
+    borderBottom: "1px solid #e6e6e6",
   },
   footerLinkItem: {
-    flexShrink: "0",
-    padding: "0px 10px",
+    flex: "1 1 100px",
+    marginTop: "5px",
     textAlign: "center",
     textDecoration: "none",
     cursor: "pointer",
@@ -32,14 +30,7 @@ export const useStyles = makeStyles({
     justifyContent: "center",
     color: "#fcf5e3",
     marginTop: "10px",
+    marginBottom: "5px",
     position: "relative",
-    "& ::after": {
-      content: "''",
-      position: "absolute",
-      height: "1px",
-      width: "120%",
-      top: "0",
-      backgroundColor: "white",
-    }, //doesnt work
   },
 });

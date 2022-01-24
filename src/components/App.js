@@ -32,6 +32,7 @@ function App() {
         <Router>
           <UsersContextProvider>
             <Navbar user={user} />
+
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/Ask" component={Ask} />
@@ -57,6 +58,7 @@ function App() {
                 />
               </Route>
             </Switch>
+
             <Footer />
           </UsersContextProvider>
         </Router>

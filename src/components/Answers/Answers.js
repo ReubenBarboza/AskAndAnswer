@@ -165,12 +165,12 @@ function Answers() {
       elevation={8}
       sx={{
         width: "100%",
-        height: "83vh",
+        minHeight: "83vh",
         mx: "auto",
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
-        overflowY: "auto",
+
         alignItems: "center",
         backgroundColor: "#e6e6e6",
       }}
