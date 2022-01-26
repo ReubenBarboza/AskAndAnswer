@@ -21,6 +21,7 @@ function App() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [user, setUser] = useState({});
+  const [isModerator, setIsModerator] = useState(false);
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
@@ -54,7 +55,8 @@ function App() {
                   setRegisterPassword={setRegisterPassword}
                   registerDisplayName={registerDisplayName}
                   setRegisterDisplayName={setRegisterDisplayName}
-                  user={user}
+                  isModerator={isModerator}
+                  setIsModerator={setIsModerator}
                 />
               </Route>
             </Switch>

@@ -8,6 +8,8 @@ import {
   Button,
   InputAdornment,
   IconButton,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -23,14 +25,17 @@ const SignUp = ({
   setRegisterPassword,
   registerDisplayName,
   setRegisterDisplayName,
-  user,
+  isModerator,
+  setIsModerator,
 }) => {
   const [hasRegistered, setHasRegistered] = useState(false);
   const [registerClicked, setRegisterClicked] = useState(false);
+  //values is used for validation
   const [values, setValues] = useState({
     email: "",
     password: "",
     displayName: "",
+    isModerator: "",
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -56,7 +61,10 @@ const SignUp = ({
             .then(console.log(registerDisplayName))
             .catch((error) => console.log(error.message));
 
-        await createUserDocument(user.user, { registerDisplayName });
+        await createUserDocument(user.user, {
+          registerDisplayName,
+          isModerator,
+        });
       } catch (error) {
         console.log(error.message);
       }
@@ -134,6 +142,21 @@ const SignUp = ({
               }}
               fullWidth
               required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isModerator}
+                  onChange={(e) => {
+                    setIsModerator(e.target.checked);
+                    setValues({ ...values, isModerator: e.target.checked });
+                  }}
+                />
+              }
+              label="Do you wish to moderate this forum?"
+              labelPlacement="start"
             />
           </Grid>
           <Grid item xs={12}>
