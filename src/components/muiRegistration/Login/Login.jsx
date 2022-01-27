@@ -18,16 +18,13 @@ import { useStyles } from "./LoginStyles";
 import { signInWithEmailAndPassword } from "@firebase/auth";
 import { auth } from "../../../firebase/firebase-config";
 
-const Login = ({
-  loginEmail,
-  setLoginEmail,
-  loginPassword,
-  setLoginPassword,
-}) => {
-  const classes = useStyles();
+const Login = () => {
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
+  const classes = useStyles();
   //to redirect user to Ask after login
   let history = useHistory();
 

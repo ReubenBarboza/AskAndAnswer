@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./Home/Home";
@@ -10,22 +10,37 @@ import Theme from "./Theme";
 import SignUp from "./muiRegistration/SignUp/SignUp";
 import { UsersContextProvider } from "./contexts/UsersContex";
 import { AppContainer } from "./styles/AppContainer.styled";
-import { auth } from "../firebase/firebase-config";
+import { auth, db } from "../firebase/firebase-config";
 import { onAuthStateChanged } from "@firebase/auth";
 import Footer from "./Footer/Footer";
 
+import { doc, getDoc } from "firebase/firestore";
+
 function App() {
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [registerDisplayName, setRegisterDisplayName] = useState("");
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
   const [user, setUser] = useState({});
-  const [isModerator, setIsModerator] = useState(false);
+  const [isUserModerator, setIsUserModerator] = useState(null);
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
+
+  useEffect(
+    () => async () => {
+      try {
+        if (auth.currentUser) {
+          const userRef = doc(db, "users", auth.currentUser.uid);
+          console.log("moderator async ran");
+          const currentUserData = await getDoc(userRef);
+          setIsUserModerator(currentUserData.data().isModerator);
+        } else {
+          console.log("user logged out");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [user]
+  );
 
   return (
     <AppContainer>
@@ -36,28 +51,16 @@ function App() {
 
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/Ask" component={Ask} />
+              <Route exact path="/Ask">
+                <Ask isUserModerator={isUserModerator} />
+              </Route>
               <Route exact path="/Answers" component={Answers} />
               <Route exact path="/Login">
-                <Login
-                  loginEmail={loginEmail}
-                  setLoginEmail={setLoginEmail}
-                  loginPassword={loginPassword}
-                  setLoginPassword={setLoginPassword}
-                />
+                <Login />
               </Route>
               <Route exact path="/Logout" component={Logout} />
               <Route exact path="/SignUp">
-                <SignUp
-                  registerEmail={registerEmail}
-                  setRegisterEmail={setRegisterEmail}
-                  registerPassword={registerPassword}
-                  setRegisterPassword={setRegisterPassword}
-                  registerDisplayName={registerDisplayName}
-                  setRegisterDisplayName={setRegisterDisplayName}
-                  isModerator={isModerator}
-                  setIsModerator={setIsModerator}
-                />
+                <SignUp />
               </Route>
             </Switch>
 

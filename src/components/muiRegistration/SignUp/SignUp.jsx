@@ -18,16 +18,12 @@ import { auth, createUserDocument } from "../../../firebase/firebase-config";
 import { useStyles } from "./SignUpStyles";
 import { SignUpValidation } from "./SignUpValidation";
 
-const SignUp = ({
-  registerEmail,
-  setRegisterEmail,
-  registerPassword,
-  setRegisterPassword,
-  registerDisplayName,
-  setRegisterDisplayName,
-  isModerator,
-  setIsModerator,
-}) => {
+const SignUp = () => {
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [registerDisplayName, setRegisterDisplayName] = useState("");
+  const [isModerator, setIsModerator] = useState(false);
+
   const [hasRegistered, setHasRegistered] = useState(false);
   const [registerClicked, setRegisterClicked] = useState(false);
   //values is used for validation

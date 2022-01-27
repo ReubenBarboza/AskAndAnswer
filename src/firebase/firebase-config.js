@@ -7,7 +7,6 @@ import {
   addDoc,
   collection,
   Timestamp,
-  getDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -49,16 +48,13 @@ export const createUserQuestion = async (user, additionalData) => {
   const { displayName, uid } = user;
   const { question } = additionalData;
 
-  const userRef = doc(db, "users", uid);
   try {
-    const serverUser = await getDoc(userRef);
     await addDoc(questionsRef, {
       createdAt: Timestamp.fromDate(new Date()),
       displayName: displayName,
       question: question,
       reputation: 0,
       user: uid,
-      isModerator: serverUser.data().isModerator,
     });
     console.log("question added!");
   } catch (error) {
@@ -70,16 +66,13 @@ export const createUserAnswer = async (user, id, additionalData) => {
   const answersRef = collection(db, `questions/${id}/answers`);
   const { displayName, uid } = user;
   const { answer } = additionalData;
-  const userRef = doc(db, "users", uid);
   try {
-    const serverUser = await getDoc(userRef);
     await addDoc(answersRef, {
       answer: answer,
       createdAt: Timestamp.fromDate(new Date()),
       displayName: displayName,
       reputation: 0,
       user: uid,
-      isModerator: serverUser.data().isModerator,
     });
     console.log("answer added!");
   } catch (error) {
