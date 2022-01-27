@@ -15,6 +15,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 import Footer from "./Footer/Footer";
 
 import { doc, getDoc } from "firebase/firestore";
+import About from "./About";
 
 function App() {
   const [user, setUser] = useState({});
@@ -61,6 +62,9 @@ function App() {
               <Route exact path="/Logout" component={Logout} />
               <Route exact path="/SignUp">
                 <SignUp />
+              </Route>
+              <Route exact path="/About">
+                <About />
               </Route>
             </Switch>
 

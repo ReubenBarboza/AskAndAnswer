@@ -62,17 +62,12 @@ function Navbar({ user }) {
         >
           {user ? "Log out" : "Login"}
         </StyledLink>
-        {/* {links.map((link, index) => {
-          return (
-            <StyledLink
-              key={index}
-              to={link.path}
-              className={location.pathname === link.path ? "active" : null}
-            >
-              {link.name}
-            </StyledLink>
-          );
-        })} */}
+        <StyledLink
+          to="/About"
+          className={location.pathname === "/About" ? "active" : null}
+        >
+          About
+        </StyledLink>
       </LinkContainer>
     </NavContainer>
   );
