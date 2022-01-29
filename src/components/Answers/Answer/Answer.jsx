@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportButton from "../../../com/ReportButton";
 
 const Answer = ({ answerData, questionId }) => {
   const [reputation, setReputation] = useState(0);
@@ -107,7 +108,7 @@ const Answer = ({ answerData, questionId }) => {
           {answerData.answer}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions>
         <IconButton
           onClick={() => {
             setReputation(1);
@@ -153,6 +154,9 @@ const Answer = ({ answerData, questionId }) => {
         >
           <FontAwesomeIcon icon={faThumbsDown} />
         </IconButton>
+        <div style={{ marginLeft: "auto", display: "flex" }}>
+          <ReportButton />
+        </div>
       </CardActions>
 
       {/* <button

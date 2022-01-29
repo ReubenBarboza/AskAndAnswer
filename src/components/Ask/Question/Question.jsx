@@ -10,6 +10,7 @@ import {
   CardContent,
   CardHeader,
   IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,8 +18,10 @@ import {
   faThumbsDown,
   faThumbsUp,
   faEye,
+  faFlag,
 } from "@fortawesome/free-solid-svg-icons";
 import { getDateFromFirestoreTimestamp } from "../../../com/functions";
+import ReportButton from "../../../com/ReportButton";
 
 const Question = ({ obj }) => {
   const [reputation, setReputation] = useState(0);
@@ -153,47 +156,51 @@ const Question = ({ obj }) => {
           >
             <FontAwesomeIcon icon={faThumbsDown} />
           </IconButton>
-          <Link
-            style={{ textDecoration: "none", marginLeft: "auto" }}
-            to={{
-              pathname: "/Answers",
-              state: {
-                id: obj.id,
-                question: obj.question,
-                displayName: obj.displayName,
-                createdAt: obj.createdAt,
-                reputation: obj.reputation,
-                clickedPositiveRep: clickedPositiveRep,
-                clickedNegativeRep: clickedNegativeRep,
-              },
-            }}
-          >
-            <Button
-              variant="outlined"
-              sx={{
-                marginLeft: "auto",
-                minWidth: "maxContent",
-                whiteSpace: "noWrap",
-                color: "black",
-                borderColor: "black",
-                "@media (max-width:400px)": {
-                  display: "none",
+          <div style={{ marginLeft: "auto", display: "flex" }}>
+            <Link
+              style={{ textDecoration: "none", marginLeft: "auto" }}
+              to={{
+                pathname: "/Answers",
+                state: {
+                  id: obj.id,
+                  question: obj.question,
+                  displayName: obj.displayName,
+                  createdAt: obj.createdAt,
+                  reputation: obj.reputation,
+                  clickedPositiveRep: clickedPositiveRep,
+                  clickedNegativeRep: clickedNegativeRep,
                 },
               }}
             >
-              See Answers
-            </Button>
-            <Button //this icon is for mobile, it does not exist on screens>400px.
-              sx={{
-                color: "black",
-                "@media (min-width:400px)": {
-                  display: "none",
-                },
-              }}
-            >
-              <FontAwesomeIcon icon={faEye} />
-            </Button>
-          </Link>
+              <Button
+                variant="outlined"
+                sx={{
+                  marginLeft: "auto",
+                  minWidth: "maxContent",
+                  whiteSpace: "noWrap",
+                  color: "black",
+                  borderColor: "black",
+                  "@media (max-width:470px)": {
+                    display: "none",
+                  },
+                }}
+              >
+                See Answers
+              </Button>
+              <Button //this icon is for mobile, it does not exist on screens>400px.
+                sx={{
+                  color: "black",
+                  minWidth: "min-content",
+                  "@media (min-width:470px)": {
+                    display: "none",
+                  },
+                }}
+              >
+                <FontAwesomeIcon icon={faEye} />
+              </Button>
+            </Link>
+            <ReportButton />
+          </div>
         </CardActions>
       </Card>
     </>

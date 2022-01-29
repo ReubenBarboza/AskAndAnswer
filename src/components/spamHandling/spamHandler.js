@@ -6,5 +6,5 @@ const bayes = require("bayes");
     fs.readFileSync("./spam-or-ham-classifier.json")
   );
 
-  console.log(await classifier.categorize("boqxsxj"));
+  console.log(await classifier.categorize("the world"));
 })();
