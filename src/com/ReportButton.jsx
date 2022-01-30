@@ -3,7 +3,7 @@ import { Tooltip, Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
 
-const ReportButton = () => {
+const ReportButton = ({ reportOnClick }) => {
   return (
     <div>
       <Tooltip
@@ -18,6 +18,7 @@ const ReportButton = () => {
         title="Flag only if the given content is disrespectful or spam."
       >
         <Button
+          onClick={reportOnClick}
           sx={{
             color: "black",
             borderColor: "black",
@@ -40,8 +41,9 @@ const ReportButton = () => {
         }}
       >
         <Button
+          onClick={reportOnClick}
           sx={{
-            color: "red",
+            color: "#bf0e00",
             minWidth: "min-content",
             "@media (min-width:470px)": {
               display: "none",

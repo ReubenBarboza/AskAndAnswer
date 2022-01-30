@@ -61,6 +61,10 @@ const Answer = ({ answerData, questionId }) => {
     reputation,
   ]);
 
+  function reportOnClick() {
+    console.log("Clicked!");
+  }
+
   return (
     <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
       <CardHeader
@@ -155,7 +159,7 @@ const Answer = ({ answerData, questionId }) => {
           <FontAwesomeIcon icon={faThumbsDown} />
         </IconButton>
         <div style={{ marginLeft: "auto", display: "flex" }}>
-          <ReportButton />
+          <ReportButton reportOnClick={reportOnClick} />
         </div>
       </CardActions>
 
