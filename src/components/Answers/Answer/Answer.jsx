@@ -15,6 +15,7 @@ import {
 import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportButton from "../../../com/ReportButton";
+import WarningSpam from "../../../com/WarningSpam";
 
 const Answer = ({ answerData, questionId }) => {
   const [reputation, setReputation] = useState(0);
@@ -24,6 +25,9 @@ const Answer = ({ answerData, questionId }) => {
   const [clickedNegativeRep, setClickedNegativeRep] = useState(false);
   const [wasPositiveRep, setWasPositiveRep] = useState(false);
   const [wasNegativeRep, setWasNegativeRep] = useState(false);
+
+  //for report button
+  const [userFlagged, setUserFlagged] = useState(false);
 
   const answerDocRef = doc(
     db,
@@ -61,109 +65,121 @@ const Answer = ({ answerData, questionId }) => {
     reputation,
   ]);
 
-  function reportOnClick() {
-    console.log("Clicked!");
+  async function reportOnClick() {
+    try {
+      setUserFlagged(true);
+      if (!answerData.isFlagged) {
+        await updateDoc(answerDocRef, {
+          isFlagged: true,
+        });
+        console.log("async fired");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
-    <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
-      <CardHeader
-        sx={{
-          position: "relative",
-          "& ::after": {
-            content: '""',
-            background: "#f0f0f0",
-            position: "absolute",
-            bottom: "-1px",
-            left: "25%",
-            width: "50%",
-            height: "1px",
-          },
-        }}
-        avatar={
-          <Avatar sx={{ bgcolor: "#100d38" }} aria-label="Answer">
-            {answerData.displayName.charAt(0)}
-          </Avatar>
-        }
-        title={answerData.displayName}
-        subheader={getDateFromFirestoreTimestamp(
-          ////just typing answerData.createdAt gave an error once you reload the page in Answers so I assume the same thing happens over here. This is probably because Timestamp object is not serialized.
-          new Timestamp(
-            answerData.createdAt.seconds,
-            answerData.createdAt.nanoseconds
-          )
-        )}
-      />
-      <CardContent
-        sx={{
-          position: "relative",
-          "& ::after": {
-            content: '""',
-            background: "#f0f0f0",
-            position: "absolute",
-            bottom: "-1px",
-            left: "25%",
-            width: "50%",
-            height: "1px",
-          },
-        }}
-      >
-        <Typography variant="h5" color="#100d38">
-          {answerData.answer}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <IconButton
-          onClick={() => {
-            setReputation(1);
-            setClickedPositiveRep(true);
-            setClickedNegativeRep(false);
-            setWasPositiveRep(true);
+    !userFlagged && (
+      <Card sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}>
+        <CardHeader
+          sx={{
+            position: "relative",
+            "& ::after": {
+              content: '""',
+              background: "#f0f0f0",
+              position: "absolute",
+              bottom: "-1px",
+              left: "25%",
+              width: "50%",
+              height: "1px",
+            },
           }}
-          sx={{ mx: "4px" }}
-        >
-          <FontAwesomeIcon icon={faThumbsUp} />
-        </IconButton>
-        <Typography
-          variant="body2"
-          fontWeight="medium"
-          width="30px"
-          height="30px"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexShrink="0"
-          bgcolor={
-            reputation === 1 ? "#DFF2BF" : reputation === -1 ? "#FFD2D2" : ""
+          avatar={
+            <Avatar sx={{ bgcolor: "#100d38" }} aria-label="Answer">
+              {answerData.displayName.charAt(0)}
+            </Avatar>
           }
-          border={
-            reputation === 1
-              ? "1px solid #4F8A10"
-              : reputation === -1
-              ? "1px solid #D8000C"
-              : "1px solid rgba(0, 0, 0, 0.6)"
-          }
-          borderRadius="50%"
-        >
-          {answerData.reputation + reputation}
-        </Typography>
-        <IconButton
-          onClick={() => {
-            setReputation(-1);
-            setClickedNegativeRep(true);
-            setClickedPositiveRep(false);
-            setWasNegativeRep(true);
+          title={answerData.displayName}
+          subheader={getDateFromFirestoreTimestamp(
+            ////just typing answerData.createdAt gave an error once you reload the page in Answers so I assume the same thing happens over here. This is probably because Timestamp object is not serialized.
+            new Timestamp(
+              answerData.createdAt.seconds,
+              answerData.createdAt.nanoseconds
+            )
+          )}
+        />
+        <CardContent
+          sx={{
+            position: "relative",
+            "& ::after": {
+              content: '""',
+              background: "#f0f0f0",
+              position: "absolute",
+              bottom: "-1px",
+              left: "25%",
+              width: "50%",
+              height: "1px",
+            },
           }}
-          sx={{ mx: "4px" }}
         >
-          <FontAwesomeIcon icon={faThumbsDown} />
-        </IconButton>
-        <div style={{ marginLeft: "auto", display: "flex" }}>
-          <ReportButton reportOnClick={reportOnClick} />
-        </div>
-      </CardActions>
+          <Typography variant="h5" color="#100d38">
+            {answerData.answer}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <IconButton
+            onClick={() => {
+              setReputation(1);
+              setClickedPositiveRep(true);
+              setClickedNegativeRep(false);
+              setWasPositiveRep(true);
+            }}
+            sx={{ mx: "4px" }}
+          >
+            <FontAwesomeIcon icon={faThumbsUp} />
+          </IconButton>
+          <Typography
+            variant="body2"
+            fontWeight="medium"
+            width="30px"
+            height="30px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexShrink="0"
+            bgcolor={
+              reputation === 1 ? "#DFF2BF" : reputation === -1 ? "#FFD2D2" : ""
+            }
+            border={
+              reputation === 1
+                ? "1px solid #4F8A10"
+                : reputation === -1
+                ? "1px solid #D8000C"
+                : "1px solid rgba(0, 0, 0, 0.6)"
+            }
+            borderRadius="50%"
+          >
+            {answerData.reputation + reputation}
+          </Typography>
+          <IconButton
+            onClick={() => {
+              setReputation(-1);
+              setClickedNegativeRep(true);
+              setClickedPositiveRep(false);
+              setWasNegativeRep(true);
+            }}
+            sx={{ mx: "4px" }}
+          >
+            <FontAwesomeIcon icon={faThumbsDown} />
+          </IconButton>
+          {answerData.isFlagged && <WarningSpam />}
+          <div style={{ marginLeft: "auto", display: "flex" }}>
+            <ReportButton reportOnClick={reportOnClick} />
+          </div>
+        </CardActions>
 
-      {/* <button
+        {/* <button
         onClick={() => {
           setReputation(1);
           setClickedPositiveRep(true);
@@ -184,7 +200,8 @@ const Answer = ({ answerData, questionId }) => {
       >
         -
       </button> */}
-    </Card>
+      </Card>
+    )
   );
 };
 

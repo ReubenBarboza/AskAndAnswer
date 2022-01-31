@@ -10,7 +10,6 @@ import {
   CardContent,
   CardHeader,
   IconButton,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,10 +17,10 @@ import {
   faThumbsDown,
   faThumbsUp,
   faEye,
-  faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 import { getDateFromFirestoreTimestamp } from "../../../com/functions";
 import ReportButton from "../../../com/ReportButton";
+import WarningSpam from "../../../com/WarningSpam";
 
 const Question = ({ obj }) => {
   const [reputation, setReputation] = useState(0);
@@ -70,11 +69,11 @@ const Question = ({ obj }) => {
 
   async function reportOnClick() {
     try {
+      setUserFlagged(true);
       if (!obj.isFlagged) {
         await updateDoc(questionDocRef, {
           isFlagged: true,
         });
-        setUserFlagged(true);
         console.log("async fired");
       }
     } catch (error) {
@@ -179,37 +178,14 @@ const Question = ({ obj }) => {
               <FontAwesomeIcon icon={faThumbsDown} />
             </IconButton>
 
-            {obj.isFlagged && (
-              <Tooltip
-                title="This question was flagged and can be taken down by moderators."
-                placement="bottom-start"
-                componentsProps={{
-                  tooltip: {
-                    sx: {
-                      backgroundColor: "#100d38",
-                      color: "#fcf5e3",
-                    },
-                  },
-                }}
-              >
-                <Button
-                  sx={{
-                    // color: "#100d38",
-                    color: "#FF7900",
-                    margin: "0px",
-                    padding: "0px",
-                    minWidth: "min-content",
-                    "&:hover": { backgroundColor: "transparent" },
-                  }}
-                >
-                  <FontAwesomeIcon
-                    style={{ marginLeft: "4px" }}
-                    icon={faExclamationTriangle}
-                  />
-                </Button>
-              </Tooltip>
-            )}
-            <div style={{ marginLeft: "auto", display: "flex" }}>
+            {obj.isFlagged && <WarningSpam />}
+
+            <div
+              style={{
+                marginLeft: "auto",
+                display: "flex",
+              }}
+            >
               <Link
                 style={{ textDecoration: "none", marginLeft: "auto" }}
                 to={{
@@ -233,7 +209,7 @@ const Question = ({ obj }) => {
                     whiteSpace: "noWrap",
                     color: "black",
                     borderColor: "black",
-                    "@media (max-width:470px)": {
+                    "@media (max-width:530px)": {
                       display: "none",
                     },
                   }}
@@ -244,7 +220,7 @@ const Question = ({ obj }) => {
                   sx={{
                     color: "black",
                     minWidth: "min-content",
-                    "@media (min-width:470px)": {
+                    "@media (min-width:530px)": {
                       display: "none",
                     },
                   }}

@@ -5,7 +5,7 @@ import { faFlag } from "@fortawesome/free-solid-svg-icons";
 
 const ReportButton = ({ reportOnClick }) => {
   return (
-    <div>
+    <div style={{ marginRight: "4px" }}>
       <Tooltip
         componentsProps={{
           tooltip: {
@@ -23,7 +23,7 @@ const ReportButton = ({ reportOnClick }) => {
             color: "black",
             borderColor: "black",
             ml: "10px",
-            "@media (max-width:470px)": {
+            "@media (max-width:530px)": {
               display: "none",
             },
           }}
@@ -45,7 +45,7 @@ const ReportButton = ({ reportOnClick }) => {
           sx={{
             color: "#bf0e00",
             minWidth: "min-content",
-            "@media (min-width:470px)": {
+            "@media (min-width:530px)": {
               display: "none",
             },
           }}
