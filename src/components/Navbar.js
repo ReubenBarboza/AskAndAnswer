@@ -9,7 +9,7 @@ import { HamburgerIcon } from "./styles/Navbar/HamburgerIcon.styled";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router";
 
-function Navbar({ user }) {
+function Navbar({ user, isUserModerator }) {
   const [animate, setAnimate] = useState(false);
   const location = useLocation();
 
@@ -52,6 +52,14 @@ function Navbar({ user }) {
         >
           Ask
         </StyledLink>
+        {isUserModerator && (
+          <StyledLink
+            to="/Moderate"
+            className={location.pathname === "/Moderate" ? "active" : null}
+          >
+            Moderate
+          </StyledLink>
+        )}
         <StyledLink
           to={user ? "/Logout" : "/Login"}
           className={

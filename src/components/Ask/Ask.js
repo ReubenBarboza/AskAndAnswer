@@ -17,7 +17,7 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useStyles } from "./AskStyles";
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
 
-function Ask({ isUserModerator }) {
+function Ask() {
   //Question input from form.
   const [values, setValues] = useState({ question: "" });
   const [error, setError] = useState("");
@@ -200,7 +200,6 @@ function Ask({ isUserModerator }) {
           )}
           {isEmpty && <h1>There are no more questions.</h1>}
         </div>
-        {isUserModerator && <Button>UserModerator</Button>}
       </div>
     </Paper>
   );

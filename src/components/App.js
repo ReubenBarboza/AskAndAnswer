@@ -16,6 +16,7 @@ import Footer from "./Footer/Footer";
 
 import { doc, getDoc } from "firebase/firestore";
 import About from "./About";
+import Moderate from "./Moderate/Moderate";
 
 function App() {
   const [user, setUser] = useState({});
@@ -48,12 +49,12 @@ function App() {
       <Theme>
         <Router>
           <UsersContextProvider>
-            <Navbar user={user} />
+            <Navbar user={user} isUserModerator={isUserModerator} />
 
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/Ask">
-                <Ask isUserModerator={isUserModerator} />
+                <Ask />
               </Route>
               <Route exact path="/Answers" component={Answers} />
               <Route exact path="/Login">
@@ -62,6 +63,9 @@ function App() {
               <Route exact path="/Logout" component={Logout} />
               <Route exact path="/SignUp">
                 <SignUp />
+              </Route>
+              <Route exact path="/Moderate">
+                <Moderate />
               </Route>
               <Route exact path="/About">
                 <About />
