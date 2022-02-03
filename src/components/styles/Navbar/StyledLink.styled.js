@@ -6,6 +6,7 @@ export const StyledLink = styled(Link)`
   color: ${(props) => props.theme.colors.primary};
   padding: 20px;
   margin: 10px;
+  width: max-content;
   text-decoration: none;
   border-bottom: 1px solid ${(props) => props.theme.colors.primary};
   transition: background-color 1s ease;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../../firebase/firebase-config";
+import { db } from "../../../firebase/firebase-config";
 import { Button, Paper, Typography } from "@mui/material";
 import {
   collection,
@@ -10,11 +10,12 @@ import {
   startAfter,
   where,
 } from "firebase/firestore";
-import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
+import { ReactComponent as ReactLogo } from "../../../assets/loadingAnimated.svg";
 import FlaggedQuestion from "./FlaggedQuestion/FlaggedQuestion";
 import { useStyles } from "./ModeratorStyles";
+import { Link } from "react-router-dom";
 
-const Moderate = () => {
+const ModerateQuestions = () => {
   const [loading, setLoading] = useState(false);
   const [questionData, setQuestionData] = useState(null);
 
@@ -104,18 +105,37 @@ const Moderate = () => {
               />
             );
           })}
-
-          <Button
-            onClick={handleLoadMore}
-            variant="outlined"
-            sx={{
-              alignSelf: "flex-start",
-              color: "black",
-              border: "1px solid black",
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              width: "100%",
             }}
           >
-            Load More
-          </Button>
+            <Button
+              onClick={handleLoadMore}
+              variant="outlined"
+              sx={{
+                color: "black",
+                mr: "10px",
+                border: "1px solid black",
+              }}
+            >
+              Load More
+            </Button>
+            <Link style={{ textDecoration: "none" }} to="/ModerateAnswers">
+              <Button
+                variant="outlined"
+                sx={{
+                  color: "black",
+                  border: "1px solid black",
+                }}
+              >
+                Moderate Answers
+              </Button>
+            </Link>
+          </div>
+
           {isEmpty && (
             <Typography variant="h5">
               There are no more questions.Thank you for Moderating!
@@ -127,4 +147,4 @@ const Moderate = () => {
   );
 };
 
-export default Moderate;
+export default ModerateQuestions;

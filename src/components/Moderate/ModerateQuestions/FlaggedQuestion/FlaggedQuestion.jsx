@@ -6,10 +6,9 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  IconButton,
   Typography,
 } from "@mui/material";
-import { getDateFromFirestoreTimestamp } from "../../../com/functions";
+import { getDateFromFirestoreTimestamp } from "../../../../com/functions";
 
 const FlaggedQuestion = ({ flaggedQuestionData }) => {
   return (

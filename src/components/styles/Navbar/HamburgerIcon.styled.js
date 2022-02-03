@@ -9,7 +9,7 @@ export const HamburgerIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
   color: ${(props) => props.theme.colors.primary};
 
-  @media (min-width: ${(props) => props.theme.screenSize.sm}) {
+  @media (min-width: 900px) {
     display: none;
   }
   @media (max-width: ${(props) => props.theme.screenSize.xs}) {

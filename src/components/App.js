@@ -16,7 +16,8 @@ import Footer from "./Footer/Footer";
 
 import { doc, getDoc } from "firebase/firestore";
 import About from "./About";
-import Moderate from "./Moderate/Moderate";
+import ModerateQuestions from "./Moderate/ModerateQuestions/ModerateQuestions";
+import ModerateAnswers from "./Moderate/ModerateAnswers/ModerateAnswers";
 
 function App() {
   const [user, setUser] = useState({});
@@ -64,8 +65,11 @@ function App() {
               <Route exact path="/SignUp">
                 <SignUp />
               </Route>
-              <Route exact path="/Moderate">
-                <Moderate />
+              <Route exact path="/ModerateQuestions">
+                <ModerateQuestions />
+              </Route>
+              <Route exact path="/ModerateAnswers">
+                <ModerateAnswers />
               </Route>
               <Route exact path="/About">
                 <About />

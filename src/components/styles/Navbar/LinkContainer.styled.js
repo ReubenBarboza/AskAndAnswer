@@ -8,7 +8,7 @@ export const LinkContainer = styled.div`
   margin-right: 3rem;
   z-index: 100;
 
-  @media (max-width: ${(props) => props.theme.screenSize.sm}) {
+  @media (max-width: 900px) {
     transition: width 0.75s ease-in-out;
     flex-direction: column;
     justify-content: flex-start;

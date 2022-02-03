@@ -54,8 +54,13 @@ function Navbar({ user, isUserModerator }) {
         </StyledLink>
         {isUserModerator && (
           <StyledLink
-            to="/Moderate"
-            className={location.pathname === "/Moderate" ? "active" : null}
+            to={"/ModerateQuestions" || "/ModerateAnswers"}
+            className={
+              location.pathname === "/ModerateQuestions" ||
+              location.pathname === "/ModerateAnswers"
+                ? "active"
+                : null
+            }
           >
             Moderate
           </StyledLink>
