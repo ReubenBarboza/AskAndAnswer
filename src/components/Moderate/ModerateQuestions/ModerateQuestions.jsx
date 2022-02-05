@@ -109,6 +109,7 @@ const ModerateQuestions = () => {
             style={{
               display: "flex",
               justifyContent: "flex-start",
+              marginTop: "10px",
               width: "100%",
             }}
           >
