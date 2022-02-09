@@ -149,6 +149,7 @@ function Answers() {
       await createUserAnswer(auth.currentUser, id, {
         answer: values.yourAnswer,
         question: question,
+        questionId: id,
       });
     } catch (error) {
       console.log(error);

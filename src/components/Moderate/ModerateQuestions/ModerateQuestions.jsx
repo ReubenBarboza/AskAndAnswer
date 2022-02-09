@@ -38,6 +38,8 @@ const ModerateQuestions = () => {
     getDocs(flaggedQuestionsRef)
       .then((snapshot) => {
         console.log("inside flaggedquestion async");
+        const isCollectionEmpty = snapshot.size === 0;
+
         const snapData = [];
         const lastVisibleDoc = snapshot.docs[snapshot.size - 1];
         setLastVisibleDoc(lastVisibleDoc);

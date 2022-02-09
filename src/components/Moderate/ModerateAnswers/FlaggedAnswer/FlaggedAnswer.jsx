@@ -12,11 +12,39 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
 import { getDateFromFirestoreTimestamp } from "../../../../com/functions";
+import { db } from "../../../../firebase/firebase-config";
+import { doc, getDoc } from "firebase/firestore";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const FlaggedAnswer = ({ flaggedAnswerData }) => {
+  const [doesQuestionExist, setDoesQuestionExist] = useState(true);
+  useEffect(() => {
+    try {
+      const flaggedQuestionRef = doc(
+        db,
+        "questions",
+        flaggedAnswerData.questionId
+      );
+      getDoc(flaggedQuestionRef).then((snapshot) => {
+        if (!snapshot.exists()) {
+          setDoesQuestionExist(false);
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  if (!doesQuestionExist)
+    return (
+      <Typography mt="10px" color="#D8000C">
+        Question was deleted
+      </Typography>
+    );
+
   return (
     <Container
-      disableGutters
       sx={{
         mt: "10px",
         minWidth: "75%",

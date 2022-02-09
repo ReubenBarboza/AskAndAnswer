@@ -4,13 +4,11 @@ import { db } from "../../../firebase/firebase-config";
 import {
   collectionGroup,
   getDocs,
-  collection,
   limit,
   query,
   where,
   orderBy,
   startAfter,
-  Timestamp,
 } from "firebase/firestore";
 import { ReactComponent as ReactLogo } from "../../../assets/loadingAnimated.svg";
 import FlaggedAnswer from "./FlaggedAnswer/FlaggedAnswer";
@@ -38,9 +36,13 @@ const ModerateAnswers = () => {
         const snapData = [];
         const lastVisibleDoc = snapshot.docs[snapshot.size - 1];
         setLastVisibleDoc(lastVisibleDoc);
-        snapshot.forEach((doc) => {
-          snapData.push({ id: doc.id, ...doc.data() });
+        snapshot.forEach((flaggedAnswer) => {
+          snapData.push({
+            id: flaggedAnswer.id,
+            ...flaggedAnswer.data(),
+          });
         });
+
         setAnswerData(snapData);
       })
       .catch((error) => console.log(error));
@@ -129,6 +131,7 @@ const ModerateAnswers = () => {
             >
               Load More
             </Button>
+            {/* Back link*/}
             <Link style={{ textDecoration: "none" }} to="/ModerateQuestions">
               <Button
                 variant="outlined"

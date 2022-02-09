@@ -66,11 +66,12 @@ export const createUserAnswer = async (user, id, additionalData) => {
   if (!user) return;
   const answersRef = collection(db, `questions/${id}/answers`);
   const { displayName, uid } = user;
-  const { answer, question } = additionalData;
+  const { answer, question, questionId } = additionalData;
   try {
     await addDoc(answersRef, {
       answer: answer,
       question: question,
+      questionId: questionId,
       createdAt: Timestamp.fromDate(new Date()),
       displayName: displayName,
       reputation: 0,
