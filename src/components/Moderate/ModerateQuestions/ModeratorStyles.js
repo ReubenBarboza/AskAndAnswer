@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles({
-  container: {
+  ModerateQuestionContainer: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

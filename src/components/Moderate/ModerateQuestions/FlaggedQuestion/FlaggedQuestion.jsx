@@ -12,6 +12,8 @@ import { getDateFromFirestoreTimestamp } from "../../../../com/functions";
 import { db } from "../../../../firebase/firebase-config";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const FlaggedQuestion = ({ flaggedQuestionData }) => {
   const [hasClickedButton, setHasClickedButton] = useState(false);
@@ -110,9 +112,23 @@ const FlaggedQuestion = ({ flaggedQuestionData }) => {
                   border: "1px solid #D8000C",
                   backgroundColor: "#FFD2D2",
                 },
+                "@media (max-width:530px)": {
+                  display: "none",
+                },
               }}
             >
               Remove
+            </Button>
+            <Button
+              sx={{
+                color: "#D8000C",
+                minWidth: "min-content",
+                "@media (min-width:530px)": {
+                  display: "none",
+                },
+              }}
+            >
+              <FontAwesomeIcon icon={faBan}></FontAwesomeIcon>
             </Button>
             <Button
               onClick={handleSaveQuestion}
@@ -127,9 +143,23 @@ const FlaggedQuestion = ({ flaggedQuestionData }) => {
                   border: "1px solid #4F8A10",
                   backgroundColor: "#DFF2BF",
                 },
+                "@media (max-width:530px)": {
+                  display: "none",
+                },
               }}
             >
               Save
+            </Button>
+            <Button
+              sx={{
+                color: "#4F8A10",
+                minWidth: "min-content",
+                "@media (min-width:530px)": {
+                  display: "none",
+                },
+              }}
+            >
+              <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>
             </Button>
           </div>
         </CardActions>

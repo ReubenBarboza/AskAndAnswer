@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase/firebase-config";
-import { Button, Paper, Typography } from "@mui/material";
+import { Button, Container, Paper, Typography } from "@mui/material";
 import {
   collection,
   getDocs,
@@ -38,47 +38,52 @@ const ModerateQuestions = () => {
     getDocs(flaggedQuestionsRef)
       .then((snapshot) => {
         console.log("inside flaggedquestion async");
-        const isCollectionEmpty = snapshot.size === 0;
-
         const snapData = [];
         const lastVisibleDoc = snapshot.docs[snapshot.size - 1];
         setLastVisibleDoc(lastVisibleDoc);
-
         snapshot.forEach((doc) => {
           snapData.push({ id: doc.id, ...doc.data() });
         });
         setQuestionData(snapData);
+        if (snapshot.size === 0) {
+          setIsEmpty(true);
+          return;
+        }
       })
       .catch((error) => console.log(error));
     setLoading(false);
   }, []);
 
-  function handleLoadMore() {
-    setLoading(true);
-    getDocs(
-      query(
-        collection(db, "questions"),
-        orderBy("createdAt", "desc"),
-        where("isFlagged", "==", true),
-        startAfter(lastVisibleDoc),
-        limit(1)
+  const handleLoadMore = () => {
+    if (!isEmpty) {
+      setLoading(true);
+      getDocs(
+        query(
+          collection(db, "questions"),
+          where("isFlagged", "==", true),
+          orderBy("createdAt", "desc"),
+          startAfter(lastVisibleDoc),
+          limit(1)
+        )
       )
-    ).then((snapshot) => {
-      const isCollectionEmpty = snapshot.size === 0;
-      if (!isCollectionEmpty) {
-        let nextSnapData = [];
-        const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
-        snapshot.forEach((doc) => {
-          nextSnapData.push({ id: doc.id, ...doc.data() });
-        });
-        setQuestionData([...questionData, ...nextSnapData]);
-        setLastVisibleDoc(nextLastVisibleDoc);
-      } else {
-        setIsEmpty(true);
-      }
-    });
-    setLoading(false);
-  }
+        .then((snapshot) => {
+          const isCollectionEmpty = snapshot.size === 0;
+          if (!isCollectionEmpty) {
+            let nextSnapData = [];
+            const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
+            snapshot.forEach((doc) => {
+              nextSnapData.push({ id: doc.id, ...doc.data() });
+            });
+            setQuestionData([...questionData, ...nextSnapData]);
+            setLastVisibleDoc(nextLastVisibleDoc);
+          } else {
+            setIsEmpty(true);
+          }
+        })
+        .catch((error) => console.log(error));
+      setLoading(false);
+    }
+  };
   return (
     <Paper
       elevation={8}
@@ -95,7 +100,7 @@ const ModerateQuestions = () => {
     >
       {loading && <ReactLogo />}
       {questionData && !loading && (
-        <div className={classes.container}>
+        <div className={classes.ModerateQuestionContainer}>
           <Typography variant="h5" marginTop="10px" color="#100d38">
             Moderate these questions
           </Typography>
@@ -107,12 +112,16 @@ const ModerateQuestions = () => {
               />
             );
           })}
-          <div
-            style={{
+          <Container
+            disableGutters
+            sx={{
               display: "flex",
               justifyContent: "flex-start",
               marginTop: "10px",
               width: "100%",
+              "@media (max-width:530px)": {
+                flexDirection: "column",
+              },
             }}
           >
             <Button
@@ -121,7 +130,12 @@ const ModerateQuestions = () => {
               sx={{
                 color: "black",
                 mr: "10px",
+
                 border: "1px solid black",
+                "@media (max-width:530px)": {
+                  mb: "10px",
+                  mr: "0px",
+                },
               }}
             >
               Load More
@@ -132,15 +146,16 @@ const ModerateQuestions = () => {
                 sx={{
                   color: "black",
                   border: "1px solid black",
+                  width: "100%",
                 }}
               >
                 Moderate Answers
               </Button>
             </Link>
-          </div>
+          </Container>
 
           {isEmpty && (
-            <Typography variant="h5">
+            <Typography mt="10px" variant="h5">
               There are no more questions.Thank you for Moderating!
             </Typography>
           )}

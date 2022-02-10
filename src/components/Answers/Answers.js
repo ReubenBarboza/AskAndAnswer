@@ -331,7 +331,7 @@ function Answers() {
             <FontAwesomeIcon icon={faArrowDown} />
           </div>
         )}
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", marginTop: "10px" }}>
           {loading && <ReactLogo />}
           {answersData &&
             answersData.map((answerData) => {
@@ -375,7 +375,9 @@ function Answers() {
               Go Back
             </Button>
           )}
-          {isEmpty && <h1>There are no more answers.</h1>}
+          {isEmpty && (
+            <Typography variant="h5">There are no more answers.</Typography>
+          )}
         </div>
       </div>
       {/* <div>

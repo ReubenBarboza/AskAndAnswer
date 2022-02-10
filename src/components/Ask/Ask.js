@@ -198,7 +198,9 @@ function Ask() {
               Load more
             </Button>
           )}
-          {isEmpty && <h1>There are no more questions.</h1>}
+          {isEmpty && (
+            <Typography variant="h5">There are no more questions.</Typography>
+          )}
         </div>
       </div>
     </Paper>

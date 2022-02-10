@@ -112,12 +112,13 @@ const ModerateAnswers = () => {
               />
             );
           })}
-          <div
-            style={{
+          <Container
+            sx={{
               display: "flex",
-              justifyContent: "flex-start",
-              marginTop: "20px",
-              width: "100%",
+              mt: "20px",
+              "@media (max-width:530px)": {
+                flexDirection: "column",
+              },
             }}
           >
             <Button
@@ -127,6 +128,10 @@ const ModerateAnswers = () => {
                 color: "black",
                 mr: "10px",
                 border: "1px solid black",
+                "@media (max-width:530px)": {
+                  mr: "0px",
+                  mb: "10px",
+                },
               }}
             >
               Load More
@@ -138,12 +143,13 @@ const ModerateAnswers = () => {
                 sx={{
                   color: "black",
                   border: "1px solid black",
+                  width: "100%",
                 }}
               >
                 Go Back
               </Button>
             </Link>
-          </div>
+          </Container>
 
           {isEmpty && (
             <Typography variant="h5">
