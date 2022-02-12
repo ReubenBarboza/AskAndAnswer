@@ -98,13 +98,13 @@ const ModerateQuestions = () => {
         backgroundColor: "#e6e6e6",
       }}
     >
-      {loading && <ReactLogo />}
-      {questionData && !loading && (
-        <div className={classes.ModerateQuestionContainer}>
-          <Typography variant="h5" marginTop="10px" color="#100d38">
-            Moderate these questions
-          </Typography>
-          {questionData.map((flaggedQuestion) => {
+      <div className={classes.ModerateQuestionContainer}>
+        {!questionData && <ReactLogo />}
+        <Typography variant="h5" marginTop="10px" color="#100d38">
+          Moderate these questions
+        </Typography>
+        {questionData &&
+          questionData.map((flaggedQuestion) => {
             return (
               <FlaggedQuestion
                 key={flaggedQuestion.id}
@@ -112,6 +112,8 @@ const ModerateQuestions = () => {
               />
             );
           })}
+        {loading && <ReactLogo />}
+        {!loading && (
           <Container
             disableGutters
             sx={{
@@ -153,14 +155,13 @@ const ModerateQuestions = () => {
               </Button>
             </Link>
           </Container>
-
-          {isEmpty && (
-            <Typography mt="10px" variant="h5">
-              There are no more questions.Thank you for Moderating!
-            </Typography>
-          )}
-        </div>
-      )}
+        )}
+        {isEmpty && (
+          <Typography mt="10px" variant="h5">
+            There are no more questions.Thank you for Moderating!
+          </Typography>
+        )}
+      </div>
     </Paper>
   );
 };

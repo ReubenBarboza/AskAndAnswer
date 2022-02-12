@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import {
   getDocs,
@@ -24,6 +24,7 @@ import {
   CardActions,
   Button,
   Collapse,
+  Container,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faArrowDown } from "@fortawesome/free-solid-svg-icons";
@@ -50,6 +51,7 @@ function Answers() {
 
   const [answersData, setAnswersData] = useState(null);
   const [values, setValues] = useState({ yourAnswer: "" });
+  const answerInput = useRef(null);
   const [error, setError] = useState("");
   const [toggleAskedAnswer, setToggleAskedAnswer] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -142,7 +144,7 @@ function Answers() {
       if (error) {
         return;
       }
-      if (!values.yourAnswer) {
+      if (!values.yourAnswer || !answerInput.current.value) {
         setError("Enter an answer.");
         return;
       }
@@ -155,6 +157,7 @@ function Answers() {
       console.log(error);
     }
     setToggleAskedAnswer(!toggleAskedAnswer);
+    answerInput.current.value = "";
     setError("");
   };
   //-----------
@@ -217,11 +220,11 @@ function Answers() {
                 },
               }}
             >
-              <Typography variant="h5" color="#100d38">
+              <Typography variant="h6" color="#100d38">
                 {question}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing sx={{ p: "8px" }}>
+            <CardActions disableSpacing sx={{ p: "16px" }}>
               <Typography
                 variant="body2"
                 fontWeight="medium"
@@ -257,7 +260,7 @@ function Answers() {
               <Button
                 sx={{
                   marginLeft: "auto",
-                  marginY: "10px",
+
                   color: "black",
                   borderColor: "black",
                   minWidth: "maxContent",
@@ -283,6 +286,7 @@ function Answers() {
                     placeholder="Your Answer"
                     variant="standard"
                     name="yourAnswer"
+                    inputRef={answerInput}
                     multiline
                     sx={{
                       width: "50vw",
@@ -345,53 +349,56 @@ function Answers() {
             })}
           {loading && <ReactLogo />}
           {!loading && (
-            <Button
-              variant="outlined"
+            <Container
+              disableGutters
               sx={{
-                marginY: "10px",
-                marginRight: "10px",
-                color: "black",
-                borderColor: "black",
-                minWidth: "maxContent",
-                whiteSpace: "noWrap",
+                display: "flex",
+                mt: "20px",
+                "@media (max-width:530px)": {
+                  flexDirection: "column",
+                },
               }}
-              onClick={loadMore}
             >
-              Load more
-            </Button>
-          )}
-          {!loading && (
-            <Button
-              variant="outlined"
-              sx={{
-                marginY: "10px",
-                color: "black",
-                borderColor: "black",
-                minWidth: "maxContent",
-                whiteSpace: "noWrap",
-              }}
-              onClick={handleBack}
-            >
-              Go Back
-            </Button>
+              <Button
+                variant="outlined"
+                sx={{
+                  marginRight: "10px",
+                  color: "black",
+                  borderColor: "black",
+                  minWidth: "maxContent",
+                  whiteSpace: "noWrap",
+                  "@media (max-width:530px)": {
+                    mr: "0px",
+                    my: "5px",
+                  },
+                }}
+                onClick={loadMore}
+              >
+                Load more
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{
+                  color: "black",
+                  borderColor: "black",
+                  minWidth: "maxContent",
+                  whiteSpace: "noWrap",
+                  "@media (max-width:530px)": {
+                    mr: "0px",
+                    my: "5px",
+                  },
+                }}
+                onClick={handleBack}
+              >
+                Go Back
+              </Button>
+            </Container>
           )}
           {isEmpty && (
             <Typography variant="h5">There are no more answers.</Typography>
           )}
         </div>
       </div>
-      {/* <div>
-        <label htmlFor="yourAnswer" aria-label="Your answer to the question">
-          Your answer
-        </label>
-        <textarea
-          name="yourAnswer"
-          rows="4"
-          cols="50"
-          onChange={handleChange}
-        ></textarea>
-        <button onClick={handleSubmit}>Submit</button>
-      </div> */}
     </Paper>
   );
 }

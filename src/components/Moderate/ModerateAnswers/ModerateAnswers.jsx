@@ -89,22 +89,22 @@ const ModerateAnswers = () => {
         backgroundColor: "#e6e6e6",
       }}
     >
-      {loading && <ReactLogo />}
-      {answerData && !loading && (
-        <Container
-          disableGutters
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            minWidth: "75%",
-          }}
-        >
-          <Typography variant="h5" marginTop="10px" color="#100d38">
-            Moderate these answers
-          </Typography>
-          {answerData.map((flaggedAnswerData) => {
+      <Container
+        disableGutters
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          minWidth: "75%",
+        }}
+      >
+        {!answerData && <ReactLogo />}
+        <Typography variant="h5" marginTop="10px" color="#100d38">
+          Moderate these answers
+        </Typography>
+        {answerData &&
+          answerData.map((flaggedAnswerData) => {
             return (
               <FlaggedAnswer
                 key={flaggedAnswerData.id}
@@ -112,6 +112,8 @@ const ModerateAnswers = () => {
               />
             );
           })}
+        {loading && <ReactLogo />}
+        {!loading && (
           <Container
             sx={{
               display: "flex",
@@ -150,14 +152,13 @@ const ModerateAnswers = () => {
               </Button>
             </Link>
           </Container>
-
-          {isEmpty && (
-            <Typography variant="h5">
-              There are no more answers.Thank you for Moderating!
-            </Typography>
-          )}
-        </Container>
-      )}
+        )}
+        {isEmpty && (
+          <Typography variant="h5">
+            There are no more answers.Thank you for Moderating!
+          </Typography>
+        )}
+      </Container>
     </Paper>
   );
 };

@@ -123,7 +123,7 @@ const Question = ({ obj }) => {
               },
             }}
           >
-            <Typography variant="h5" color="#100d38">
+            <Typography variant="h6" color="#100d38">
               {obj.question}
             </Typography>
           </CardContent>

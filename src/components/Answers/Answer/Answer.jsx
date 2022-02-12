@@ -123,7 +123,7 @@ const Answer = ({ answerData, questionId }) => {
             },
           }}
         >
-          <Typography variant="h5" color="#100d38">
+          <Typography variant="h6" color="#100d38">
             {answerData.answer}
           </Typography>
         </CardContent>

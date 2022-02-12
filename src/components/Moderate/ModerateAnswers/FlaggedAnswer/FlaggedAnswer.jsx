@@ -98,11 +98,11 @@ const FlaggedAnswer = ({ flaggedAnswerData }) => {
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "white",
-            border: "1px solid #00000018",
+            border: "1px solid #00000008",
             borderTopLeftRadius: "10px",
             borderTopRightRadius: "10px",
             mb: "0px",
-            p: "4px",
+            p: "8px",
           }}
         >
           <FontAwesomeIcon
@@ -154,11 +154,11 @@ const FlaggedAnswer = ({ flaggedAnswerData }) => {
                 },
               }}
             >
-              <Typography variant="h5" color="#100d38">
+              <Typography variant="h6" color="#100d38">
                 {flaggedAnswerData.answer}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
+            <CardActions disableSpacing sx={{ p: "16px" }}>
               <Typography
                 variant="body2"
                 fontWeight="medium"

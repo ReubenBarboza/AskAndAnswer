@@ -79,11 +79,11 @@ const FlaggedQuestion = ({ flaggedQuestionData }) => {
             },
           }}
         >
-          <Typography variant="h5" color="#100d38">
+          <Typography variant="h6" color="#100d38">
             {flaggedQuestionData.question}
           </Typography>
         </CardContent>
-        <CardActions disableSpacing>
+        <CardActions disableSpacing sx={{ p: "16px" }}>
           <Typography
             variant="body2"
             fontWeight="medium"

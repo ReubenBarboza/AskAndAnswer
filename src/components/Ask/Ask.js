@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Question from "./Question/Question";
 import { db } from "../../firebase/firebase-config";
 import { auth, createUserQuestion } from "../../firebase/firebase-config";
@@ -21,6 +21,7 @@ function Ask() {
   //Question input from form.
   const [values, setValues] = useState({ question: "" });
   const [error, setError] = useState("");
+  const questionInput = useRef(null);
 
   //To update ui after asking a question.
   const [toggleAskedQuestion, setToggleAskedQuestion] = useState(false);
@@ -109,7 +110,7 @@ function Ask() {
       if (error) {
         return;
       }
-      if (!values.question) {
+      if (!values.question || !questionInput.current.value) {
         setError("Enter a question.");
         return;
       }
@@ -118,6 +119,7 @@ function Ask() {
       console.log(error);
     }
     setToggleAskedQuestion(!toggleAskedQuestion);
+    questionInput.current.value = "";
     setError("");
   };
 
@@ -142,6 +144,7 @@ function Ask() {
             placeholder="Ask a question"
             variant="standard"
             name="question"
+            inputRef={questionInput}
             multiline
             sx={{
               width: "50vw",
@@ -192,6 +195,9 @@ function Ask() {
                 borderColor: "black",
                 minWidth: "maxContent",
                 whiteSpace: "noWrap",
+                "@media (max-width:530px)": {
+                  width: "100%",
+                },
               }}
               onClick={loadMore}
             >
