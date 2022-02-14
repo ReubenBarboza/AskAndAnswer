@@ -73,18 +73,16 @@ function Answers() {
     setLoading(true);
     getDocs(answersRef)
       .then((snapshot) => {
-        const isCollectionEmpty = snapshot.size === 0;
-        if (!isCollectionEmpty) {
-          const answersData = [];
-          const lastDoc = snapshot.docs[snapshot.size - 1];
-          setLastVisibleDoc(lastDoc);
-          snapshot.forEach((doc) =>
-            answersData.push({ id: doc.id, ...doc.data() })
-          );
-          setAnswersData(answersData);
-          setIsEmpty(false);
-        } else {
+        const answersData = [];
+        const lastDoc = snapshot.docs[snapshot.size - 1];
+        setLastVisibleDoc(lastDoc);
+        snapshot.forEach((doc) =>
+          answersData.push({ id: doc.id, ...doc.data() })
+        );
+        setAnswersData(answersData);
+        if (snapshot.size === 0) {
           setIsEmpty(true);
+          return;
         }
       })
       .catch((error) => {
@@ -94,30 +92,32 @@ function Answers() {
   }, [toggleAskedAnswer]);
 
   const loadMore = () => {
-    setLoading(true);
-    getDocs(
-      query(
-        collection(db, `questions/${id}/answers`),
-        orderBy("createdAt"),
-        startAfter(lastVisibleDoc),
-        limit(1)
-      )
-    ).then((snapshot) => {
-      const isCollectionEmpty = snapshot.size === 0;
-      if (!isCollectionEmpty) {
-        let nextAnswersData = [];
-        const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
+    if (!isEmpty) {
+      setLoading(true);
+      getDocs(
+        query(
+          collection(db, `questions/${id}/answers`),
+          orderBy("createdAt"),
+          startAfter(lastVisibleDoc),
+          limit(1)
+        )
+      ).then((snapshot) => {
+        const isCollectionEmpty = snapshot.size === 0;
+        if (!isCollectionEmpty) {
+          let nextAnswersData = [];
+          const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
 
-        snapshot.forEach((doc) => {
-          nextAnswersData.push({ id: doc.id, ...doc.data() });
-        });
-        setAnswersData([...answersData, ...nextAnswersData]);
-        setLastVisibleDoc(nextLastVisibleDoc);
-      } else {
-        setIsEmpty(true);
-      }
-    });
-    setLoading(false);
+          snapshot.forEach((doc) => {
+            nextAnswersData.push({ id: doc.id, ...doc.data() });
+          });
+          setAnswersData([...answersData, ...nextAnswersData]);
+          setLastVisibleDoc(nextLastVisibleDoc);
+        } else {
+          setIsEmpty(true);
+        }
+      });
+      setLoading(false);
+    }
   };
 
   const handleExpandClick = () => {
@@ -347,7 +347,6 @@ function Answers() {
                 />
               );
             })}
-          {loading && <ReactLogo />}
           {!loading && (
             <Container
               disableGutters
@@ -395,7 +394,9 @@ function Answers() {
             </Container>
           )}
           {isEmpty && (
-            <Typography variant="h5">There are no more answers.</Typography>
+            <Typography variant="h5" my="10px">
+              There are no more answers.
+            </Typography>
           )}
         </div>
       </div>

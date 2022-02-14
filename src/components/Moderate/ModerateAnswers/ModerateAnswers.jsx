@@ -42,38 +42,43 @@ const ModerateAnswers = () => {
             ...flaggedAnswer.data(),
           });
         });
-
         setAnswerData(snapData);
+        if (snapshot.size === 0) {
+          setIsEmpty(true);
+          return;
+        }
       })
       .catch((error) => console.log(error));
     setLoading(false);
   }, []);
 
   function handleLoadMore() {
-    setLoading(true);
-    getDocs(
-      query(
-        collectionGroup(db, "answers"),
-        where("isFlagged", "==", true),
-        orderBy("createdAt", "asc"),
-        startAfter(lastVisibleDoc),
-        limit(1)
-      )
-    ).then((snapshot) => {
-      const isCollectionEmpty = snapshot.size === 0;
-      if (!isCollectionEmpty) {
-        let nextSnapData = [];
-        const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
-        snapshot.forEach((doc) => {
-          nextSnapData.push({ id: doc.id, ...doc.data() });
-        });
-        setAnswerData([...answerData, ...nextSnapData]);
-        setLastVisibleDoc(nextLastVisibleDoc);
-      } else {
-        setIsEmpty(true);
-      }
-    });
-    setLoading(false);
+    if (!isEmpty) {
+      setLoading(true);
+      getDocs(
+        query(
+          collectionGroup(db, "answers"),
+          where("isFlagged", "==", true),
+          orderBy("createdAt", "asc"),
+          startAfter(lastVisibleDoc),
+          limit(1)
+        )
+      ).then((snapshot) => {
+        const isCollectionEmpty = snapshot.size === 0;
+        if (!isCollectionEmpty) {
+          let nextSnapData = [];
+          const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
+          snapshot.forEach((doc) => {
+            nextSnapData.push({ id: doc.id, ...doc.data() });
+          });
+          setAnswerData([...answerData, ...nextSnapData]);
+          setLastVisibleDoc(nextLastVisibleDoc);
+        } else {
+          setIsEmpty(true);
+        }
+      });
+      setLoading(false);
+    }
   }
   return (
     <Paper
@@ -154,7 +159,7 @@ const ModerateAnswers = () => {
           </Container>
         )}
         {isEmpty && (
-          <Typography variant="h5">
+          <Typography variant="h5" my="10px">
             There are no more answers.Thank you for Moderating!
           </Typography>
         )}

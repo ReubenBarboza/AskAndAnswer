@@ -10,7 +10,6 @@ import {
   orderBy,
   startAfter,
 } from "firebase/firestore";
-
 import { Button, Paper, TextField, Typography, Grid } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -46,6 +45,7 @@ function Ask() {
       limit(1)
     );
     setLoading(true);
+
     if (!error) {
       getDocs(questionsRef)
         .then((snapshot) => {
@@ -58,38 +58,44 @@ function Ask() {
             snapData.push({ id: doc.id, ...doc.data() });
           });
           setData(snapData);
+          if (snapshot.size === 0) {
+            setIsEmpty(true);
+            return;
+          }
+          setLoading(false);
         })
         .catch((error) => console.log(error));
-      setLoading(false);
     }
   }, [toggleAskedQuestion]);
 
   // //pagination
   const loadMore = () => {
-    setLoading(true);
-    getDocs(
-      query(
-        collection(db, "questions"),
-        orderBy("createdAt", "desc"),
-        orderBy("reputation", "desc"),
-        startAfter(lastVisibleDoc),
-        limit(1)
-      )
-    ).then((snapshot) => {
-      const isCollectionEmpty = snapshot.size === 0;
-      if (!isCollectionEmpty) {
-        let nextSnapData = [];
-        const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
-        snapshot.forEach((doc) => {
-          nextSnapData.push({ id: doc.id, ...doc.data() });
-        });
-        setData([...data, ...nextSnapData]);
-        setLastVisibleDoc(nextLastVisibleDoc);
-      } else {
-        setIsEmpty(true);
-      }
-    });
-    setLoading(false);
+    if (!isEmpty) {
+      setLoading(true);
+      getDocs(
+        query(
+          collection(db, "questions"),
+          orderBy("createdAt", "desc"),
+          orderBy("reputation", "desc"),
+          startAfter(lastVisibleDoc),
+          limit(1)
+        )
+      ).then((snapshot) => {
+        const isCollectionEmpty = snapshot.size === 0;
+        if (!isCollectionEmpty) {
+          let nextSnapData = [];
+          const nextLastVisibleDoc = snapshot.docs[snapshot.size - 1];
+          snapshot.forEach((doc) => {
+            nextSnapData.push({ id: doc.id, ...doc.data() });
+          });
+          setData([...data, ...nextSnapData]);
+          setLastVisibleDoc(nextLastVisibleDoc);
+        } else {
+          setIsEmpty(true);
+        }
+      });
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -185,7 +191,6 @@ function Ask() {
               return <Question key={obj.id} obj={obj} />;
             })}
 
-          {loading && <ReactLogo />}
           {!loading && (
             <Button
               variant="outlined"
@@ -205,7 +210,9 @@ function Ask() {
             </Button>
           )}
           {isEmpty && (
-            <Typography variant="h5">There are no more questions.</Typography>
+            <Typography variant="h5" my="10px">
+              There are no more questions.
+            </Typography>
           )}
         </div>
       </div>

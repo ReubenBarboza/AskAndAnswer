@@ -157,7 +157,7 @@ const ModerateQuestions = () => {
           </Container>
         )}
         {isEmpty && (
-          <Typography mt="10px" variant="h5">
+          <Typography my="10px" variant="h5">
             There are no more questions.Thank you for Moderating!
           </Typography>
         )}
