@@ -128,21 +128,23 @@ const ModerateAnswers = () => {
               },
             }}
           >
-            <Button
-              onClick={handleLoadMore}
-              variant="outlined"
-              sx={{
-                color: "black",
-                mr: "10px",
-                border: "1px solid black",
-                "@media (max-width:530px)": {
-                  mr: "0px",
-                  mb: "10px",
-                },
-              }}
-            >
-              Load More
-            </Button>
+            {!isEmpty && (
+              <Button
+                onClick={handleLoadMore}
+                variant="outlined"
+                sx={{
+                  color: "black",
+                  mr: "10px",
+                  border: "1px solid black",
+                  "@media (max-width:530px)": {
+                    mr: "0px",
+                    mb: "10px",
+                  },
+                }}
+              >
+                Load More
+              </Button>
+            )}
             {/* Back link*/}
             <Link style={{ textDecoration: "none" }} to="/ModerateQuestions">
               <Button

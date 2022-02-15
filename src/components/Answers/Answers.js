@@ -32,6 +32,7 @@ import { faPaperPlane, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
 import { getDateFromFirestoreTimestamp } from "../../com/functions";
 import { useStyles } from "./AnswersStyles";
+import CollapseInput from "./CollapseInput";
 
 function Answers() {
   //////FUNCTIONALITY////////
@@ -139,7 +140,6 @@ function Answers() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       if (error) {
         return;
@@ -276,7 +276,13 @@ function Answers() {
               </Button>
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <div className={classes.divider}>
+              <CollapseInput
+                answerInput={answerInput}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                error={error}
+              />
+              {/* <div className={classes.divider}>
                 <div className={classes.inner}></div>
               </div>
               <div className={classes.expandedContainer}>
@@ -326,7 +332,7 @@ function Answers() {
                     </Typography>
                   </Grid>
                 )}
-              </div>
+              </div> */}
             </Collapse>
           </Card>
         </div>
@@ -353,28 +359,31 @@ function Answers() {
               sx={{
                 display: "flex",
                 mt: "20px",
+                mb: "10px",
                 "@media (max-width:530px)": {
                   flexDirection: "column",
                 },
               }}
             >
-              <Button
-                variant="outlined"
-                sx={{
-                  marginRight: "10px",
-                  color: "black",
-                  borderColor: "black",
-                  minWidth: "maxContent",
-                  whiteSpace: "noWrap",
-                  "@media (max-width:530px)": {
-                    mr: "0px",
-                    my: "5px",
-                  },
-                }}
-                onClick={loadMore}
-              >
-                Load more
-              </Button>
+              {!isEmpty && (
+                <Button
+                  variant="outlined"
+                  sx={{
+                    marginRight: "10px",
+                    color: "black",
+                    borderColor: "black",
+                    minWidth: "maxContent",
+                    whiteSpace: "noWrap",
+                    "@media (max-width:530px)": {
+                      mr: "0px",
+                      my: "5px",
+                    },
+                  }}
+                  onClick={loadMore}
+                >
+                  Load more
+                </Button>
+              )}
               <Button
                 variant="outlined"
                 sx={{

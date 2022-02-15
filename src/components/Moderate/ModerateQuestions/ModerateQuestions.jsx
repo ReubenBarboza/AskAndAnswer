@@ -126,22 +126,24 @@ const ModerateQuestions = () => {
               },
             }}
           >
-            <Button
-              onClick={handleLoadMore}
-              variant="outlined"
-              sx={{
-                color: "black",
-                mr: "10px",
+            {!isEmpty && (
+              <Button
+                onClick={handleLoadMore}
+                variant="outlined"
+                sx={{
+                  color: "black",
+                  mr: "10px",
 
-                border: "1px solid black",
-                "@media (max-width:530px)": {
-                  mb: "10px",
-                  mr: "0px",
-                },
-              }}
-            >
-              Load More
-            </Button>
+                  border: "1px solid black",
+                  "@media (max-width:530px)": {
+                    mb: "10px",
+                    mr: "0px",
+                  },
+                }}
+              >
+                Load More
+              </Button>
+            )}
             <Link style={{ textDecoration: "none" }} to="/ModerateAnswers">
               <Button
                 variant="outlined"

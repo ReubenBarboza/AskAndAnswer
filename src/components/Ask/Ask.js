@@ -9,6 +9,7 @@ import {
   limit,
   orderBy,
   startAfter,
+  where,
 } from "firebase/firestore";
 import { Button, Paper, TextField, Typography, Grid } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -195,7 +196,7 @@ function Ask() {
             <Button
               variant="outlined"
               sx={{
-                marginY: "10px",
+                mt: "10px",
                 color: "black",
                 borderColor: "black",
                 minWidth: "maxContent",
