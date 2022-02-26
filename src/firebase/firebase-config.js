@@ -46,7 +46,7 @@ export const createUserQuestion = async (user, additionalData) => {
   if (!user) return;
   const questionsRef = collection(db, "questions");
   const { displayName, uid } = user;
-  const { question } = additionalData;
+  const { question, tags } = additionalData;
 
   try {
     await addDoc(questionsRef, {
@@ -54,6 +54,7 @@ export const createUserQuestion = async (user, additionalData) => {
       displayName: displayName,
       question: question,
       reputation: 0,
+      tags: tags,
       isFlagged: false,
       user: uid,
     });

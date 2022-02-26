@@ -11,15 +11,15 @@ import {
   startAfter,
   where,
 } from "firebase/firestore";
-import { Button, Paper, TextField, Typography, Grid } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { Button, Paper, Typography, Grid } from "@mui/material";
 import { useStyles } from "./AskStyles";
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
+import AskForm from "./AskForm";
 
 function Ask() {
   //Question input from form.
   const [values, setValues] = useState({ question: "" });
+  const [tags, setTags] = useState([]);
   const [error, setError] = useState("");
   const questionInput = useRef(null);
 
@@ -114,14 +114,29 @@ function Ask() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (error) {
+      if (error === "Login to ask a question.") {
         return;
       }
       if (!values.question || !questionInput.current.value) {
         setError("Enter a question.");
         return;
+      } else {
+        setError("");
       }
-      await createUserQuestion(auth.currentUser, { question: values.question });
+      if (tags.length === 0) {
+        setError("Enter some tags");
+        return;
+      } else if (tags.length > 5) {
+        setError("Number of tags must be less than 5");
+        return;
+      } else {
+        setError("");
+      }
+
+      await createUserQuestion(auth.currentUser, {
+        question: values.question,
+        tags: tags,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -145,7 +160,14 @@ function Ask() {
       }}
     >
       <div className={classes.aboveQuestionContainer}>
-        <div className={classes.questionContainer}>
+        <AskForm
+          questionInput={questionInput}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          tags={tags}
+          setTags={setTags}
+        />
+        {/* <div className={classes.questionContainer}>
           <TextField
             aria-label="Ask a question"
             placeholder="Ask a question"
@@ -176,7 +198,7 @@ function Ask() {
             <FontAwesomeIcon icon={faPaperPlane} />
           </button>
           <br />
-        </div>
+        </div> */}
         {error && (
           <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
             <Typography variant="subtitle1" className={classes.errorText}>

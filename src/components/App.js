@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./Home/Home";
 import Ask from "./Ask/Ask";
+import SearchAsk from "./Ask/SearchAsk/SearchAsk";
 import Answers from "././Answers/Answers";
 import Login from "./muiRegistration/Login/Login";
 import Logout from "./muiRegistration/Logout/Logout";
@@ -22,7 +23,6 @@ import ModerateAnswers from "./Moderate/ModerateAnswers/ModerateAnswers";
 function App() {
   const [user, setUser] = useState({});
   const [isUserModerator, setIsUserModerator] = useState(null);
-
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
@@ -57,6 +57,8 @@ function App() {
               <Route exact path="/Ask">
                 <Ask />
               </Route>
+              <Route exact path="/SearchAsk" component={SearchAsk} />
+
               <Route exact path="/Answers" component={Answers} />
               <Route exact path="/Login">
                 <Login />
