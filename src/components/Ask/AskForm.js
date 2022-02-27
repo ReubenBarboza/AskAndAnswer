@@ -1,9 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
-import { faPaperPlane, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPaperPlane,
+  faSearch,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useHistory } from "react-router-dom";
+import TagItem from "../../com/TagItem";
 
 const useStyles = makeStyles({
   wrapper: {
@@ -13,10 +18,10 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   searchWrapper: {
-    display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: "10px",
   },
   search: {
     display: "flex",
@@ -28,6 +33,7 @@ const useStyles = makeStyles({
     color: "#e6e6e6",
     height: "2rem",
     width: "200px",
+
     borderTopLeftRadius: "10px",
     borderBottomLeftRadius: "10px",
     borderColor: "transparent",
@@ -42,10 +48,25 @@ const useStyles = makeStyles({
       display: "none",
     },
   },
-  searchButton: {
+  searchTagButton: {
     color: "#100d38",
     backgroundColor: "#e6e6e6",
     borderColor: "#100d38",
+    borderRightWidth: "1px",
+    padding: "0 0.5rem",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#cfcbc8",
+    },
+    "&:disabled": {
+      backgroundColor: "#cfcbc8",
+    },
+  },
+  searchSubmitButton: {
+    color: "#100d38",
+    backgroundColor: "#e6e6e6",
+    borderColor: "#100d38",
+    borderLeftWidth: "1px",
     borderTopRightRadius: "10px",
     borderBottomRightRadius: "10px",
     padding: "0 0.5rem",
@@ -72,6 +93,53 @@ const useStyles = makeStyles({
     "&:hover": {
       background: "#ffffff",
       border: "1px solid #ffffff",
+    },
+  },
+  askTagWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  // askTagInput: {
+  //   backgroundColor: "#100d38",
+  //   paddingLeft: "10px",
+  //   color: "#e6e6e6",
+  //   height: "2rem",
+  //   width: "175px",
+  //   borderTopLeftRadius: "10px",
+  //   borderBottomLeftRadius: "10px",
+  //   borderColor: "transparent",
+  //   "&::placeholder": {
+  //     color: "#d9d5d4",
+  //   },
+  //   "&:active, &:focus": {
+  //     backgroundColor: "rgba(16, 13, 56,0.8)",
+  //     borderColor: "rgba(16, 13, 56,0.8)",
+  //   },
+  //   "&::-webkit-search-cancel-button": {
+  //     display: "none",
+  //   },
+  // },
+  askTagButton: {
+    fontSize: "15px",
+    color: "#100d38",
+    backgroundColor: "#e6e6e6",
+    border: "1px solid transparent",
+    padding: "0.5rem 0.5rem",
+    margin: "0px 5px",
+    cursor: "pointer",
+    background: "none",
+    borderRadius: "20%",
+    border: "1px solid transparent",
+    transition: "background 1s ease ",
+    "&:hover": {
+      background: "#ffffff",
+      border: "1px solid #ffffff",
+    },
+    "&:disabled": {
+      color: "#cfcbc8",
+      backgroundColor: "transparent",
+      borderColor: "transparent",
     },
   },
   tagList: {
@@ -144,7 +212,7 @@ const AskForm = ({
   };
 
   const handleSearchAddTag = () => {
-    if (searchTextField.current.value)
+    if (searchTextField.current.value && !searchTagButton.current.disabled)
       setSearchArray([...searchArray, searchInput]);
   };
   const handleSearchAddTagEnterKey = (e) => {
@@ -157,7 +225,7 @@ const AskForm = ({
   };
 
   const handleSearchRemoveTag = (indexToRemove) => {
-    setSearchArray(searchArray.filter((_, index) => index != indexToRemove));
+    setSearchArray(searchArray.filter((_, index) => index !== indexToRemove));
   };
 
   const handleTag = (e) => {
@@ -170,13 +238,13 @@ const AskForm = ({
     }
   };
 
-  const handleClickedAskTag = (e) => {
-    if (askTextField.current.value)
+  const handleClickedAskTag = () => {
+    if (askTextField.current.value && !askTagButton.current.disabled)
       setTags([...tags, askTextField.current.value]);
   };
 
   const handleRemoveTag = (indexToRemove) => {
-    setTags(tags.filter((_, index) => index != indexToRemove));
+    setTags(tags.filter((_, index) => index !== indexToRemove));
   };
   return (
     <div className={classes.wrapper}>
@@ -184,31 +252,43 @@ const AskForm = ({
         <div className={classes.search}>
           <input
             className={classes.searchInput}
-            placeholder="Enter tags to search eg t1 t2"
+            placeholder="Enter tags to search"
             type="search"
             ref={searchTextField}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyUp={handleSearchAddTagEnterKey}
           ></input>
-          <button onClick={handleSearchAddTag} ref={searchTagButton}>
-            +
+          <button
+            onClick={handleSearchAddTag}
+            ref={searchTagButton}
+            className={classes.searchTagButton}
+          >
+            <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
           </button>
-          <button className={classes.searchButton} onClick={handleSearchSubmit}>
+          <button
+            className={classes.searchSubmitButton}
+            onClick={handleSearchSubmit}
+          >
             <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
           </button>
         </div>
-
-        <ul className={classes.tagList}>
-          {searchArray.map((tag, index) => {
-            return (
-              <li key={index}>
-                <span>{tag}</span>
-                <button onClick={() => handleSearchRemoveTag(index)}>X</button>
-              </li>
-            );
-          })}
-        </ul>
       </div>
+      <ul className={classes.tagList}>
+        {searchArray.map((tag, index) => {
+          return (
+            // <li key={index}>
+            //   <span>{tag}</span>
+            //   <button onClick={() => handleSearchRemoveTag(index)}>X</button>
+            // </li>
+            <TagItem
+              key={index}
+              tag={tag}
+              index={index}
+              handleFn={handleSearchRemoveTag}
+            />
+          );
+        })}
+      </ul>
 
       <div className={classes.questionContainer}>
         <TextField
@@ -248,26 +328,60 @@ const AskForm = ({
         </button>
         <br />
       </div>
-      <div>
-        <input
-          style={{ width: "50%" }}
+      <div className={classes.askTagWrapper}>
+        {/* <input
           type="text"
           placeholder="Enter tags"
           onKeyUp={handleTag}
+          className={classes.askTagInput}
           ref={askTextField}
-        ></input>
-        <button onClick={handleClickedAskTag} ref={askTagButton}>
-          +
+        ></input> */}
+        <TextField
+          variant="standard"
+          aria-label="Enter tags"
+          placeholder="Enter tags"
+          onKeyUp={handleTag}
+          inputRef={askTextField}
+          sx={{
+            width: "10vw",
+            height: "6vh",
+
+            "& .MuiInputBase-input": {
+              color: "#000", // Text color
+            },
+            "& .MuiInput-underline:before": {
+              borderBottomColor: "#100d38", // Semi-transparent underline
+            },
+            "& .MuiInput-underline:hover:before": {
+              borderBottomColor: "#100d38", // Solid underline on hover
+            },
+            "& .MuiInput-underline:after": {
+              borderBottomColor: "#3f51b5", // Solid underline on focus
+            },
+          }}
+        ></TextField>
+        <button
+          onClick={handleClickedAskTag}
+          ref={askTagButton}
+          className={classes.askTagButton}
+        >
+          <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
         </button>
       </div>
 
       <ul className={classes.tagList}>
         {tags.map((tag, index) => {
           return (
-            <li key={index}>
-              <span>{tag}</span>
-              <button onClick={() => handleRemoveTag(index)}>X</button>
-            </li>
+            // <li key={index}>
+            //   <span>{tag}</span>
+            //   <button onClick={() => handleRemoveTag(index)}>X</button>
+            // </li>
+            <TagItem
+              key={index}
+              tag={tag}
+              index={index}
+              handleFn={handleRemoveTag}
+            />
           );
         })}
       </ul>
