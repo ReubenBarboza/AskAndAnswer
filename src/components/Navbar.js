@@ -8,8 +8,62 @@ import { LinkContainer } from "./styles/Navbar/LinkContainer.styled";
 import { HamburgerIcon } from "./styles/Navbar/HamburgerIcon.styled";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router";
+import { makeStyles } from "@mui/styles";
+import { Link } from "react-router-dom";
+const useStyles = makeStyles({
+  dropdown: {
+    position: "relative",
+    display: "inline-block",
+    "@media (max-width:900px)": {
+      margin: "30px",
+    },
+    "&:hover": {
+      "& $dropdownContent": {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "10px",
+        borderRadius: "5px",
+        "@media (max-width:900px)": {
+          display: "none",
+        },
+      },
+      "& $dropbtn": {
+        backgroundColor: "#3f51b5",
+      },
+    },
+  },
+  dropbtn: {},
+  link: {
+    textDecoration: "none",
+    color: "white",
+    display: "block",
+    padding: "5px",
+    width: "100%",
+    "&:hover": {
+      backgroundColor: "#3f51b5",
+    },
+  },
+  dropdownContent: {
+    display: "none",
+    position: "absolute",
+    left: "40px",
+    marginTop: "20px",
+    backgroundColor: "#100d38",
+    border: "1px solid white",
+    minWidth: "max-content",
+    boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
+    zIndex: "1",
+  },
+  displayName: {
+    color: "white",
+    padding: "5px",
+  },
+});
 
 function Navbar({ user, isUserModerator }) {
+  const classes = useStyles();
   const [animate, setAnimate] = useState(false);
   const location = useLocation();
 
@@ -53,28 +107,45 @@ function Navbar({ user, isUserModerator }) {
           Ask
         </StyledLink>
         {isUserModerator && (
+          <div className={classes.dropdown}>
+            <StyledLink
+              to={"/ModerateQuestions" || "/ModerateAnswers"}
+              className={
+                location.pathname === "/ModerateQuestions" ||
+                location.pathname === "/ModerateAnswers"
+                  ? `active ${classes.dropbtn}`
+                  : `${classes.dropbtn}`
+              }
+            >
+              Moderate
+            </StyledLink>
+            <div className={classes.dropdownContent}>
+              <Link className={classes.link} to="/ModerateQuestions">
+                Moderate Questions
+              </Link>
+              <Link className={classes.link} to="/ModerateAnswers">
+                Moderate Answers
+              </Link>
+            </div>
+          </div>
+        )}
+        <div className={classes.dropdown}>
           <StyledLink
-            to={"/ModerateQuestions" || "/ModerateAnswers"}
+            to={user ? "/Logout" : "/Login"}
             className={
-              location.pathname === "/ModerateQuestions" ||
-              location.pathname === "/ModerateAnswers"
-                ? "active"
-                : null
+              location.pathname === "/Login" || location.pathname === "/Logout"
+                ? `active ${classes.dropbtn}`
+                : `${classes.dropbtn}`
             }
           >
-            Moderate
+            {user ? "Logout" : "Login"}
           </StyledLink>
-        )}
-        <StyledLink
-          to={user ? "/Logout" : "/Login"}
-          className={
-            location.pathname === "/Login" || location.pathname === "/Logout"
-              ? "active"
-              : null
-          }
-        >
-          {user ? "Log out" : "Login"}
-        </StyledLink>
+          {user ? (
+            <div className={classes.dropdownContent}>
+              <span className={classes.displayName}>{user.displayName}</span>
+            </div>
+          ) : null}
+        </div>
         <StyledLink
           to="/About"
           className={location.pathname === "/About" ? "active" : null}

@@ -219,6 +219,7 @@ function Ask() {
               variant="outlined"
               sx={{
                 mt: "10px",
+                mb: "20px",
                 color: "black",
                 borderColor: "black",
                 minWidth: "maxContent",

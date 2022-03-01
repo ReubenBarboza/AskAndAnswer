@@ -74,6 +74,9 @@ const useStyles = makeStyles({
     "&:hover": {
       backgroundColor: "#cfcbc8",
     },
+    "&:disabled": {
+      backgroundColor: "#cfcbc8",
+    },
   },
   questionContainer: {
     display: "flex",
@@ -164,6 +167,7 @@ const AskForm = ({
   const [searchInput, setSearchInput] = useState("");
   const searchTextField = useRef(null);
   const searchTagButton = useRef(null);
+  const searchSubmitButton = useRef(null);
   const [searchArray, setSearchArray] = useState([]);
   const [submitSearchArray, setSubmitSearchArray] = useState([]);
 
@@ -171,6 +175,7 @@ const AskForm = ({
 
   useEffect(() => {
     try {
+      //playing with refs
       if (searchTextField.current.value) {
         searchTextField.current.value = "";
         setSearchInput("");
@@ -180,6 +185,12 @@ const AskForm = ({
       } else {
         searchTagButton.current.disabled = false;
       }
+      if (searchArray.length === 0) {
+        searchSubmitButton.current.disabled = true;
+      } else {
+        searchSubmitButton.current.disabled = false;
+      }
+
       if (askTextField.current.value) {
         askTextField.current.value = "";
       }
@@ -188,6 +199,8 @@ const AskForm = ({
       } else {
         askTagButton.current.disabled = false;
       }
+
+      //push search data
       if (submitSearchArray.length > 0) {
         history.push({ pathname: "/SearchAsk", state: submitSearchArray });
       }
@@ -208,7 +221,8 @@ const AskForm = ({
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     // setSearchArray(searchInput.trim().split(" "));
-    setSubmitSearchArray([...searchArray]);
+    if (!searchSubmitButton.current.disabled)
+      setSubmitSearchArray([...searchArray]);
   };
 
   const handleSearchAddTag = () => {
@@ -266,6 +280,7 @@ const AskForm = ({
             <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
           </button>
           <button
+            ref={searchSubmitButton}
             className={classes.searchSubmitButton}
             onClick={handleSearchSubmit}
           >

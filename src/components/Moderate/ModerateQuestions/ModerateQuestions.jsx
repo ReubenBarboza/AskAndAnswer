@@ -119,7 +119,8 @@ const ModerateQuestions = () => {
             sx={{
               display: "flex",
               justifyContent: "flex-start",
-              marginTop: "10px",
+              mt: "10px",
+              mb: "20px",
               width: "100%",
               "@media (max-width:530px)": {
                 flexDirection: "column",
@@ -159,7 +160,7 @@ const ModerateQuestions = () => {
           </Container>
         )}
         {isEmpty && (
-          <Typography my="10px" variant="h5">
+          <Typography mb="20px" variant="h5">
             There are no more questions.Thank you for Moderating!
           </Typography>
         )}

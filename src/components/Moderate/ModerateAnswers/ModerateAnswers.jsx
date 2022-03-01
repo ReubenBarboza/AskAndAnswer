@@ -161,7 +161,7 @@ const ModerateAnswers = () => {
           </Container>
         )}
         {isEmpty && (
-          <Typography variant="h5" my="10px">
+          <Typography variant="h5" my="20px">
             There are no more answers.Thank you for Moderating!
           </Typography>
         )}

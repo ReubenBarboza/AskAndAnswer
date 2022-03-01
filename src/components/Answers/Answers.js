@@ -27,7 +27,7 @@ import {
   Container,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
 import { getDateFromFirestoreTimestamp } from "../../com/functions";
@@ -83,7 +83,8 @@ function Answers() {
         setAnswersData(answersData);
         if (snapshot.size === 0) {
           setIsEmpty(true);
-          return;
+        } else {
+          setIsEmpty(false);
         }
       })
       .catch((error) => {
@@ -282,57 +283,6 @@ function Answers() {
                 handleSubmit={handleSubmit}
                 error={error}
               />
-              {/* <div className={classes.divider}>
-                <div className={classes.inner}></div>
-              </div>
-              <div className={classes.expandedContainer}>
-                <div className={classes.expandedTextFieldButtonGroup}>
-                  <TextField
-                    aria-label="Answer the question"
-                    placeholder="Your Answer"
-                    variant="standard"
-                    name="yourAnswer"
-                    inputRef={answerInput}
-                    multiline
-                    sx={{
-                      width: "50vw",
-                      height: "10vh",
-                      marginTop: "25px",
-                      "& .MuiInputBase-input": {
-                        color: "#000", // Text color
-                      },
-                      "& .MuiInput-underline:before": {
-                        borderBottomColor: "#100d38", // Semi-transparent underline
-                      },
-                      "& .MuiInput-underline:hover:before": {
-                        borderBottomColor: "#100d38", // Solid underline on hover
-                      },
-                      "& .MuiInput-underline:after": {
-                        borderBottomColor: "#3f51b5", // Solid underline on focus
-                      },
-                    }}
-                    onChange={handleChange}
-                  />
-                  <button className={classes.sendIcon} onClick={handleSubmit}>
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                  </button>
-                </div>
-
-                {error && (
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{ width: "25vw", mx: "auto", mb: "5vh" }}
-                  >
-                    <Typography
-                      variant="subtitle1"
-                      className={classes.errorText}
-                    >
-                      {error}
-                    </Typography>
-                  </Grid>
-                )}
-              </div> */}
             </Collapse>
           </Card>
         </div>
@@ -341,7 +291,7 @@ function Answers() {
             <FontAwesomeIcon icon={faArrowDown} />
           </div>
         )}
-        <div style={{ width: "100%", marginTop: "10px" }}>
+        <div style={{ width: "100%" }}>
           {loading && <ReactLogo />}
           {answersData &&
             answersData.map((answerData) => {
@@ -358,8 +308,8 @@ function Answers() {
               disableGutters
               sx={{
                 display: "flex",
-                mt: "20px",
-                mb: "10px",
+                my: "20px",
+
                 "@media (max-width:530px)": {
                   flexDirection: "column",
                 },
@@ -403,7 +353,7 @@ function Answers() {
             </Container>
           )}
           {isEmpty && (
-            <Typography variant="h5" my="10px">
+            <Typography variant="h5" mb="20px">
               There are no more answers.
             </Typography>
           )}
