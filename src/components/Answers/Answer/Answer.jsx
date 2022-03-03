@@ -15,6 +15,7 @@ import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportButton from "../../../com/ReportButton";
 import WarningSpam from "../../../com/WarningSpam";
+import ReadMore from "../../../com/ReadMore";
 
 const Answer = ({ answerData, questionId }) => {
   const [reputation, setReputation] = useState(0);
@@ -123,7 +124,7 @@ const Answer = ({ answerData, questionId }) => {
           }}
         >
           <Typography variant="h6" color="#100d38">
-            {answerData.answer}
+            <ReadMore content={answerData.answer} />
           </Typography>
         </CardContent>
         <CardActions>

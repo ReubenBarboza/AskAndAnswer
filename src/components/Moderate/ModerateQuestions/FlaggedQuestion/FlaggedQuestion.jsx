@@ -14,6 +14,7 @@ import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
+import ReadMore from "../../../../com/ReadMore";
 
 const FlaggedQuestion = ({ flaggedQuestionData }) => {
   const [hasClickedButton, setHasClickedButton] = useState(false);
@@ -80,7 +81,7 @@ const FlaggedQuestion = ({ flaggedQuestionData }) => {
           }}
         >
           <Typography variant="h6" color="#100d38">
-            {flaggedQuestionData.question}
+            <ReadMore content={flaggedQuestionData.question} />
           </Typography>
         </CardContent>
         <CardActions disableSpacing sx={{ p: "16px" }}>

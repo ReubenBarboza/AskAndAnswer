@@ -21,6 +21,7 @@ import {
 import { getDateFromFirestoreTimestamp } from "../../../com/functions";
 import ReportButton from "../../../com/ReportButton";
 import WarningSpam from "../../../com/WarningSpam";
+import ReadMore from "../../../com/ReadMore";
 
 const Question = ({ obj }) => {
   const [reputation, setReputation] = useState(0);
@@ -33,6 +34,9 @@ const Question = ({ obj }) => {
 
   //to check if user reported a question
   const [userFlagged, setUserFlagged] = useState(false);
+
+  //read more
+  const [readMore, setReadMore] = useState(true);
 
   const questionDocRef = doc(db, "questions", obj.id);
   // implementing reputation
@@ -124,7 +128,35 @@ const Question = ({ obj }) => {
             }}
           >
             <Typography variant="h6" color="#100d38">
-              {obj.question}
+              {/* {readMore
+                ? obj.question.substring(0, 200).concat("...")
+                : obj.question}
+              {readMore ? (
+                <button
+                  style={{
+                    fontSize: "12px",
+                    marginLeft: "5px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setReadMore(!readMore)}
+                >
+                  Read more
+                </button>
+              ) : (
+                obj.question.length > 200 && (
+                  <button
+                    style={{
+                      fontSize: "12px",
+                      marginLeft: "5px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setReadMore(!readMore)}
+                  >
+                    Read less
+                  </button>
+                )
+              )} */}
+              <ReadMore content={obj.question} />
             </Typography>
           </CardContent>
           <CardActions disableSpacing>

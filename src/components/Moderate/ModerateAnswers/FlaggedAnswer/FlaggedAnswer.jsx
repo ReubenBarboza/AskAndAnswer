@@ -14,6 +14,7 @@ import { faReply, faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { getDateFromFirestoreTimestamp } from "../../../../com/functions";
 import { db } from "../../../../firebase/firebase-config";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import ReadMore from "../../../../com/ReadMore";
 
 const FlaggedAnswer = ({ flaggedAnswerData }) => {
   const [doesQuestionExist, setDoesQuestionExist] = useState(true);
@@ -113,7 +114,9 @@ const FlaggedAnswer = ({ flaggedAnswerData }) => {
             }}
             icon={faReply}
           />
-          <Typography>Replying to "{flaggedAnswerData.question}"</Typography>
+          <Typography>
+            Replying to "{<ReadMore content={flaggedAnswerData.question} />}"
+          </Typography>
         </Container>
         <Container disableGutters>
           <Card sx={{ width: "100%", bgColor: "#fcf5e3" }}>
@@ -155,7 +158,7 @@ const FlaggedAnswer = ({ flaggedAnswerData }) => {
               }}
             >
               <Typography variant="h6" color="#100d38">
-                {flaggedAnswerData.answer}
+                <ReadMore content={flaggedAnswerData.answer} />
               </Typography>
             </CardContent>
             <CardActions disableSpacing sx={{ p: "16px" }}>

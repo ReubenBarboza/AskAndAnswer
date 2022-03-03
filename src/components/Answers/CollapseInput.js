@@ -68,8 +68,8 @@ const CollapseInput = ({ answerInput, handleChange, handleSubmit, error }) => {
             multiline
             sx={{
               width: "50vw",
-              height: "10vh",
-              marginTop: "25px",
+              height: "100%",
+              my: "25px",
               "& .MuiInputBase-input": {
                 color: "#000", // Text color
               },

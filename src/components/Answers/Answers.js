@@ -33,6 +33,7 @@ import { ReactComponent as ReactLogo } from "../../assets/loadingAnimated.svg";
 import { getDateFromFirestoreTimestamp } from "../../com/functions";
 import { useStyles } from "./AnswersStyles";
 import CollapseInput from "./CollapseInput";
+import ReadMore from "../../com/ReadMore";
 
 function Answers() {
   //////FUNCTIONALITY////////
@@ -62,6 +63,8 @@ function Answers() {
   //for styles
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  //read more
+  const [questionReadMore, setQuestionReadMore] = useState(true);
 
   const answersRef = query(
     collection(db, `questions/${id}/answers`),
@@ -222,7 +225,7 @@ function Answers() {
               }}
             >
               <Typography variant="h6" color="#100d38">
-                {question}
+                <ReadMore content={question} />
               </Typography>
             </CardContent>
             <CardActions disableSpacing sx={{ p: "16px" }}>

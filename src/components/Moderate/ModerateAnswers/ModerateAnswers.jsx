@@ -122,7 +122,7 @@ const ModerateAnswers = () => {
           <Container
             sx={{
               display: "flex",
-              mt: "20px",
+              my: "20px",
               "@media (max-width:530px)": {
                 flexDirection: "column",
               },
