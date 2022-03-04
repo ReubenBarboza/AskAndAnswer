@@ -167,38 +167,7 @@ function Ask() {
           tags={tags}
           setTags={setTags}
         />
-        {/* <div className={classes.questionContainer}>
-          <TextField
-            aria-label="Ask a question"
-            placeholder="Ask a question"
-            variant="standard"
-            name="question"
-            inputRef={questionInput}
-            multiline
-            sx={{
-              width: "50vw",
-              height: "10vh",
-              marginTop: "25px",
-              "& .MuiInputBase-input": {
-                color: "#000", // Text color
-              },
-              "& .MuiInput-underline:before": {
-                borderBottomColor: "#100d38", // Semi-transparent underline
-              },
-              "& .MuiInput-underline:hover:before": {
-                borderBottomColor: "#100d38", // Solid underline on hover
-              },
-              "& .MuiInput-underline:after": {
-                borderBottomColor: "#3f51b5", // Solid underline on focus
-              },
-            }}
-            onChange={handleChange}
-          />
-          <button className={classes.sendIcon} onClick={handleSubmit}>
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </button>
-          <br />
-        </div> */}
+
         {error && (
           <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
             <Typography variant="subtitle1" className={classes.errorText}>
