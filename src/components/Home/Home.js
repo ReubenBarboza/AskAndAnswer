@@ -1,6 +1,6 @@
 import React from "react";
 import { useStyles } from "./HomeStyles";
-import { Typography, Paper, Grid } from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 import feather from "../../assets/feather.png";
 import clock from "../../assets/clock.png";
 import responsive from "../../assets/responsive.png";

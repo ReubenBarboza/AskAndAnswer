@@ -48,9 +48,22 @@ const useStyles = makeStyles({
     border: "1px solid #854953",
     borderRadius: "3px",
   },
+  refreshText: {
+    textAlign: "center",
+    padding: "4px",
+    backgroundColor: "#DFF2BF",
+    border: "1px solid #4F8A10",
+    borderRadius: "3px",
+  },
 });
 
-const CollapseInput = ({ answerInput, handleChange, handleSubmit, error }) => {
+const CollapseInput = ({
+  answerInput,
+  handleChange,
+  handleSubmit,
+  error,
+  refreshNotice,
+}) => {
   const classes = useStyles();
   return (
     <div>
@@ -89,7 +102,13 @@ const CollapseInput = ({ answerInput, handleChange, handleSubmit, error }) => {
             <FontAwesomeIcon icon={faPaperPlane} />
           </button>
         </div>
-
+        {refreshNotice && !error && (
+          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
+            <Typography variant="subtitle1" className={classes.refreshText}>
+              {refreshNotice}
+            </Typography>
+          </Grid>
+        )}
         {error && (
           <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
             <Typography variant="subtitle1" className={classes.errorText}>

@@ -21,6 +21,7 @@ function Ask() {
   const [values, setValues] = useState({ question: "" });
   const [tags, setTags] = useState([]);
   const [error, setError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState("");
   const questionInput = useRef(null);
 
   //To update ui after asking a question.
@@ -67,7 +68,7 @@ function Ask() {
         })
         .catch((error) => console.log(error));
     }
-  }, [toggleAskedQuestion]);
+  }, []);
 
   // //pagination
   const loadMore = () => {
@@ -141,6 +142,7 @@ function Ask() {
       console.log(error);
     }
     setToggleAskedQuestion(!toggleAskedQuestion);
+    setSubmitSuccess("Question Submitted!");
     questionInput.current.value = "";
     setError("");
   };
@@ -167,6 +169,13 @@ function Ask() {
           tags={tags}
           setTags={setTags}
         />
+        {submitSuccess && !error && (
+          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
+            <Typography variant="subtitle1" className={classes.successText}>
+              {submitSuccess}
+            </Typography>
+          </Grid>
+        )}
 
         {error && (
           <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>

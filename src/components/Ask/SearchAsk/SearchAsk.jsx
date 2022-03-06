@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Grid, Paper, Typography } from "@mui/material";
+import { Button, Container, Paper, Typography } from "@mui/material";
 import Question from "../Question/Question";
 import { ReactComponent as ReactLogo } from "../../../assets/loadingAnimated.svg";
 import {

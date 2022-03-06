@@ -15,8 +15,6 @@ import Answer from "./Answer/Answer";
 import {
   Paper,
   Card,
-  TextField,
-  Grid,
   CardContent,
   Avatar,
   CardHeader,
@@ -56,6 +54,7 @@ function Answers() {
   const answerInput = useRef(null);
   const [error, setError] = useState("");
   const [toggleAskedAnswer, setToggleAskedAnswer] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   //integrating pagination using firebase api
   const [lastVisibleDoc, setLastVisibleDoc] = useState(null);
@@ -63,8 +62,6 @@ function Answers() {
   //for styles
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  //read more
-  const [questionReadMore, setQuestionReadMore] = useState(true);
 
   const answersRef = query(
     collection(db, `questions/${id}/answers`),
@@ -93,8 +90,9 @@ function Answers() {
       .catch((error) => {
         console.log(error);
       });
+
     setLoading(false);
-  }, [toggleAskedAnswer]);
+  }, []);
 
   const loadMore = () => {
     if (!isEmpty) {
@@ -161,6 +159,7 @@ function Answers() {
       console.log(error);
     }
     setToggleAskedAnswer(!toggleAskedAnswer);
+    setSubmitSuccess("Answer added!");
     answerInput.current.value = "";
     setError("");
   };
@@ -285,6 +284,7 @@ function Answers() {
                 handleChange={handleChange}
                 handleSubmit={handleSubmit}
                 error={error}
+                submitSuccess={submitSuccess}
               />
             </Collapse>
           </Card>
@@ -296,6 +296,7 @@ function Answers() {
         )}
         <div style={{ width: "100%" }}>
           {loading && <ReactLogo />}
+
           {answersData &&
             answersData.map((answerData) => {
               return (

@@ -43,15 +43,20 @@ const Answer = ({ answerData, questionId }) => {
         });
         console.log("async ran");
       };
+
       if (clickedPositiveRep && wasPositiveRep && !wasNegativeRep) {
         //this will execute only on first click
+        console.log("cp wp !wn" + reputation);
         update(reputation); //+1
       } else if (wasPositiveRep && clickedNegativeRep) {
+        console.log("wp cn" + reputation);
         update(reputation - 1); //-2
       } else if (clickedNegativeRep && !wasPositiveRep && wasNegativeRep) {
         //this will execute only on first click
+        console.log("cn wp wn" + reputation);
         update(reputation); //-1
       } else if (wasNegativeRep && clickedPositiveRep) {
+        console.log("wn cp" + reputation);
         update(reputation + 1); //+2
       }
     } catch (error) {
@@ -161,6 +166,7 @@ const Answer = ({ answerData, questionId }) => {
             borderRadius="50%"
           >
             {answerData.reputation + reputation}
+            {/* {answerData.reputation + !toggleAskedAnswer ? reputation : ""} */}
           </Typography>
           <IconButton
             onClick={() => {

@@ -33,4 +33,11 @@ export const useStyles = makeStyles({
     border: "1px solid #854953",
     borderRadius: "3px",
   },
+  successText: {
+    textAlign: "center",
+    padding: "4px",
+    backgroundColor: "#DFF2BF",
+    border: "1px solid #4F8A10",
+    borderRadius: "3px",
+  },
 });

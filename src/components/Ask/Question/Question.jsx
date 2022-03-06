@@ -35,9 +35,6 @@ const Question = ({ obj }) => {
   //to check if user reported a question
   const [userFlagged, setUserFlagged] = useState(false);
 
-  //read more
-  const [readMore, setReadMore] = useState(true);
-
   const questionDocRef = doc(db, "questions", obj.id);
   // implementing reputation
   useEffect(() => {
