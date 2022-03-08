@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { doc, increment, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase/firebase-config";
+import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
+import { db, auth } from "../../../firebase/firebase-config";
 import {
   Avatar,
   Button,
@@ -25,6 +25,8 @@ import ReadMore from "../../../com/ReadMore";
 
 const Question = ({ obj }) => {
   const [reputation, setReputation] = useState(0);
+  const [questionReputationData, setQuestionReputationData] = useState(null);
+  const [clientReputation, setClientReputation] = useState(null);
 
   //to handle reputation when user clicks dislike after liking and vice versa.
   const [clickedPositiveRep, setClickedPositiveRep] = useState(false);
@@ -34,6 +36,21 @@ const Question = ({ obj }) => {
 
   //to check if user reported a question
   const [userFlagged, setUserFlagged] = useState(false);
+
+  //used to check the server if current user already liked or disliked this content before.
+  const questionReputationRef = doc(
+    db,
+    `questionReputation/${obj.id}-${auth.currentUser.uid}`
+  );
+  useEffect(() => {
+    console.log("initial get questionReputation useEffect fired");
+
+    getDoc(questionReputationRef)
+      .then((snapshot) => {
+        setQuestionReputationData(snapshot.data());
+      })
+      .catch((e) => console.log(`initial questionRep ${e}`));
+  }, []);
 
   const questionDocRef = doc(db, "questions", obj.id);
   // implementing reputation
@@ -46,16 +63,54 @@ const Question = ({ obj }) => {
         });
         console.log("async ran");
       };
-      if (clickedPositiveRep && wasPositiveRep && !wasNegativeRep) {
-        //this will execute only on first click
-        update(reputation); //+1
-      } else if (wasPositiveRep && clickedNegativeRep) {
-        update(reputation - 1); //-2
-      } else if (clickedNegativeRep && !wasPositiveRep && wasNegativeRep) {
-        //this will execute only on first click
-        update(reputation); //-1
-      } else if (wasNegativeRep && clickedPositiveRep) {
-        update(reputation + 1); //+2
+      //if questionReputationData is null or undefined it means the current user did not like/dislike before
+      if (!questionReputationData) {
+        //Consider 5 rep, if liked=>6rep,disliked immediately after then 4rep
+        if (clickedPositiveRep && wasPositiveRep && !wasNegativeRep) {
+          //this will execute only on first click
+          update(reputation); //+1
+          setClientReputation(obj.reputation + 1);
+        } else if (wasPositiveRep && clickedNegativeRep) {
+          update(reputation - 1); //-2
+          setClientReputation(obj.reputation - 1);
+        } else if (clickedNegativeRep && !wasPositiveRep && wasNegativeRep) {
+          //this will execute only on first click
+          update(reputation); //-1
+          setClientReputation(obj.reputation - 1);
+        } else if (wasNegativeRep && clickedPositiveRep) {
+          update(reputation + 1); //+2
+          setClientReputation(obj.reputation + 1);
+        }
+      } else {
+        //means the server stored that current user liked this content before
+        if (questionReputationData && questionReputationData.liked) {
+          //consider 5 rep, liked=>5rep, dislike=>3rep, like immediately after=>5rep
+          if (clickedNegativeRep && !wasPositiveRep && wasNegativeRep) {
+            //this will execute only on first click
+            update(reputation - 1); //-2
+            setClientReputation(obj.reputation - 2);
+          } else if (wasPositiveRep && clickedNegativeRep) {
+            update(reputation - 1); //-2
+            setClientReputation(obj.reputation - 2);
+          } else if (wasNegativeRep && clickedPositiveRep) {
+            update(reputation + 1); //+2
+            setClientReputation(obj.reputation);
+          }
+          //means the server stored that current user disliked this content before
+        } else if (questionReputationData && questionReputationData.disliked) {
+          //consider 5 rep, dislike=>5rep liked=>7rep, dislike immediately after=>5rep
+          if (clickedPositiveRep && wasPositiveRep && !wasNegativeRep) {
+            //this will execute only on first click
+            update(reputation + 1); //+2
+            setClientReputation(obj.reputation + 2);
+          } else if (wasPositiveRep && clickedNegativeRep) {
+            update(reputation - 1); //-2
+            setClientReputation(obj.reputation);
+          } else if (wasNegativeRep && clickedPositiveRep) {
+            update(reputation + 1); //+2
+            setClientReputation(obj.reputation + 2);
+          }
+        }
       }
     } catch (error) {
       console.log(error);
@@ -67,6 +122,45 @@ const Question = ({ obj }) => {
     wasNegativeRep,
     reputation,
   ]);
+
+  useEffect(() => {
+    console.log("questionReputation useeffect fired");
+    try {
+      const updatePositive = async () => {
+        await setDoc(questionReputationRef, {
+          liked: true,
+          disliked: false,
+        });
+        console.log("liked async ran");
+      };
+      const updateNegative = async () => {
+        await setDoc(questionReputationRef, {
+          liked: false,
+          disliked: true,
+        });
+        console.log("disliked async ran");
+      };
+
+      // questionReputationData.liked && clickedNegativeRep
+      //   ? updateNegative()
+      //   : questionReputationData.disliked && clickedPositiveRep
+      //   ? updatePositive()
+      //   : null;
+      if (
+        clickedNegativeRep &&
+        (!questionReputationData || !questionReputationData.disliked)
+      ) {
+        updateNegative();
+      } else if (
+        clickedPositiveRep &&
+        (!questionReputationData || !questionReputationData.liked)
+      ) {
+        updatePositive();
+      }
+    } catch (e) {
+      console.log(`questionRep ${e}`);
+    }
+  }, [clickedPositiveRep, clickedNegativeRep]);
 
   async function reportOnClick() {
     try {
@@ -89,6 +183,9 @@ const Question = ({ obj }) => {
           key={obj.id}
           sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}
         >
+          {console.log(questionReputationData)}
+          {console.log("rep: " + reputation)}
+
           <CardHeader
             sx={{
               position: "relative",
@@ -125,34 +222,6 @@ const Question = ({ obj }) => {
             }}
           >
             <Typography variant="h6" color="#100d38">
-              {/* {readMore
-                ? obj.question.substring(0, 200).concat("...")
-                : obj.question}
-              {readMore ? (
-                <button
-                  style={{
-                    fontSize: "12px",
-                    marginLeft: "5px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setReadMore(!readMore)}
-                >
-                  Read more
-                </button>
-              ) : (
-                obj.question.length > 200 && (
-                  <button
-                    style={{
-                      fontSize: "12px",
-                      marginLeft: "5px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => setReadMore(!readMore)}
-                  >
-                    Read less
-                  </button>
-                )
-              )} */}
               <ReadMore content={obj.question} />
             </Typography>
           </CardContent>
@@ -177,23 +246,48 @@ const Question = ({ obj }) => {
               justifyContent="center"
               alignItems="center"
               flexShrink="0"
+              //checks whether server stored the like/dislike and display colors based on it intitially and then change based on what was clicked.
               bgcolor={
+                (questionReputationData &&
+                  questionReputationData.liked &&
+                  !clickedNegativeRep) ||
                 reputation === 1
                   ? "#DFF2BF"
-                  : reputation === -1
+                  : (questionReputationData &&
+                      questionReputationData.disliked &&
+                      !clickedPositiveRep) ||
+                    reputation === -1
                   ? "#FFD2D2"
                   : ""
               }
+              //checks whether server stored the like/dislike and display colors based on it intitially and then change based on what was clicked.
               border={
+                (questionReputationData &&
+                  questionReputationData.liked &&
+                  !clickedNegativeRep) ||
                 reputation === 1
                   ? "1px solid #4F8A10"
-                  : reputation === -1
+                  : (questionReputationData &&
+                      questionReputationData.disliked &&
+                      !clickedPositiveRep) ||
+                    reputation === -1
                   ? "1px solid #D8000C"
                   : "1px solid rgba(0, 0, 0, 0.6)"
               }
               borderRadius="50%"
             >
-              {obj.reputation + reputation}
+              {/* {questionReputationData &&
+                obj.reputation +
+                  (questionReputationData.liked &&
+                  clickedNegativeRep &&
+                  wasPositiveRep
+                    ? reputation - 1
+                    : questionReputationData.disliked &&
+                      clickedPositiveRep &&
+                      wasNegativeRep
+                    ? reputation + 1
+                    : reputation)} */}
+              {clientReputation ?? obj.reputation}
             </Typography>
             <IconButton
               onClick={() => {
