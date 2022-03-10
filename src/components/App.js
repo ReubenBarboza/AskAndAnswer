@@ -23,7 +23,7 @@ import ModerateAnswers from "./Moderate/ModerateAnswers/ModerateAnswers";
 function App() {
   const [user, setUser] = useState({});
   const [isUserModerator, setIsUserModerator] = useState(null);
-  onAuthStateChanged(auth, (currentUser) => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
 
@@ -37,6 +37,8 @@ function App() {
           setIsUserModerator(currentUserData.data().isModerator);
         } else {
           console.log("user logged out");
+          setIsUserModerator(false);
+          unsubscribe();
         }
       } catch (e) {
         console.log(e);

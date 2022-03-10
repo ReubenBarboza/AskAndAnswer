@@ -50,6 +50,7 @@ const Question = ({ obj }) => {
         setQuestionReputationData(snapshot.data());
       })
       .catch((e) => console.log(`initial questionRep ${e}`));
+    console.log("async ran");
   }, []);
 
   const questionDocRef = doc(db, "questions", obj.id);
@@ -183,9 +184,6 @@ const Question = ({ obj }) => {
           key={obj.id}
           sx={{ width: "100%", bgColor: "#fcf5e3", marginY: "10px" }}
         >
-          {console.log(questionReputationData)}
-          {console.log("rep: " + reputation)}
-
           <CardHeader
             sx={{
               position: "relative",

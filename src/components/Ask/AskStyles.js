@@ -29,6 +29,7 @@ export const useStyles = makeStyles({
   errorText: {
     textAlign: "center",
     padding: "4px",
+    margin: "4px 0px",
     backgroundColor: "#facacb",
     border: "1px solid #854953",
     borderRadius: "3px",
@@ -36,6 +37,7 @@ export const useStyles = makeStyles({
   successText: {
     textAlign: "center",
     padding: "4px",
+    margin: "4px 0px",
     backgroundColor: "#DFF2BF",
     border: "1px solid #4F8A10",
     borderRadius: "3px",

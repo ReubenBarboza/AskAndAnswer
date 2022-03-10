@@ -50,7 +50,7 @@ function Answers() {
   } = location.state;
 
   const [answersData, setAnswersData] = useState(null);
-  const [values, setValues] = useState({ yourAnswer: "" });
+  const [values, setValues] = useState({ yourAnswer: `` });
   const answerInput = useRef(null);
   const [error, setError] = useState("");
   const [toggleAskedAnswer, setToggleAskedAnswer] = useState(false);
@@ -66,7 +66,7 @@ function Answers() {
   const answersRef = query(
     collection(db, `questions/${id}/answers`),
     orderBy("createdAt"),
-    limit(1)
+    limit(4)
   );
 
   useEffect(() => {
@@ -102,7 +102,7 @@ function Answers() {
           collection(db, `questions/${id}/answers`),
           orderBy("createdAt"),
           startAfter(lastVisibleDoc),
-          limit(1)
+          limit(4)
         )
       ).then((snapshot) => {
         const isCollectionEmpty = snapshot.size === 0;
@@ -139,16 +139,21 @@ function Answers() {
       }
     }
     setValues({ ...values, [e.target.name]: e.target.value });
+    if (submitSuccess) {
+      setSubmitSuccess("");
+    }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (error) {
+      if (error == "Login to answer.") {
         return;
       }
       if (!values.yourAnswer || !answerInput.current.value) {
         setError("Enter an answer.");
         return;
+      } else {
+        setError("");
       }
       await createUserAnswer(auth.currentUser, id, {
         answer: values.yourAnswer,

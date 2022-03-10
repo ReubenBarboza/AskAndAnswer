@@ -31,7 +31,7 @@ const ModerateQuestions = () => {
       collection(db, "questions"),
       orderBy("createdAt", "desc"),
       where("isFlagged", "==", true),
-      limit(1)
+      limit(4)
     );
     setLoading(true);
 
@@ -63,7 +63,7 @@ const ModerateQuestions = () => {
           where("isFlagged", "==", true),
           orderBy("createdAt", "desc"),
           startAfter(lastVisibleDoc),
-          limit(1)
+          limit(4)
         )
       )
         .then((snapshot) => {

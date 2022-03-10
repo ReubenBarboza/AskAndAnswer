@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     margin: "0px 2px",
     padding: "0.25rem",
     border: "1px solid lightgray",
-    borderRadius: "20%",
+    borderRadius: "10px",
   },
   tagSpan: {
     fontSize: "14px",

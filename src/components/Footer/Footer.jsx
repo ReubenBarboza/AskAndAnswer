@@ -19,7 +19,7 @@ const Footer = () => {
         <Link className={classes.footerLinkItem} to="/SignUp">
           Sign In
         </Link>
-        <Link className={classes.footerLinkItem} to="#">
+        <Link className={classes.footerLinkItem} to="/About">
           About
         </Link>
       </div>

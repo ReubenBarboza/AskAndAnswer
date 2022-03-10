@@ -9,7 +9,6 @@ import {
   limit,
   orderBy,
   startAfter,
-  where,
 } from "firebase/firestore";
 import { Button, Paper, Typography, Grid } from "@mui/material";
 import { useStyles } from "./AskStyles";
@@ -44,7 +43,7 @@ function Ask() {
       collection(db, "questions"),
       orderBy("createdAt", "desc"),
       orderBy("reputation", "desc"),
-      limit(1)
+      limit(4)
     );
     setLoading(true);
 
@@ -80,7 +79,7 @@ function Ask() {
           orderBy("createdAt", "desc"),
           orderBy("reputation", "desc"),
           startAfter(lastVisibleDoc),
-          limit(1)
+          limit(4)
         )
       ).then((snapshot) => {
         const isCollectionEmpty = snapshot.size === 0;
@@ -110,6 +109,9 @@ function Ask() {
     }
 
     setValues({ ...values, [e.target.name]: e.target.value });
+    if (submitSuccess) {
+      setSubmitSuccess("");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -170,7 +172,7 @@ function Ask() {
           setTags={setTags}
         />
         {submitSuccess && !error && (
-          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
+          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", my: "3vh" }}>
             <Typography variant="subtitle1" className={classes.successText}>
               {submitSuccess}
             </Typography>
@@ -178,7 +180,7 @@ function Ask() {
         )}
 
         {error && (
-          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
+          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", my: "3vh" }}>
             <Typography variant="subtitle1" className={classes.errorText}>
               {error}
             </Typography>

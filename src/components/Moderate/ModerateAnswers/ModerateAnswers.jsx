@@ -27,7 +27,7 @@ const ModerateAnswers = () => {
       collectionGroup(db, "answers"),
       where("isFlagged", "==", true),
       orderBy("createdAt", "asc"),
-      limit(1)
+      limit(4)
     );
     setLoading(true);
     getDocs(flaggedAnswersRef)
@@ -61,7 +61,7 @@ const ModerateAnswers = () => {
           where("isFlagged", "==", true),
           orderBy("createdAt", "asc"),
           startAfter(lastVisibleDoc),
-          limit(1)
+          limit(4)
         )
       ).then((snapshot) => {
         const isCollectionEmpty = snapshot.size === 0;

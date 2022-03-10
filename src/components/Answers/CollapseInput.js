@@ -44,6 +44,7 @@ const useStyles = makeStyles({
   errorText: {
     textAlign: "center",
     padding: "4px",
+    margin: "4px 0px",
     backgroundColor: "#facacb",
     border: "1px solid #854953",
     borderRadius: "3px",
@@ -51,6 +52,7 @@ const useStyles = makeStyles({
   refreshText: {
     textAlign: "center",
     padding: "4px",
+    margin: "4px 0px",
     backgroundColor: "#DFF2BF",
     border: "1px solid #4F8A10",
     borderRadius: "3px",
@@ -62,7 +64,7 @@ const CollapseInput = ({
   handleChange,
   handleSubmit,
   error,
-  refreshNotice,
+  submitSuccess,
 }) => {
   const classes = useStyles();
   return (
@@ -102,15 +104,15 @@ const CollapseInput = ({
             <FontAwesomeIcon icon={faPaperPlane} />
           </button>
         </div>
-        {refreshNotice && !error && (
-          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
+        {submitSuccess && !error && (
+          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", my: "3vh" }}>
             <Typography variant="subtitle1" className={classes.refreshText}>
-              {refreshNotice}
+              {submitSuccess}
             </Typography>
           </Grid>
         )}
         {error && (
-          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", mb: "5vh" }}>
+          <Grid item xs={12} sx={{ width: "25vw", mx: "auto", my: "3vh" }}>
             <Typography variant="subtitle1" className={classes.errorText}>
               {error}
             </Typography>
