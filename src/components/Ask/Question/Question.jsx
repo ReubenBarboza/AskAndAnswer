@@ -38,18 +38,17 @@ const Question = ({ obj }) => {
   const [userFlagged, setUserFlagged] = useState(false);
 
   //used to check the server if current user already liked or disliked this content before.
-  const questionReputationRef = doc(
-    db,
-    `questionReputation/${obj.id}-${auth.currentUser.uid}`
-  );
+  const questionReputationRef =
+    auth.currentUser &&
+    doc(db, `questionReputation/${obj.id}-${auth.currentUser.uid}`);
   useEffect(() => {
     console.log("initial get questionReputation useEffect fired");
-
-    getDoc(questionReputationRef)
-      .then((snapshot) => {
-        setQuestionReputationData(snapshot.data());
-      })
-      .catch((e) => console.log(`initial questionRep ${e}`));
+    auth.currentUser &&
+      getDoc(questionReputationRef)
+        .then((snapshot) => {
+          setQuestionReputationData(snapshot.data());
+        })
+        .catch((e) => console.log(`initial questionRep ${e}`));
     console.log("async ran");
   }, []);
 
@@ -349,7 +348,9 @@ const Question = ({ obj }) => {
                   <FontAwesomeIcon icon={faEye} />
                 </Button>
               </Link>
-              <ReportButton reportOnClick={reportOnClick} />
+              {auth.currentUser && (
+                <ReportButton reportOnClick={reportOnClick} />
+              )}
             </div>
           </CardActions>
         </Card>

@@ -38,18 +38,18 @@ const Answer = ({ answerData, questionId }) => {
   //for report button
   const [userFlagged, setUserFlagged] = useState(false);
 
-  const answerReputationRef = doc(
-    db,
-    `answerReputation/${answerData.id}-${auth.currentUser.uid}`
-  );
+  const answerReputationRef =
+    auth.currentUser &&
+    doc(db, `answerReputation/${answerData.id}-${auth.currentUser.uid}`);
   useEffect(() => {
     console.log("initial get answerReputation useEffect fired");
 
-    getDoc(answerReputationRef)
-      .then((snapshot) => {
-        setAnswerReputationData(snapshot.data());
-      })
-      .catch((e) => console.log(`initial answerRep ${e}`));
+    auth.currentUser &&
+      getDoc(answerReputationRef)
+        .then((snapshot) => {
+          setAnswerReputationData(snapshot.data());
+        })
+        .catch((e) => console.log(`initial answerRep ${e}`));
   }, []);
 
   // const answerDocRef = doc(
@@ -338,7 +338,7 @@ const Answer = ({ answerData, questionId }) => {
           </IconButton>
           {answerData.isFlagged && <WarningSpam />}
           <div style={{ marginLeft: "auto", display: "flex" }}>
-            <ReportButton reportOnClick={reportOnClick} />
+            {auth.currentUser && <ReportButton reportOnClick={reportOnClick} />}
           </div>
         </CardActions>
 
