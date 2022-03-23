@@ -11,6 +11,7 @@ import {
   CardHeader,
   IconButton,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -56,6 +57,7 @@ const Question = ({ obj }) => {
   // implementing reputation
   useEffect(() => {
     console.log("reputation useeffect fired");
+    if (!auth.currentUser) return;
     try {
       const update = async (reputation) => {
         await updateDoc(questionDocRef, {
@@ -125,6 +127,7 @@ const Question = ({ obj }) => {
 
   useEffect(() => {
     console.log("questionReputation useeffect fired");
+    if (!auth.currentUser) return;
     try {
       const updatePositive = async () => {
         await setDoc(questionReputationRef, {
@@ -223,17 +226,44 @@ const Question = ({ obj }) => {
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton
-              onClick={() => {
-                setReputation(1);
-                setClickedPositiveRep(true);
-                setClickedNegativeRep(false);
-                setWasPositiveRep(true);
-              }}
-              sx={{ mx: "4px" }}
-            >
-              <FontAwesomeIcon icon={faThumbsUp} />
-            </IconButton>
+            {!auth.currentUser ? (
+              <Tooltip
+                title="Please login to like"
+                placement="bottom-start"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      backgroundColor: "#100d38",
+                      color: "#fcf5e3",
+                    },
+                  },
+                }}
+              >
+                <IconButton
+                  onClick={() => {
+                    setReputation(1);
+                    setClickedPositiveRep(true);
+                    setClickedNegativeRep(false);
+                    setWasPositiveRep(true);
+                  }}
+                  sx={{ mx: "4px" }}
+                >
+                  <FontAwesomeIcon icon={faThumbsUp} />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  setReputation(1);
+                  setClickedPositiveRep(true);
+                  setClickedNegativeRep(false);
+                  setWasPositiveRep(true);
+                }}
+                sx={{ mx: "4px" }}
+              >
+                <FontAwesomeIcon icon={faThumbsUp} />
+              </IconButton>
+            )}
             <Typography
               variant="body2"
               fontWeight="medium"
@@ -286,17 +316,44 @@ const Question = ({ obj }) => {
                     : reputation)} */}
               {clientReputation ?? obj.reputation}
             </Typography>
-            <IconButton
-              onClick={() => {
-                setReputation(-1);
-                setClickedNegativeRep(true);
-                setClickedPositiveRep(false);
-                setWasNegativeRep(true);
-              }}
-              sx={{ mx: "4px" }}
-            >
-              <FontAwesomeIcon icon={faThumbsDown} />
-            </IconButton>
+            {!auth.currentUser ? (
+              <Tooltip
+                title="Please login to dislike"
+                placement="bottom-start"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      backgroundColor: "#100d38",
+                      color: "#fcf5e3",
+                    },
+                  },
+                }}
+              >
+                <IconButton
+                  onClick={() => {
+                    setReputation(-1);
+                    setClickedNegativeRep(true);
+                    setClickedPositiveRep(false);
+                    setWasNegativeRep(true);
+                  }}
+                  sx={{ mx: "4px" }}
+                >
+                  <FontAwesomeIcon icon={faThumbsDown} />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  setReputation(-1);
+                  setClickedNegativeRep(true);
+                  setClickedPositiveRep(false);
+                  setWasNegativeRep(true);
+                }}
+                sx={{ mx: "4px" }}
+              >
+                <FontAwesomeIcon icon={faThumbsDown} />
+              </IconButton>
+            )}
 
             {obj.isFlagged && <WarningSpam />}
 
