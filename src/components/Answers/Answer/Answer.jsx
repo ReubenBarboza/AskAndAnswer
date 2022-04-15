@@ -244,7 +244,7 @@ const Answer = ({ answerData, questionId }) => {
           }
           title={answerData.displayName}
           subheader={getDateFromFirestoreTimestamp(
-            ////just typing answerData.createdAt gave an error once you reload the page in Answers so I assume the same thing happens over here. This is probably because Timestamp answerDataect is not serialized.
+            ////just typing answerData.createdAt gave an error once you reload the page in Answers so I assume the same thing happens over here. This is probably because Timestamp answerData is not serialized.
             new Timestamp(
               answerData.createdAt.seconds,
               answerData.createdAt.nanoseconds

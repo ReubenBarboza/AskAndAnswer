@@ -92,7 +92,7 @@ const SignUp = () => {
             />
           </Grid>
           {registerClicked && errors.email && (
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ my: "5px" }}>
               <Typography variant="subtitle1" className={classes.errorText}>
                 {errors.email}
               </Typography>
@@ -121,7 +121,7 @@ const SignUp = () => {
             />
           </Grid>
           {registerClicked && errors.password && (
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ my: "5px" }}>
               <Typography variant="subtitle1" className={classes.errorText}>
                 {errors.password}
               </Typography>
@@ -140,6 +140,13 @@ const SignUp = () => {
               required
             />
           </Grid>
+          {registerClicked && errors.username && (
+            <Grid item xs={12} sx={{ my: "5px" }}>
+              <Typography variant="subtitle1" className={classes.errorText}>
+                {errors.username}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <FormControlLabel
               control={

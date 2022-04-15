@@ -10,5 +10,9 @@ export const SignUpValidation = (values) => {
     errors.password = "Password must be greater than 6 characters";
   }
 
+  if (values.displayName === "") {
+    errors.username = "Username cannot be empty";
+  }
+
   return errors;
 };
