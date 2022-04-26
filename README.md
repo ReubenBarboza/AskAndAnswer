@@ -8,23 +8,23 @@
 
 <br>
 
-![home-main-footer](screenshots\home-main-footer.png)
+![home-main-footer](./screenshots/home-main-footer.png)
 
 ### Login
 
 <br>
 
-![login](screenshots\login.png)
+![login](./screenshots/login.png)
 
 ### Ask
 
 <br>
 
-![ask-top-half](screenshots\ask-top-half.png)
+![ask-top-half](./screenshots/ask-top-half.png)
 
 <br>
 
-![ask-bottom-half](screenshots\ask-bottom-half.png)
+![ask-bottom-half](./screenshots/ask-bottom-half.png)
 
 <br>
 
@@ -32,7 +32,7 @@
 
 <br>
 
-![answers](screenshots\answers.png)
+![answers](./screenshots/answers.png)
 
 <br>
 
@@ -40,14 +40,14 @@
 
 <br>
 
-![moderate-questions](screenshots\moderate-questions.png)
+![moderate-questions](./screenshots/moderate-questions.png)
 
 <br>
 
-![moderate-answers](screenshots\moderate-answers.png)
+![moderate-answers](./screenshots/moderate-answers.png)
 
 ### About
 
 <br>
 
-![about](screenshots\about.png)
+![about](./screenshots/about.png)
